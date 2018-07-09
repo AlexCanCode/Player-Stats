@@ -1,0 +1,11 @@
+TODO
+
+- Figure out search algorithm 
+	- Need to check database/object against all words on page
+	- Need to eliminate names as each character is processed to make it faster
+	- Look into what kind of algorithm this would take
+		- feel like its similar to what websites use to restrict usernames
+
+
+- Develop web crawler to properly scrape and format data 
+
