@@ -1,0 +1,47 @@
+.stat-box {
+	
+	}
+
+.stat-box .stat-table{
+	visibility: visible;
+	width: 200px;
+	height: auto;
+	color: white;
+	background: grey;
+}
+
+span {
+
+}
+
+.stat-box:hover .stat-table {
+	visibility: visible;
+}
+
+
+
+.stat-table, .stat-table th, .stat-table td {
+	border-collapse: collapse;
+	z-index: 1;
+	height: 50%;
+	width: auto;
+	border-radius: 10px;
+}
+
+.stat-table th {
+	color: black;
+} 
+
+
+.stat-table td {
+	text-align: center;
+}
+
+th, td {
+	padding: 3px;
+}
+
+.stat-table a {
+	text-decoration: none;
+	font-family: helvetica;
+}
