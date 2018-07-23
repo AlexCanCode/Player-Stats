@@ -1,11 +1,24 @@
 TODO
 
-- Figure out search algorithm 
-	- Need to check database/object against all words on page
-	- Need to eliminate names as each character is processed to make it faster
-	- Look into what kind of algorithm this would take
-		- feel like its similar to what websites use to restrict usernames
+- Configure web crawler to only grab stats you want from the table (or a way to automatically filter them after)
 
+- Determine how to grab PER 
 
-- Develop web crawler to properly scrape and format data 
+- Define exact stats you want to grab
+
+- Develop automated process to convert CSV to JSON 
+
+- Develop search of JSON - (hash or map serach?) 
+
+- Look into how to store data in cache so you don't need to load it each time
+
+- Look into broad process of storing data in database and having the extension load it when needed
+
+- Feature: only works on urls that contain "NBA" or a sports related string
+
+- Develop UI including box appearance 
+   Name
+   Stats
+   Link to stats page 
+   Anything else you want to show? 
 
