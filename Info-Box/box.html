@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
+	<meta charset="utf-8">
+	<script src="https://d3js.org/d3.v5.min.js"></script> 
 	<title>POp-up Box Tester</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
-
+	<script src="stats.js"></script>
+	
 </head>
 <body>
 	<div class="stat-box">Steph Curry <span class="table"><table class="stat-table">
@@ -30,4 +33,18 @@
 	
 
 </body>
+
+<!--<script type="text/javascript">
+	
+
+	let playerData = d3.csv("https://raw.githubusercontent.com/AlexCanCode/Player-Stats/master/players.csv", function(error, data){
+		const dataNest = d3.nest()
+			.key(function(d) { return d.PF})
+			.entries(data);
+
+			return dataNest
+
+	})
+
+</script> -->
 </html>
