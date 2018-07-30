@@ -1,7 +1,117 @@
+ function hashCode(str) {
+    let hash = 0;
+    if (str.length == 0){
+        return hash;
+    }
+    for (let i = 0; i < str.length; i++) {
+        let char = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash;
+    }
+    return hash;
+}
+
+class statMap {
+    constructor() {
+    this.list = []
+  }
+
+  hash(str) {
+    let hash = 0;
+    if (str.length == 0){
+        return hash;
+    }
+    for (let i = 0; i < str.length; i++) {
+        let char = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash;
+    }
+    return hash;
+  }
+
+  get(x) {
+    let i = this.hash(x);
+
+    if(!this.list[i]){
+        return undefined
+    }
+
+    let result;
+
+    this.list[i].forEach(pairs => { //May be able to make faster by adding a conditional that checks if there are multiple values for list[i] before running this block
+        if (pairs[0] === x) {
+            result = pairs[1];
+        }
+    })
+
+    return result;
+  }
+
+  set(x, y) {
+    let i = this.hash(x);
+
+    if(!this.list[i]) {
+        this.list[i] = [];
+    }
+
+    this.list[i].push([x, y]);
+  }
+}
+
+
+let m = new statMap();
+
+                        /*Next Steps
+
+                        1. Write a function that hashes the first and last names of each player automatically
+                            - The value will be there "RK" number from the basketball reference table
+                            -  Modify the scraper to include this number
+                            - eventually, lets also tie nicknames to these numbers by scraping them from each players BR page 
+                                - this will not be a reoccuring script but rather something to run a couple of times a year
+                                - nickname functionality will be a more eye-catching feature
+                            - to be run daily in case of new players
+                            - throughly test the hasing funciton for collisions 
+
+                        2. Seperately, write a script to automatically break the stats object into a key:value object with the RK as
+                           the key and all the current stats info as the value.
+                            - to be run daily in case of new players 
+
+                        3. Data Storage: Store the key: stat-value data in chrome.storage.
+                            - ensure you can make daily updates/sync's in the way you want
+                            - check how fast retrieval is and whether loading the stats each time is faster (unlikely by do due diligences) 
+
+                        4. Write the search script: Search all the words on a page by hashing each and seeing if it matches a key
+                            - Address player line duplication, consolidating all duplicates into "TOT" stats line (will affect "RK" numbers)
+                            - need to remove apostrophies, as they are commonly applied to players names along with an 's' - remove ("'s")
+                            - if the script finds a first name key matches, search for the next word and compare the values 
+                            - if they match, retrieve the stats information from chrome.storage 
+                            - May need to deal with nicknames being their own thing as they will only correspond to single values 
+                                - idea: add a unique identifier to the nicknames key signifiying that the search does not need to compare
+                                  next word and can skip to stat retrieval 
+
+                        5. Design back-end to automate steps throughout 1-4 using a server and a database
+                            - This will require delving into topics that you don't know much about 
+                            - will require a seperate brainstorming session to lay out steps, consider this a bookmark
+
+                        6. Finish design of the info box 
+
+                        7. Test 
+
+                        8. Write pitch
+
+                        9. Test more  
+
+                        10. Launch 
+                            - Idealy before the season starts (perhaps the week before and use 2018 stats for 'demo') 
+                                - Only issue with this is if the scraper does not work properly I may not know until afterwards
+                                - But this way will probably generate more interest
+leaning towards this option --> - Or launch a week in after thorough testing of the nightly scraper activities - will prevent issues during launch 
+                                - May be worth having a more tested app then generating 
 
 
 
-let stats =  {
+                           */
+let stats =  [{
     "Player": "Alex Abrines",
     "Pos": "SG",
     "Age": 24,
