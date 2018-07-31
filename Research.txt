@@ -1,0 +1,1 @@
+https://www.quora.com/How-can-I-search-an-elements-inner-HTML-for-a-specific-string-in-JS
