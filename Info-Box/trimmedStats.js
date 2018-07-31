@@ -1,3 +1,5 @@
+ /* Hash Function */
+
  function hashCode(str) {
     let hash = 0;
     if (str.length == 0){
@@ -10,6 +12,8 @@
     }
     return hash;
 }
+
+/* Object to hash and store player names and corresponding "rk" value */
 
 class statMap {
     constructor() {
@@ -59,9 +63,57 @@ class statMap {
 }
 
 
-let m = new statMap();
+let m = new statMap(); //creates new instances of player stat object
 
-                        /*Next Steps
+/* testing speed/functionality */
+
+const t2 = performance.now();
+
+hashObject(arrayOfText);  //basketball reference stats page = 2.7 ms
+
+const t3 = performance.now();
+
+console.log(t3 - t2);
+
+
+/* Hashes all strings of an array */
+
+function hashObject(arr){
+    for(let i = 0; i < arr.length; i++) {
+        m.set(arr[i], i);
+    }
+}
+
+/* Enables console on basketball reference (previously disabled) */
+
+ javascript: (function() { //restores console.log to basketball reference 
+    var i = document.createElement('iframe');
+    i.style.display='none';
+    document.body.appendChild(i);
+    window.console=i.contentWindow.console;
+}());
+
+/* remove white spaces from array - may not need */
+
+function cleanArray(arr){
+    let arrayOne = [];
+    for(var i = 0; i < arr.length; i++){
+        if(arr[i]) {
+            arrayOne.push(arr[i]);
+        }
+    }
+    return arrayOne;
+}
+
+/* serialize the body text of a webpage and remove special characters*/
+
+const pageText = cleanArray(document.body.innerText.replace(/\W/g, ' ').toLowerCase().split(" "));
+
+
+
+
+
+                        /*Steps
 
                         1. Write a function that hashes the first and last names of each player automatically
                             - The value will be there "RK" number from the basketball reference table
@@ -108,6 +160,14 @@ let m = new statMap();
 leaning towards this option --> - Or launch a week in after thorough testing of the nightly scraper activities - will prevent issues during launch 
                                 - May be worth having a more tested app then generating 
 
+
+                                other feature notes:
+
+                                - Have nickname feature optional
+                                - limit to "nba" in the url
+                                - have the highlighting feature of players names be optional 
+
+                                * reddit comment: This is awesome dude, thank you. Do you just want to apply this to sports? Because this would be perfect for /r/asoiaf. There are just so many characters and places, it gets annoying sometimes to search them all.
 
 
                            */
