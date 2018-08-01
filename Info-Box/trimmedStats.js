@@ -169,8 +169,9 @@ const cleanStats = stats.filter(function(item, index) {
     }
 });
 
-/*nex step: function that creates a key:value map for cleanStats object. Key should equal y in hash tbale */
 
+/*next step: how to search and match players when they have multiple same first and last names, need to store the first name search results and compare to the last
+  keep in mind players with the same name may eventually exist */
 
 /* NEXT STEP, GRAB AND FILL IN CURRENT TEAM FOR ALL "TOT" PLAYERS GOTTEN FROM DUPLICATE */
 
