@@ -66,7 +66,7 @@ class statMap {
 
   setHashAll(arr){  
 
-    for(let i = 0; i < arr.length; i++){
+    for(let i = 0; i < arr.length; i++){  //is arr.legnth fine? Or does it need to be length-1? Try with small sample array see if you are adding garbage values 
         let x = this.hash(arr[i].toLowerCase())
 
         if(!this.list[x]){
@@ -136,7 +136,43 @@ const pageText = cleanArray(document.body.innerText.replace(/\W/g, ' ').toLowerC
 
 
 
-/* Next Step: Deal with diplicate players upstream from sorting and hashing processes */
+/* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions */
+
+let duplicate = false;
+let compare;
+let spliceArr = [];
+let dupStatsArr = [];
+
+stats.map(function(item, index) {
+     if(item.Tm === "TOT"){
+      duplicate = true;
+      compare = item.Player;
+  }
+    else if(duplicate) {
+        if(item.Player === compare){
+         spliceArr.push(index); 
+        }
+        else {
+         duplicate = false;
+         compare = ""; 
+        }
+    }
+});
+
+const cleanStats = stats.filter(function(item, index) {
+    if(spliceArr.indexOf(index) == -1){
+     return true; 
+    }
+    else {
+      dupStatsArr.push(item);
+      return false
+    }
+});
+
+/*nex step: function that creates a key:value map for cleanStats object. Key should equal y in hash tbale */
+
+
+/* NEXT STEP, GRAB AND FILL IN CURRENT TEAM FOR ALL "TOT" PLAYERS GOTTEN FROM DUPLICATE */
 
 
                         /*Steps
@@ -150,6 +186,7 @@ const pageText = cleanArray(document.body.innerText.replace(/\W/g, ' ').toLowerC
                                 - nickname functionality will be a more eye-catching feature
                             - to be run daily in case of new players
                             - throughly test the hasing funciton for collisions 
+                            - NEED TO GRAB CURRENT TEAM FOR ALL DUPLICATE PLAYERS
 
                         2. Seperately, write a script to automatically break the stats object into a key:value object with the RK as
                            the key and all the current stats info as the value.
