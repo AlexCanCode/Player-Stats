@@ -13,11 +13,13 @@
     return hash;
 }
 
-/* Object to hash and store player names and corresponding "rk" value */
+/* Object to hash and store player names and corresponding stats[key] value */
+
+
 
 class statMap {
     constructor() {
-    this.list = []
+    this.list = [];
   }
 
   hash(str) {
@@ -33,17 +35,18 @@ class statMap {
     return hash;
   }
 
-  get(x) {
-    let i = this.hash(x);
+  get(x) { //need to get all instances of a match in order to compare the first names and the last names 
 
-    if(!this.list[i]){
+    let j = this.hash(x);
+    
+    if(!this.list[j]){
         return undefined
     }
 
     let result;
 
-    this.list[i].forEach(pairs => { //May be able to make faster by adding a conditional that checks if there are multiple values for list[i] before running this block
-        if (pairs[0] === x) {
+    this.list[j].forEach(pairs => { //May be able to make faster by adding a conditional that checks if there are multiple values for list[i] before running this block
+        if (pairs[0] === j) {
             result = pairs[1];
         }
     })
@@ -60,10 +63,38 @@ class statMap {
 
     this.list[i].push([x, y]);
   }
+
+  setHashAll(arr){  
+
+    for(let i = 0; i < arr.length; i++){
+        let x = this.hash(arr[i].toLowerCase())
+
+        if(!this.list[x]){
+            this.list[x] = [];
+        }
+
+        this.list[x].push([x, i]); 
+    }
+
+  }
 }
 
 
-let m = new statMap(); //creates new instances of player stat object
+let playerMap = new statMap();
+
+/* Grab all first and last names from stats and put them, respectively, into first and last name arrays */
+
+let firstNames = [];
+let lastNames = [];
+
+function grabNames(arr){
+    arr.map((item, index) => {
+        let tempArr = item.Player.split(" ");
+        firstNames.push(tempArr[0]);
+        lastNames.push(tempArr[1]);
+    });
+};
+
 
 /* testing speed/functionality */
 
@@ -76,13 +107,7 @@ const t3 = performance.now();
 console.log(t3 - t2);
 
 
-/* Hashes all strings of an array */
-
-function hashObject(arr){
-    for(let i = 0; i < arr.length; i++) {
-        m.set(arr[i], i);
-    }
-}
+/* *****NEW SECTION: Deals with getting html on page and formatting****** */
 
 /* Enables console on basketball reference (previously disabled) */
 
@@ -111,13 +136,15 @@ const pageText = cleanArray(document.body.innerText.replace(/\W/g, ' ').toLowerC
 
 
 
+/* Next Step: Deal with diplicate players upstream from sorting and hashing processes */
 
 
                         /*Steps
 
-                        1. Write a function that hashes the first and last names of each player automatically
-                            - The value will be there "RK" number from the basketball reference table
-                            -  Modify the scraper to include this number
+                        1. Write a function that hashes the first and last names of each player automatically DONE - EXECPT NEED TO DEAL WITH DUPLICATE PLAYERS AT EARLIER STAGE
+                            - The value will be there "RK" number from the basketball reference table, which corresponds to their index
+                              in the array minus 1
+                                - RK = array index - 1
                             - eventually, lets also tie nicknames to these numbers by scraping them from each players BR page 
                                 - this will not be a reoccuring script but rather something to run a couple of times a year
                                 - nickname functionality will be a more eye-catching feature
@@ -171,6 +198,9 @@ leaning towards this option --> - Or launch a week in after thorough testing of 
 
 
                            */
+
+
+
 let stats =  [{
     "Player": "Alex Abrines",
     "Pos": "SG",
