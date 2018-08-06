@@ -27,7 +27,7 @@ class statMap {
     if (str.length == 0){
         return hash;
     }
-    for (let i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) { // consider declaring i as a variable accessible to the whole object, may be better practice, research
         let char = str.charCodeAt(i);
         hash = ((hash<<5)-hash)+char;
         hash = hash & hash;
@@ -35,23 +35,25 @@ class statMap {
     return hash;
   }
 
-  get(x) { //need to get all instances of a match in order to compare the first names and the last names 
+  get(x) { 
 
-    let j = this.hash(x);
+    let j = this.hash(x.toLowerCase());
+    let result = this.list[j];
     
-    if(!this.list[j]){
-        return undefined
+    if(!result){
+        return -1;  
     }
 
-    let result;
+    
 
-    this.list[j].forEach(pairs => { //May be able to make faster by adding a conditional that checks if there are multiple values for list[i] before running this block
-        if (pairs[0] === j) {
-            result = pairs[1];
-        }
-    })
+    else{ //puts all outputs into an array for simpler processing in playerSearch, doubles performance time on a MDN page from .29 ms to .50ms, 
+          //a seemingly negligable difference to my beginner eyes. removes need to check typeof in playerSearch 
+        return result.reduce(function(all, item, index){
+            all.push(item[1]);
+            return all;
+        }, [])
+    }   //No need to deal with duplicates here as this is expected due to common names 
 
-    return result;
   }
 
   set(x, y) {
@@ -77,10 +79,31 @@ class statMap {
     }
 
   }
+
+  playerSearch(arr){ 
+    const t0 = performance.now()
+    let fullMatches = [];
+    let searchedHash;
+    let secondHash;
+
+     for(let i = 0; i < (arr.length - 1); i++){
+        searchedHash = playerMap.get(arr[i]);
+        secondHash = playerMap.get(arr[(i + 1)]); 
+
+        if(searchedHash != -1 && secondHash != -1){
+             fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
+        }
+    }
+    console.log(fullMatches.filter(element => element.length >= 1)); 
+    const t1 = performance.now();
+    //console.log(t1 - t0);
+  }
+  
 }
 
 
-let playerMap = new statMap();
+
+let playerMap = new statMap(); 
 
 /* Grab all first and last names from stats and put them, respectively, into first and last name arrays */
 
@@ -96,31 +119,22 @@ function grabNames(arr){
 };
 
 
-/* testing speed/functionality */
-
-const t2 = performance.now();
-
-hashObject(arrayOfText);  //basketball reference stats page = 2.7 ms
-
-const t3 = performance.now();
-
-console.log(t3 - t2);
 
 
 /* *****NEW SECTION: Deals with getting html on page and formatting****** */
 
-/* Enables console on basketball reference (previously disabled) */
+/* Enables console on basketball reference (previously disabled) 
 
  javascript: (function() { //restores console.log to basketball reference 
     var i = document.createElement('iframe');
     i.style.display='none';
     document.body.appendChild(i);
     window.console=i.contentWindow.console;
-}());
+}());d
 
-/* remove white spaces from array - may not need */
+*/
 
-function cleanArray(arr){
+ function cleanArray(arr){
     let arrayOne = [];
     for(var i = 0; i < arr.length; i++){
         if(arr[i]) {
@@ -132,11 +146,18 @@ function cleanArray(arr){
 
 /* serialize the body text of a webpage and remove special characters*/
 
-const pageText = cleanArray(document.body.innerText.replace(/\W/g, ' ').toLowerCase().split(" "));
+let pageText; //wrote this function hastily to get to search funciton - return and optomize (if needed);
 
+function getPageText(){
+    pageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))
+};
+
+getPageText();
 
 
 /* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions */
+
+/* COMMENTED OUT TO TEST CODE ON WEBPAGES
 
 let duplicate = false;
 let compare;
@@ -169,6 +190,7 @@ const cleanStats = stats.filter(function(item, index) {
     }
 });
 
+*/
 
 /*next step: how to search and match players when they have multiple same first and last names, need to store the first name search results and compare to the last
   keep in mind players with the same name may eventually exist */
@@ -188,6 +210,9 @@ const cleanStats = stats.filter(function(item, index) {
                             - to be run daily in case of new players
                             - throughly test the hasing funciton for collisions 
                             - NEED TO GRAB CURRENT TEAM FOR ALL DUPLICATE PLAYERS
+                            - ****Need to do some individual changes, potentially for "steph" not "stephan" curry and KD and the likes. Nickname
+                              solution may be the way to go here. Also, keep in mind nicnames may be multiple length strings. 
+                                - Solution may be to make it a seperate object so its toggle-able for the users to search or not.
 
                         2. Seperately, write a script to automatically break the stats object into a key:value object with the RK as
                            the key and all the current stats info as the value.
@@ -205,20 +230,34 @@ const cleanStats = stats.filter(function(item, index) {
                             - May need to deal with nicknames being their own thing as they will only correspond to single values 
                                 - idea: add a unique identifier to the nicknames key signifiying that the search does not need to compare
                                   next word and can skip to stat retrieval 
+                        
+                        5. Design/implement a serach and replace feature that locates the matched players on a page and inserts the corresponding
+                           style element (prehaps <em>) around them to add the box. This may be more difficult then first anticipated. Below are
+                           links that may help find the optimal solution.
+                            Consider how you want to make the app lightweight and not add too much JS to a page, using the libary below
+                            may not be the best solution.  
 
-                        5. Design back-end to automate steps throughout 1-4 using a server and a database
+                            You may also be able to store the find and replace logic locally to solve any loadtime issues
+
+                                  - Useful links to solving this problem:  
+                                   https://github.com/padolsey/findAndReplaceDOMText 
+                                   https://j11y.io/javascript/replacing-text-in-the-dom-solved/
+
+                        6. Design back-end to automate steps throughout 1-4 using a server and a database
                             - This will require delving into topics that you don't know much about 
                             - will require a seperate brainstorming session to lay out steps, consider this a bookmark
 
-                        6. Finish design of the info box 
+                        7. Finish design of the info box 
+                            - Make box expandable to include extra stats >>
+                                - Need to decided which stats are important enough to load 
 
-                        7. Test 
+                        8. Test 
 
-                        8. Write pitch
+                        9. Write pitch
 
-                        9. Test more  
+                        10. Test more  
 
-                        10. Launch 
+                        11. Launch 
                             - Idealy before the season starts (perhaps the week before and use 2018 stats for 'demo') 
                                 - Only issue with this is if the scraper does not work properly I may not know until afterwards
                                 - But this way will probably generate more interest
@@ -234,12 +273,20 @@ leaning towards this option --> - Or launch a week in after thorough testing of 
 
                                 * reddit comment: This is awesome dude, thank you. Do you just want to apply this to sports? Because this would be perfect for /r/asoiaf. There are just so many characters and places, it gets annoying sometimes to search them all.
 
+Stats order of operation:
+
+1. playerData --> formatted as JSON but nothing removed 
+
+2. stats = --> removed all unwanted fields but retains duplicates
+
+3. cleanStats --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)
+
 
                            */
 
 
-
-let stats =  [{
+let cleanStats = [
+  {
     "Player": "Alex Abrines",
     "Pos": "SG",
     "Age": 24,
@@ -516,30 +563,6 @@ let stats =  [{
     "PS/G": 1.2
   },
   {
-    "Player": "Omer Asik",
-    "Pos": "C",
-    "Age": 31,
-    "Tm": "NOP",
-    "G": 14,
-    "MP": 8.6,
-    "FG%": ".438",
-    "TRB": 2.6,
-    "AST": 0.1,
-    "PS/G": 1.3
-  },
-  {
-    "Player": "Omer Asik",
-    "Pos": "C",
-    "Age": 31,
-    "Tm": "CHI",
-    "G": 4,
-    "MP": 15.3,
-    "FG%": ".333",
-    "TRB": 2.5,
-    "AST": 0.3,
-    "PS/G": 1
-  },
-  {
     "Player": "D.J. Augustin",
     "Pos": "PG",
     "Age": 30,
@@ -562,30 +585,6 @@ let stats =  [{
     "TRB": 1.9,
     "AST": 0.6,
     "PS/G": 5.2
-  },
-  {
-    "Player": "Luke Babbitt",
-    "Pos": "SF",
-    "Age": 28,
-    "Tm": "ATL",
-    "G": 37,
-    "MP": 15.4,
-    "FG%": ".476",
-    "TRB": 2.2,
-    "AST": 0.7,
-    "PS/G": 6.1
-  },
-  {
-    "Player": "Luke Babbitt",
-    "Pos": "SF",
-    "Age": 28,
-    "Tm": "MIA",
-    "G": 13,
-    "MP": 11.2,
-    "FG%": ".234",
-    "TRB": 1.2,
-    "AST": 0.4,
-    "PS/G": 2.5
   },
   {
     "Player": "Dwayne Bacon",
@@ -768,30 +767,6 @@ let stats =  [{
     "PS/G": 12.1
   },
   {
-    "Player": "Marco Belinelli",
-    "Pos": "SG",
-    "Age": 31,
-    "Tm": "ATL",
-    "G": 52,
-    "MP": 23.3,
-    "FG%": ".411",
-    "TRB": 1.9,
-    "AST": 2,
-    "PS/G": 11.4
-  },
-  {
-    "Player": "Marco Belinelli",
-    "Pos": "SG",
-    "Age": 31,
-    "Tm": "PHI",
-    "G": 28,
-    "MP": 26.3,
-    "FG%": ".495",
-    "TRB": 1.8,
-    "AST": 1.6,
-    "PS/G": 13.6
-  },
-  {
     "Player": "Jordan Bell",
     "Pos": "C",
     "Age": 23,
@@ -936,30 +911,6 @@ let stats =  [{
     "PS/G": 17.7
   },
   {
-    "Player": "Eric Bledsoe",
-    "Pos": "PG",
-    "Age": 28,
-    "Tm": "PHO",
-    "G": 3,
-    "MP": 27.7,
-    "FG%": ".400",
-    "TRB": 2.3,
-    "AST": 3,
-    "PS/G": 15.7
-  },
-  {
-    "Player": "Eric Bledsoe",
-    "Pos": "PG",
-    "Age": 28,
-    "Tm": "MIL",
-    "G": 71,
-    "MP": 31.5,
-    "FG%": ".476",
-    "TRB": 3.9,
-    "AST": 5.1,
-    "PS/G": 17.8
-  },
-  {
     "Player": "Vander Blue",
     "Pos": "SG",
     "Age": 25,
@@ -1044,42 +995,6 @@ let stats =  [{
     "PS/G": 6.3
   },
   {
-    "Player": "Trevor Booker",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "BRK",
-    "G": 18,
-    "MP": 21.9,
-    "FG%": ".513",
-    "TRB": 6.6,
-    "AST": 2.1,
-    "PS/G": 10.1
-  },
-  {
-    "Player": "Trevor Booker",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "PHI",
-    "G": 33,
-    "MP": 15,
-    "FG%": ".560",
-    "TRB": 3.7,
-    "AST": 0.8,
-    "PS/G": 4.7
-  },
-  {
-    "Player": "Trevor Booker",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "IND",
-    "G": 17,
-    "MP": 15.8,
-    "FG%": ".464",
-    "TRB": 4.5,
-    "AST": 1,
-    "PS/G": 5.4
-  },
-  {
     "Player": "Chris Boucher",
     "Pos": "PF",
     "Age": 25,
@@ -1104,30 +1019,6 @@ let stats =  [{
     "PS/G": 14.3
   },
   {
-    "Player": "Avery Bradley",
-    "Pos": "SG",
-    "Age": 27,
-    "Tm": "DET",
-    "G": 40,
-    "MP": 31.7,
-    "FG%": ".409",
-    "TRB": 2.4,
-    "AST": 2.1,
-    "PS/G": 15
-  },
-  {
-    "Player": "Avery Bradley",
-    "Pos": "SG",
-    "Age": 27,
-    "Tm": "LAC",
-    "G": 6,
-    "MP": 27.5,
-    "FG%": ".473",
-    "TRB": 3.7,
-    "AST": 1.8,
-    "PS/G": 9.2
-  },
-  {
     "Player": "Tony Bradley",
     "Pos": "C",
     "Age": 20,
@@ -1150,30 +1041,6 @@ let stats =  [{
     "TRB": 2.1,
     "AST": 0.9,
     "PS/G": 5.3
-  },
-  {
-    "Player": "Corey Brewer",
-    "Pos": "SF",
-    "Age": 31,
-    "Tm": "LAL",
-    "G": 54,
-    "MP": 12.9,
-    "FG%": ".453",
-    "TRB": 1.7,
-    "AST": 0.8,
-    "PS/G": 3.7
-  },
-  {
-    "Player": "Corey Brewer",
-    "Pos": "SG",
-    "Age": 31,
-    "Tm": "OKC",
-    "G": 18,
-    "MP": 28.6,
-    "FG%": ".444",
-    "TRB": 3.4,
-    "AST": 1.3,
-    "PS/G": 10.1
   },
   {
     "Player": "Malcolm Brogdon",
@@ -1392,30 +1259,6 @@ let stats =  [{
     "PS/G": 2.2
   },
   {
-    "Player": "Bruno Caboclo",
-    "Pos": "SF",
-    "Age": 22,
-    "Tm": "TOR",
-    "G": 2,
-    "MP": 3.5,
-    "FG%": ".000",
-    "TRB": 0.5,
-    "AST": 0.5,
-    "PS/G": 0
-  },
-  {
-    "Player": "Bruno Caboclo",
-    "Pos": "SF",
-    "Age": 22,
-    "Tm": "SAC",
-    "G": 10,
-    "MP": 10,
-    "FG%": ".310",
-    "TRB": 2.1,
-    "AST": 0.4,
-    "PS/G": 2.6
-  },
-  {
     "Player": "Jose Calderon",
     "Pos": "PG",
     "Age": 36,
@@ -1450,30 +1293,6 @@ let stats =  [{
     "TRB": 2.3,
     "AST": 3.8,
     "PS/G": 8.6
-  },
-  {
-    "Player": "Isaiah Canaan",
-    "Pos": "SG",
-    "Age": 26,
-    "Tm": "HOU",
-    "G": 1,
-    "MP": 4,
-    "FG%": ".000",
-    "TRB": 1,
-    "AST": 0,
-    "PS/G": 0
-  },
-  {
-    "Player": "Isaiah Canaan",
-    "Pos": "PG",
-    "Age": 26,
-    "Tm": "PHO",
-    "G": 19,
-    "MP": 22,
-    "FG%": ".382",
-    "TRB": 2.3,
-    "AST": 4,
-    "PS/G": 9.1
   },
   {
     "Player": "Clint Capela",
@@ -1644,30 +1463,6 @@ let stats =  [{
     "PS/G": 13.9
   },
   {
-    "Player": "Jordan Clarkson",
-    "Pos": "SG",
-    "Age": 25,
-    "Tm": "LAL",
-    "G": 53,
-    "MP": 23.7,
-    "FG%": ".448",
-    "TRB": 3,
-    "AST": 3.3,
-    "PS/G": 14.5
-  },
-  {
-    "Player": "Jordan Clarkson",
-    "Pos": "SG",
-    "Age": 25,
-    "Tm": "CLE",
-    "G": 28,
-    "MP": 22.6,
-    "FG%": ".456",
-    "TRB": 2.1,
-    "AST": 1.7,
-    "PS/G": 12.6
-  },
-  {
     "Player": "Gian Clavell",
     "Pos": "SG",
     "Age": 24,
@@ -1690,30 +1485,6 @@ let stats =  [{
     "TRB": 0.8,
     "AST": 0.1,
     "PS/G": 1.4
-  },
-  {
-    "Player": "Antonius Cleveland",
-    "Pos": "SG",
-    "Age": 23,
-    "Tm": "DAL",
-    "G": 13,
-    "MP": 6.2,
-    "FG%": ".286",
-    "TRB": 0.8,
-    "AST": 0.2,
-    "PS/G": 0.8
-  },
-  {
-    "Player": "Antonius Cleveland",
-    "Pos": "SG",
-    "Age": 23,
-    "Tm": "ATL",
-    "G": 4,
-    "MP": 10.5,
-    "FG%": ".571",
-    "TRB": 1,
-    "AST": 0,
-    "PS/G": 3.3
   },
   {
     "Player": "John Collins",
@@ -1932,30 +1703,6 @@ let stats =  [{
     "PS/G": 9.7
   },
   {
-    "Player": "Jae Crowder",
-    "Pos": "SF",
-    "Age": 27,
-    "Tm": "CLE",
-    "G": 53,
-    "MP": 25.4,
-    "FG%": ".418",
-    "TRB": 3.3,
-    "AST": 1.1,
-    "PS/G": 8.6
-  },
-  {
-    "Player": "Jae Crowder",
-    "Pos": "SF",
-    "Age": 27,
-    "Tm": "UTA",
-    "G": 27,
-    "MP": 27.6,
-    "FG%": ".386",
-    "TRB": 3.8,
-    "AST": 1.5,
-    "PS/G": 11.8
-  },
-  {
     "Player": "Dante Cunningham",
     "Pos": "SF",
     "Age": 30,
@@ -1966,30 +1713,6 @@ let stats =  [{
     "TRB": 4.1,
     "AST": 0.7,
     "PS/G": 5.7
-  },
-  {
-    "Player": "Dante Cunningham",
-    "Pos": "SF",
-    "Age": 30,
-    "Tm": "NOP",
-    "G": 51,
-    "MP": 21.9,
-    "FG%": ".440",
-    "TRB": 3.8,
-    "AST": 0.5,
-    "PS/G": 5
-  },
-  {
-    "Player": "Dante Cunningham",
-    "Pos": "SF",
-    "Age": 30,
-    "Tm": "BRK",
-    "G": 22,
-    "MP": 20.3,
-    "FG%": ".468",
-    "TRB": 4.8,
-    "AST": 1,
-    "PS/G": 7.5
   },
   {
     "Player": "Stephen Curry",
@@ -2232,30 +1955,6 @@ let stats =  [{
     "PS/G": 1.7
   },
   {
-    "Player": "Larry Drew",
-    "Pos": "PG",
-    "Age": 27,
-    "Tm": "PHI",
-    "G": 3,
-    "MP": 5,
-    "FG%": ".143",
-    "TRB": 0.3,
-    "AST": 0.7,
-    "PS/G": 0.7
-  },
-  {
-    "Player": "Larry Drew",
-    "Pos": "PG",
-    "Age": 27,
-    "Tm": "NOP",
-    "G": 7,
-    "MP": 7.9,
-    "FG%": ".353",
-    "TRB": 0.3,
-    "AST": 1.1,
-    "PS/G": 2.1
-  },
-  {
     "Player": "Andre Drummond",
     "Pos": "C",
     "Age": 24,
@@ -2316,30 +2015,6 @@ let stats =  [{
     "PS/G": 0
   },
   {
-    "Player": "Jarell Eddie",
-    "Pos": "SF",
-    "Age": 26,
-    "Tm": "BOS",
-    "G": 2,
-    "MP": 3,
-    "FG%": ".000",
-    "TRB": 0.5,
-    "AST": 0,
-    "PS/G": 0
-  },
-  {
-    "Player": "Jarell Eddie",
-    "Pos": "SF",
-    "Age": 26,
-    "Tm": "CHI",
-    "G": 1,
-    "MP": 3,
-    "FG%": ".000",
-    "TRB": 0,
-    "AST": 0,
-    "PS/G": 0
-  },
-  {
     "Player": "Henry Ellenson",
     "Pos": "PF",
     "Age": 21,
@@ -2386,30 +2061,6 @@ let stats =  [{
     "TRB": 3.1,
     "AST": 1,
     "PS/G": 7.1
-  },
-  {
-    "Player": "James Ennis",
-    "Pos": "SF",
-    "Age": 27,
-    "Tm": "MEM",
-    "G": 45,
-    "MP": 23.4,
-    "FG%": ".486",
-    "TRB": 3.5,
-    "AST": 1.1,
-    "PS/G": 6.9
-  },
-  {
-    "Player": "James Ennis",
-    "Pos": "SF",
-    "Age": 27,
-    "Tm": "DET",
-    "G": 27,
-    "MP": 20.4,
-    "FG%": ".457",
-    "TRB": 2.5,
-    "AST": 0.8,
-    "PS/G": 7.5
   },
   {
     "Player": "Tyler Ennis",
@@ -2506,30 +2157,6 @@ let stats =  [{
     "TRB": 1.1,
     "AST": 1.3,
     "PS/G": 3.6
-  },
-  {
-    "Player": "Kay Felder",
-    "Pos": "PG",
-    "Age": 22,
-    "Tm": "CHI",
-    "G": 14,
-    "MP": 9.6,
-    "FG%": ".303",
-    "TRB": 1,
-    "AST": 1.4,
-    "PS/G": 3.9
-  },
-  {
-    "Player": "Kay Felder",
-    "Pos": "PG",
-    "Age": 22,
-    "Tm": "DET",
-    "G": 2,
-    "MP": 3,
-    "FG%": ".250",
-    "TRB": 2,
-    "AST": 0,
-    "PS/G": 1
   },
   {
     "Player": "Cristiano Felicio",
@@ -2650,30 +2277,6 @@ let stats =  [{
     "TRB": 2.5,
     "AST": 0.7,
     "PS/G": 5
-  },
-  {
-    "Player": "Channing Frye",
-    "Pos": "C",
-    "Age": 34,
-    "Tm": "CLE",
-    "G": 44,
-    "MP": 12.4,
-    "FG%": ".497",
-    "TRB": 2.5,
-    "AST": 0.6,
-    "PS/G": 4.8
-  },
-  {
-    "Player": "Channing Frye",
-    "Pos": "C",
-    "Age": 34,
-    "Tm": "LAL",
-    "G": 9,
-    "MP": 16.7,
-    "FG%": ".465",
-    "TRB": 2.8,
-    "AST": 1.1,
-    "PS/G": 5.8
   },
   {
     "Player": "Markelle Fultz",
@@ -2976,30 +2579,6 @@ let stats =  [{
     "PS/G": 21.4
   },
   {
-    "Player": "Blake Griffin",
-    "Pos": "PF",
-    "Age": 28,
-    "Tm": "LAC",
-    "G": 33,
-    "MP": 34.5,
-    "FG%": ".441",
-    "TRB": 7.9,
-    "AST": 5.4,
-    "PS/G": 22.6
-  },
-  {
-    "Player": "Blake Griffin",
-    "Pos": "PF",
-    "Age": 28,
-    "Tm": "DET",
-    "G": 25,
-    "MP": 33.2,
-    "FG%": ".433",
-    "TRB": 6.6,
-    "AST": 6.2,
-    "PS/G": 19.8
-  },
-  {
     "Player": "Daniel Hamilton",
     "Pos": "SG",
     "Age": 22,
@@ -3072,30 +2651,6 @@ let stats =  [{
     "PS/G": 8.4
   },
   {
-    "Player": "Devin Harris",
-    "Pos": "PG",
-    "Age": 34,
-    "Tm": "DAL",
-    "G": 44,
-    "MP": 18.3,
-    "FG%": ".415",
-    "TRB": 1.9,
-    "AST": 1.9,
-    "PS/G": 8.5
-  },
-  {
-    "Player": "Devin Harris",
-    "Pos": "PG",
-    "Age": 34,
-    "Tm": "DEN",
-    "G": 27,
-    "MP": 19.7,
-    "FG%": ".406",
-    "TRB": 1.6,
-    "AST": 2.5,
-    "PS/G": 8.2
-  },
-  {
     "Player": "Gary Harris",
     "Pos": "SG",
     "Age": 23,
@@ -3130,30 +2685,6 @@ let stats =  [{
     "TRB": 5.5,
     "AST": 2.4,
     "PS/G": 18.6
-  },
-  {
-    "Player": "Tobias Harris",
-    "Pos": "PF",
-    "Age": 25,
-    "Tm": "DET",
-    "G": 48,
-    "MP": 32.6,
-    "FG%": ".451",
-    "TRB": 5.1,
-    "AST": 2,
-    "PS/G": 18.1
-  },
-  {
-    "Player": "Tobias Harris",
-    "Pos": "PF",
-    "Age": 25,
-    "Tm": "LAC",
-    "G": 32,
-    "MP": 34.5,
-    "FG%": ".473",
-    "TRB": 6,
-    "AST": 3.1,
-    "PS/G": 19.3
   },
   {
     "Player": "Aaron Harrison",
@@ -3228,42 +2759,6 @@ let stats =  [{
     "PS/G": 3
   },
   {
-    "Player": "Nigel Hayes",
-    "Pos": "SF",
-    "Age": 23,
-    "Tm": "LAL",
-    "G": 2,
-    "MP": 5.5,
-    "FG%": ".333",
-    "TRB": 0,
-    "AST": 1,
-    "PS/G": 1.5
-  },
-  {
-    "Player": "Nigel Hayes",
-    "Pos": "SF",
-    "Age": 23,
-    "Tm": "TOR",
-    "G": 2,
-    "MP": 3,
-    "FG%": 1,
-    "TRB": 0,
-    "AST": 0,
-    "PS/G": 3
-  },
-  {
-    "Player": "Nigel Hayes",
-    "Pos": "SF",
-    "Age": 23,
-    "Tm": "SAC",
-    "G": 5,
-    "MP": 21,
-    "FG%": ".286",
-    "TRB": 4.4,
-    "AST": 0.8,
-    "PS/G": 3.6
-  },
-  {
     "Player": "Gordon Hayward",
     "Pos": "SF",
     "Age": 27,
@@ -3336,30 +2831,6 @@ let stats =  [{
     "PS/G": 5.1
   },
   {
-    "Player": "Willy Hernangomez",
-    "Pos": "C",
-    "Age": 23,
-    "Tm": "NYK",
-    "G": 26,
-    "MP": 9,
-    "FG%": ".605",
-    "TRB": 2.6,
-    "AST": 0.8,
-    "PS/G": 4.3
-  },
-  {
-    "Player": "Willy Hernangomez",
-    "Pos": "C",
-    "Age": 23,
-    "Tm": "CHO",
-    "G": 22,
-    "MP": 11.9,
-    "FG%": ".506",
-    "TRB": 5.3,
-    "AST": 0.5,
-    "PS/G": 6.1
-  },
-  {
     "Player": "Mario Hezonja",
     "Pos": "SF",
     "Age": 22,
@@ -3418,30 +2889,6 @@ let stats =  [{
     "TRB": 2.7,
     "AST": 2.8,
     "PS/G": 10
-  },
-  {
-    "Player": "George Hill",
-    "Pos": "PG",
-    "Age": 31,
-    "Tm": "SAC",
-    "G": 43,
-    "MP": 26.6,
-    "FG%": ".469",
-    "TRB": 2.7,
-    "AST": 2.8,
-    "PS/G": 10.3
-  },
-  {
-    "Player": "George Hill",
-    "Pos": "PG",
-    "Age": 31,
-    "Tm": "CLE",
-    "G": 24,
-    "MP": 27.9,
-    "FG%": ".444",
-    "TRB": 2.7,
-    "AST": 2.8,
-    "PS/G": 9.4
   },
   {
     "Player": "Solomon Hill",
@@ -3538,30 +2985,6 @@ let stats =  [{
     "TRB": 2.8,
     "AST": 1.6,
     "PS/G": 14.7
-  },
-  {
-    "Player": "Rodney Hood",
-    "Pos": "SG",
-    "Age": 25,
-    "Tm": "UTA",
-    "G": 39,
-    "MP": 27.8,
-    "FG%": ".424",
-    "TRB": 2.8,
-    "AST": 1.7,
-    "PS/G": 16.8
-  },
-  {
-    "Player": "Rodney Hood",
-    "Pos": "SG",
-    "Age": 25,
-    "Tm": "CLE",
-    "G": 21,
-    "MP": 25.3,
-    "FG%": ".442",
-    "TRB": 2.6,
-    "AST": 1.4,
-    "PS/G": 10.8
   },
   {
     "Player": "Scotty Hopson",
@@ -3684,30 +3107,6 @@ let stats =  [{
     "PS/G": 10.9
   },
   {
-    "Player": "Ersan Ilyasova",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "ATL",
-    "G": 46,
-    "MP": 25.5,
-    "FG%": ".459",
-    "TRB": 5.5,
-    "AST": 1.1,
-    "PS/G": 10.9
-  },
-  {
-    "Player": "Ersan Ilyasova",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "PHI",
-    "G": 23,
-    "MP": 24.1,
-    "FG%": ".439",
-    "TRB": 6.7,
-    "AST": 1.7,
-    "PS/G": 10.8
-  },
-  {
     "Player": "Joe Ingles",
     "Pos": "SF",
     "Age": 30,
@@ -3816,30 +3215,6 @@ let stats =  [{
     "PS/G": 1.1
   },
   {
-    "Player": "Demetrius Jackson",
-    "Pos": "PG",
-    "Age": 23,
-    "Tm": "HOU",
-    "G": 12,
-    "MP": 5.3,
-    "FG%": ".286",
-    "TRB": 0.9,
-    "AST": 0.4,
-    "PS/G": 0.7
-  },
-  {
-    "Player": "Demetrius Jackson",
-    "Pos": "PG",
-    "Age": 23,
-    "Tm": "PHI",
-    "G": 3,
-    "MP": 5.7,
-    "FG%": ".750",
-    "TRB": 0.3,
-    "AST": 1.3,
-    "PS/G": 2.7
-  },
-  {
     "Player": "Josh Jackson",
     "Pos": "SF",
     "Age": 20,
@@ -3898,30 +3273,6 @@ let stats =  [{
     "TRB": 2.5,
     "AST": 3.5,
     "PS/G": 9.3
-  },
-  {
-    "Player": "Mike James",
-    "Pos": "PG",
-    "Age": 27,
-    "Tm": "PHO",
-    "G": 32,
-    "MP": 20.9,
-    "FG%": ".388",
-    "TRB": 2.8,
-    "AST": 3.8,
-    "PS/G": 10.4
-  },
-  {
-    "Player": "Mike James",
-    "Pos": "PG",
-    "Age": 27,
-    "Tm": "NOP",
-    "G": 4,
-    "MP": 4.5,
-    "FG%": ".222",
-    "TRB": 0.3,
-    "AST": 1.5,
-    "PS/G": 1
   },
   {
     "Player": "Al Jefferson",
@@ -3996,30 +3347,6 @@ let stats =  [{
     "PS/G": 2.4
   },
   {
-    "Player": "Brice Johnson",
-    "Pos": "PF",
-    "Age": 23,
-    "Tm": "LAC",
-    "G": 9,
-    "MP": 4.2,
-    "FG%": ".636",
-    "TRB": 1.4,
-    "AST": 0.1,
-    "PS/G": 1.8
-  },
-  {
-    "Player": "Brice Johnson",
-    "Pos": "PF",
-    "Age": 23,
-    "Tm": "MEM",
-    "G": 9,
-    "MP": 6.7,
-    "FG%": ".419",
-    "TRB": 2,
-    "AST": 0.1,
-    "PS/G": 3
-  },
-  {
     "Player": "Dakari Johnson",
     "Pos": "C",
     "Age": 22,
@@ -4054,30 +3381,6 @@ let stats =  [{
     "TRB": 3.1,
     "AST": 1.5,
     "PS/G": 6.8
-  },
-  {
-    "Player": "Joe Johnson",
-    "Pos": "SF",
-    "Age": 36,
-    "Tm": "UTA",
-    "G": 32,
-    "MP": 21.9,
-    "FG%": ".420",
-    "TRB": 3.3,
-    "AST": 1.4,
-    "PS/G": 7.3
-  },
-  {
-    "Player": "Joe Johnson",
-    "Pos": "SF",
-    "Age": 36,
-    "Tm": "HOU",
-    "G": 23,
-    "MP": 22,
-    "FG%": ".381",
-    "TRB": 2.8,
-    "AST": 1.7,
-    "PS/G": 6
   },
   {
     "Player": "Omari Johnson",
@@ -4164,30 +3467,6 @@ let stats =  [{
     "PS/G": 3.1
   },
   {
-    "Player": "Derrick Jones",
-    "Pos": "SF",
-    "Age": 20,
-    "Tm": "PHO",
-    "G": 6,
-    "MP": 5.5,
-    "FG%": ".500",
-    "TRB": 0.7,
-    "AST": 0.5,
-    "PS/G": 1.5
-  },
-  {
-    "Player": "Derrick Jones",
-    "Pos": "SF",
-    "Age": 20,
-    "Tm": "MIA",
-    "G": 14,
-    "MP": 15.1,
-    "FG%": ".388",
-    "TRB": 2.4,
-    "AST": 0.4,
-    "PS/G": 3.7
-  },
-  {
     "Player": "Jalen Jones",
     "Pos": "SF",
     "Age": 24,
@@ -4198,30 +3477,6 @@ let stats =  [{
     "TRB": 2.4,
     "AST": 0.3,
     "PS/G": 4.6
-  },
-  {
-    "Player": "Jalen Jones",
-    "Pos": "SF",
-    "Age": 24,
-    "Tm": "NOP",
-    "G": 4,
-    "MP": 4.8,
-    "FG%": ".250",
-    "TRB": 0.8,
-    "AST": 0,
-    "PS/G": 1.3
-  },
-  {
-    "Player": "Jalen Jones",
-    "Pos": "SF",
-    "Age": 24,
-    "Tm": "DAL",
-    "G": 12,
-    "MP": 13.5,
-    "FG%": ".391",
-    "TRB": 2.9,
-    "AST": 0.3,
-    "PS/G": 5.8
   },
   {
     "Player": "Tyus Jones",
@@ -4318,54 +3573,6 @@ let stats =  [{
     "TRB": 1.7,
     "AST": 0.9,
     "PS/G": 6.3
-  },
-  {
-    "Player": "Sean Kilpatrick",
-    "Pos": "SG",
-    "Age": 28,
-    "Tm": "BRK",
-    "G": 16,
-    "MP": 11.4,
-    "FG%": ".287",
-    "TRB": 2.2,
-    "AST": 0.9,
-    "PS/G": 4.9
-  },
-  {
-    "Player": "Sean Kilpatrick",
-    "Pos": "SG",
-    "Age": 28,
-    "Tm": "MIL",
-    "G": 23,
-    "MP": 8.9,
-    "FG%": ".378",
-    "TRB": 1.1,
-    "AST": 0.7,
-    "PS/G": 4
-  },
-  {
-    "Player": "Sean Kilpatrick",
-    "Pos": "SG",
-    "Age": 28,
-    "Tm": "LAC",
-    "G": 4,
-    "MP": 9.5,
-    "FG%": ".389",
-    "TRB": 0.5,
-    "AST": 0.8,
-    "PS/G": 4.8
-  },
-  {
-    "Player": "Sean Kilpatrick",
-    "Pos": "SG",
-    "Age": 28,
-    "Tm": "CHI",
-    "G": 9,
-    "MP": 23.8,
-    "FG%": ".439",
-    "TRB": 2.8,
-    "AST": 1.4,
-    "PS/G": 15.4
   },
   {
     "Player": "Maxi Kleber",
@@ -4644,30 +3851,6 @@ let stats =  [{
     "PS/G": 1.7
   },
   {
-    "Player": "DeAndre Liggins",
-    "Pos": "SG",
-    "Age": 29,
-    "Tm": "MIL",
-    "G": 31,
-    "MP": 15.5,
-    "FG%": ".338",
-    "TRB": 1.6,
-    "AST": 0.9,
-    "PS/G": 1.8
-  },
-  {
-    "Player": "DeAndre Liggins",
-    "Pos": "SG",
-    "Age": 29,
-    "Tm": "NOP",
-    "G": 27,
-    "MP": 9,
-    "FG%": ".439",
-    "TRB": 1,
-    "AST": 0.8,
-    "PS/G": 1.6
-  },
-  {
     "Player": "Damian Lillard",
     "Pos": "PG",
     "Age": 27,
@@ -4860,30 +4043,6 @@ let stats =  [{
     "PS/G": 6
   },
   {
-    "Player": "Boban Marjanovic",
-    "Pos": "C",
-    "Age": 29,
-    "Tm": "DET",
-    "G": 19,
-    "MP": 9,
-    "FG%": ".519",
-    "TRB": 3,
-    "AST": 0.7,
-    "PS/G": 6.2
-  },
-  {
-    "Player": "Boban Marjanovic",
-    "Pos": "C",
-    "Age": 29,
-    "Tm": "LAC",
-    "G": 20,
-    "MP": 8.3,
-    "FG%": ".551",
-    "TRB": 4.4,
-    "AST": 0.4,
-    "PS/G": 5.9
-  },
-  {
     "Player": "Lauri Markkanen",
     "Pos": "PF",
     "Age": 20,
@@ -5038,30 +4197,6 @@ let stats =  [{
     "TRB": 2.5,
     "AST": 1,
     "PS/G": 7.8
-  },
-  {
-    "Player": "Doug McDermott",
-    "Pos": "SF",
-    "Age": 26,
-    "Tm": "NYK",
-    "G": 55,
-    "MP": 21.3,
-    "FG%": ".460",
-    "TRB": 2.4,
-    "AST": 0.9,
-    "PS/G": 7.2
-  },
-  {
-    "Player": "Doug McDermott",
-    "Pos": "SF",
-    "Age": 26,
-    "Tm": "DAL",
-    "G": 26,
-    "MP": 22.9,
-    "FG%": ".478",
-    "TRB": 2.5,
-    "AST": 1.1,
-    "PS/G": 9
   },
   {
     "Player": "JaVale McGee",
@@ -5256,30 +4391,6 @@ let stats =  [{
     "PS/G": 15.6
   },
   {
-    "Player": "Nikola Mirotic",
-    "Pos": "PF",
-    "Age": 26,
-    "Tm": "CHI",
-    "G": 25,
-    "MP": 24.9,
-    "FG%": ".474",
-    "TRB": 6.4,
-    "AST": 1.6,
-    "PS/G": 16.8
-  },
-  {
-    "Player": "Nikola Mirotic",
-    "Pos": "PF",
-    "Age": 26,
-    "Tm": "NOP",
-    "G": 30,
-    "MP": 29.1,
-    "FG%": ".427",
-    "TRB": 8.2,
-    "AST": 1.4,
-    "PS/G": 14.6
-  },
-  {
     "Player": "Donovan Mitchell",
     "Pos": "SG",
     "Age": 21,
@@ -5326,42 +4437,6 @@ let stats =  [{
     "TRB": 6.9,
     "AST": 2.2,
     "PS/G": 10.3
-  },
-  {
-    "Player": "Greg Monroe",
-    "Pos": "C",
-    "Age": 27,
-    "Tm": "MIL",
-    "G": 5,
-    "MP": 15.8,
-    "FG%": ".485",
-    "TRB": 5,
-    "AST": 1,
-    "PS/G": 6.8
-  },
-  {
-    "Player": "Greg Monroe",
-    "Pos": "C",
-    "Age": 27,
-    "Tm": "PHO",
-    "G": 20,
-    "MP": 23.3,
-    "FG%": ".626",
-    "TRB": 8,
-    "AST": 2.5,
-    "PS/G": 11.3
-  },
-  {
-    "Player": "Greg Monroe",
-    "Pos": "C",
-    "Age": 27,
-    "Tm": "BOS",
-    "G": 26,
-    "MP": 19.1,
-    "FG%": ".530",
-    "TRB": 6.3,
-    "AST": 2.3,
-    "PS/G": 10.2
   },
   {
     "Player": "Luis Montero",
@@ -5496,30 +4571,6 @@ let stats =  [{
     "PS/G": 8.6
   },
   {
-    "Player": "Emmanuel Mudiay",
-    "Pos": "PG",
-    "Age": 21,
-    "Tm": "DEN",
-    "G": 42,
-    "MP": 17.9,
-    "FG%": ".401",
-    "TRB": 2.2,
-    "AST": 2.9,
-    "PS/G": 8.5
-  },
-  {
-    "Player": "Emmanuel Mudiay",
-    "Pos": "PG",
-    "Age": 21,
-    "Tm": "NYK",
-    "G": 22,
-    "MP": 22.4,
-    "FG%": ".368",
-    "TRB": 2.6,
-    "AST": 3.9,
-    "PS/G": 8.8
-  },
-  {
     "Player": "Shabazz Muhammad",
     "Pos": "SF-SG",
     "Age": 25,
@@ -5530,30 +4581,6 @@ let stats =  [{
     "TRB": 1.8,
     "AST": 0.3,
     "PS/G": 5
-  },
-  {
-    "Player": "Shabazz Muhammad",
-    "Pos": "SF",
-    "Age": 25,
-    "Tm": "MIN",
-    "G": 32,
-    "MP": 9.4,
-    "FG%": ".388",
-    "TRB": 1.4,
-    "AST": 0.2,
-    "PS/G": 3.8
-  },
-  {
-    "Player": "Shabazz Muhammad",
-    "Pos": "SG",
-    "Age": 25,
-    "Tm": "MIL",
-    "G": 11,
-    "MP": 10.6,
-    "FG%": ".552",
-    "TRB": 2.8,
-    "AST": 0.6,
-    "PS/G": 8.5
   },
   {
     "Player": "Xavier Munford",
@@ -5628,30 +4655,6 @@ let stats =  [{
     "PS/G": 8.7
   },
   {
-    "Player": "Larry Nance",
-    "Pos": "C",
-    "Age": 25,
-    "Tm": "LAL",
-    "G": 42,
-    "MP": 22,
-    "FG%": ".601",
-    "TRB": 6.8,
-    "AST": 1.4,
-    "PS/G": 8.6
-  },
-  {
-    "Player": "Larry Nance",
-    "Pos": "C",
-    "Age": 25,
-    "Tm": "CLE",
-    "G": 24,
-    "MP": 20.8,
-    "FG%": ".550",
-    "TRB": 7,
-    "AST": 1,
-    "PS/G": 8.9
-  },
-  {
     "Player": "Shabazz Napier",
     "Pos": "PG",
     "Age": 26,
@@ -5674,30 +4677,6 @@ let stats =  [{
     "TRB": 2.1,
     "AST": 3.6,
     "PS/G": 4.9
-  },
-  {
-    "Player": "Jameer Nelson",
-    "Pos": "PG",
-    "Age": 35,
-    "Tm": "NOP",
-    "G": 43,
-    "MP": 20.9,
-    "FG%": ".410",
-    "TRB": 2.2,
-    "AST": 3.6,
-    "PS/G": 5.1
-  },
-  {
-    "Player": "Jameer Nelson",
-    "Pos": "PG",
-    "Age": 35,
-    "Tm": "DET",
-    "G": 7,
-    "MP": 16.6,
-    "FG%": ".282",
-    "TRB": 1.1,
-    "AST": 3.3,
-    "PS/G": 3.7
   },
   {
     "Player": "Raul Neto",
@@ -5880,30 +4859,6 @@ let stats =  [{
     "PS/G": 6.3
   },
   {
-    "Player": "Jahlil Okafor",
-    "Pos": "C",
-    "Age": 22,
-    "Tm": "PHI",
-    "G": 2,
-    "MP": 12.5,
-    "FG%": ".444",
-    "TRB": 4.5,
-    "AST": 0.5,
-    "PS/G": 5
-  },
-  {
-    "Player": "Jahlil Okafor",
-    "Pos": "C",
-    "Age": 22,
-    "Tm": "BRK",
-    "G": 26,
-    "MP": 12.6,
-    "FG%": ".566",
-    "TRB": 2.9,
-    "AST": 0.4,
-    "PS/G": 6.4
-  },
-  {
     "Player": "Victor Oladipo",
     "Pos": "SG",
     "Age": 25,
@@ -5998,30 +4953,6 @@ let stats =  [{
     "TRB": 2.2,
     "AST": 0.5,
     "PS/G": 2.1
-  },
-  {
-    "Player": "Georgios Papagiannis",
-    "Pos": "C",
-    "Age": 20,
-    "Tm": "SAC",
-    "G": 16,
-    "MP": 7.4,
-    "FG%": ".415",
-    "TRB": 2.3,
-    "AST": 0.6,
-    "PS/G": 2.1
-  },
-  {
-    "Player": "Georgios Papagiannis",
-    "Pos": "C",
-    "Age": 20,
-    "Tm": "POR",
-    "G": 1,
-    "MP": 4,
-    "FG%": 1,
-    "TRB": 1,
-    "AST": 0,
-    "PS/G": 2
   },
   {
     "Player": "Jabari Parker",
@@ -6144,30 +5075,6 @@ let stats =  [{
     "PS/G": 12.7
   },
   {
-    "Player": "Elfrid Payton",
-    "Pos": "PG",
-    "Age": 23,
-    "Tm": "ORL",
-    "G": 44,
-    "MP": 28.6,
-    "FG%": ".520",
-    "TRB": 4,
-    "AST": 6.3,
-    "PS/G": 13
-  },
-  {
-    "Player": "Elfrid Payton",
-    "Pos": "PG",
-    "Age": 23,
-    "Tm": "PHO",
-    "G": 19,
-    "MP": 29,
-    "FG%": ".435",
-    "TRB": 5.3,
-    "AST": 6.2,
-    "PS/G": 11.8
-  },
-  {
     "Player": "Gary Payton",
     "Pos": "PG",
     "Age": 25,
@@ -6178,30 +5085,6 @@ let stats =  [{
     "TRB": 1.9,
     "AST": 0.9,
     "PS/G": 3
-  },
-  {
-    "Player": "Gary Payton",
-    "Pos": "PG",
-    "Age": 25,
-    "Tm": "MIL",
-    "G": 12,
-    "MP": 8.8,
-    "FG%": ".394",
-    "TRB": 1.4,
-    "AST": 0.8,
-    "PS/G": 2.5
-  },
-  {
-    "Player": "Gary Payton",
-    "Pos": "PG",
-    "Age": 25,
-    "Tm": "LAL",
-    "G": 11,
-    "MP": 10.5,
-    "FG%": ".415",
-    "TRB": 2.5,
-    "AST": 1.1,
-    "PS/G": 3.5
   },
   {
     "Player": "Kendrick Perkins",
@@ -6504,30 +5387,6 @@ let stats =  [{
     "PS/G": 4.6
   },
   {
-    "Player": "Willie Reed",
-    "Pos": "C",
-    "Age": 27,
-    "Tm": "LAC",
-    "G": 39,
-    "MP": 10.7,
-    "FG%": ".667",
-    "TRB": 3.1,
-    "AST": 0.2,
-    "PS/G": 4.9
-  },
-  {
-    "Player": "Willie Reed",
-    "Pos": "C",
-    "Age": 27,
-    "Tm": "DET",
-    "G": 3,
-    "MP": 3,
-    "FG%": 1,
-    "TRB": 0.3,
-    "AST": 0.3,
-    "PS/G": 0.7
-  },
-  {
     "Player": "Josh Richardson",
     "Pos": "SF",
     "Age": 24,
@@ -6550,30 +5409,6 @@ let stats =  [{
     "TRB": 1.3,
     "AST": 0.5,
     "PS/G": 3.4
-  },
-  {
-    "Player": "Malachi Richardson",
-    "Pos": "SG",
-    "Age": 22,
-    "Tm": "SAC",
-    "G": 25,
-    "MP": 12.8,
-    "FG%": ".330",
-    "TRB": 1.3,
-    "AST": 0.5,
-    "PS/G": 3.5
-  },
-  {
-    "Player": "Malachi Richardson",
-    "Pos": "SG",
-    "Age": 22,
-    "Tm": "TOR",
-    "G": 1,
-    "MP": 5,
-    "FG%": ".500",
-    "TRB": 1,
-    "AST": 0,
-    "PS/G": 2
   },
   {
     "Player": "Austin Rivers",
@@ -6646,30 +5481,6 @@ let stats =  [{
     "TRB": 1.4,
     "AST": 1.5,
     "PS/G": 8.4
-  },
-  {
-    "Player": "Derrick Rose",
-    "Pos": "PG",
-    "Age": 29,
-    "Tm": "CLE",
-    "G": 16,
-    "MP": 19.3,
-    "FG%": ".439",
-    "TRB": 1.8,
-    "AST": 1.6,
-    "PS/G": 9.8
-  },
-  {
-    "Player": "Derrick Rose",
-    "Pos": "PG",
-    "Age": 29,
-    "Tm": "MIN",
-    "G": 9,
-    "MP": 12.4,
-    "FG%": ".426",
-    "TRB": 0.7,
-    "AST": 1.2,
-    "PS/G": 5.8
   },
   {
     "Player": "Terrence Ross",
@@ -6826,30 +5637,6 @@ let stats =  [{
     "TRB": 1.4,
     "AST": 2.8,
     "PS/G": 4.9
-  },
-  {
-    "Player": "Ramon Sessions",
-    "Pos": "PG",
-    "Age": 31,
-    "Tm": "NYK",
-    "G": 13,
-    "MP": 12.8,
-    "FG%": ".321",
-    "TRB": 1.4,
-    "AST": 2.1,
-    "PS/G": 3.7
-  },
-  {
-    "Player": "Ramon Sessions",
-    "Pos": "PG",
-    "Age": 31,
-    "Tm": "WAS",
-    "G": 15,
-    "MP": 15,
-    "FG%": ".391",
-    "TRB": 1.3,
-    "AST": 3.3,
-    "PS/G": 5.9
   },
   {
     "Player": "Iman Shumpert",
@@ -7044,30 +5831,6 @@ let stats =  [{
     "PS/G": 4.4
   },
   {
-    "Player": "Nik Stauskas",
-    "Pos": "SG",
-    "Age": 24,
-    "Tm": "PHI",
-    "G": 6,
-    "MP": 7.5,
-    "FG%": ".250",
-    "TRB": 0.2,
-    "AST": 0.2,
-    "PS/G": 0.7
-  },
-  {
-    "Player": "Nik Stauskas",
-    "Pos": "SG",
-    "Age": 24,
-    "Tm": "BRK",
-    "G": 35,
-    "MP": 13.7,
-    "FG%": ".393",
-    "TRB": 1.8,
-    "AST": 1.1,
-    "PS/G": 5.1
-  },
-  {
     "Player": "Lance Stephenson",
     "Pos": "SG",
     "Age": 27,
@@ -7246,30 +6009,6 @@ let stats =  [{
     "TRB": 2.1,
     "AST": 4.8,
     "PS/G": 15.2
-  },
-  {
-    "Player": "Isaiah Thomas",
-    "Pos": "PG",
-    "Age": 28,
-    "Tm": "CLE",
-    "G": 15,
-    "MP": 27.1,
-    "FG%": ".361",
-    "TRB": 2.1,
-    "AST": 4.5,
-    "PS/G": 14.7
-  },
-  {
-    "Player": "Isaiah Thomas",
-    "Pos": "PG",
-    "Age": 28,
-    "Tm": "LAL",
-    "G": 17,
-    "MP": 26.8,
-    "FG%": ".383",
-    "TRB": 2.1,
-    "AST": 5,
-    "PS/G": 15.6
   },
   {
     "Player": "Lance Thomas",
@@ -7452,42 +6191,6 @@ let stats =  [{
     "PS/G": 2.3
   },
   {
-    "Player": "Rashad Vaughn",
-    "Pos": "SG",
-    "Age": 21,
-    "Tm": "MIL",
-    "G": 22,
-    "MP": 7.9,
-    "FG%": ".420",
-    "TRB": 0.8,
-    "AST": 0.5,
-    "PS/G": 2.7
-  },
-  {
-    "Player": "Rashad Vaughn",
-    "Pos": "SG",
-    "Age": 21,
-    "Tm": "BRK",
-    "G": 1,
-    "MP": 4,
-    "FG%": "",
-    "TRB": 0,
-    "AST": 1,
-    "PS/G": 0
-  },
-  {
-    "Player": "Rashad Vaughn",
-    "Pos": "SG",
-    "Age": 21,
-    "Tm": "ORL",
-    "G": 5,
-    "MP": 7,
-    "FG%": ".333",
-    "TRB": 0.8,
-    "AST": 0,
-    "PS/G": 1
-  },
-  {
     "Player": "Noah Vonleh",
     "Pos": "PF",
     "Age": 22,
@@ -7498,30 +6201,6 @@ let stats =  [{
     "TRB": 5.8,
     "AST": 0.6,
     "PS/G": 4.9
-  },
-  {
-    "Player": "Noah Vonleh",
-    "Pos": "PF",
-    "Age": 22,
-    "Tm": "POR",
-    "G": 33,
-    "MP": 14.4,
-    "FG%": ".490",
-    "TRB": 5.1,
-    "AST": 0.4,
-    "PS/G": 3.6
-  },
-  {
-    "Player": "Noah Vonleh",
-    "Pos": "PF",
-    "Age": 22,
-    "Tm": "CHI",
-    "G": 21,
-    "MP": 19,
-    "FG%": ".413",
-    "TRB": 6.9,
-    "AST": 1,
-    "PS/G": 6.9
   },
   {
     "Player": "Nikola Vucevic",
@@ -7546,30 +6225,6 @@ let stats =  [{
     "TRB": 3.8,
     "AST": 3.4,
     "PS/G": 11.4
-  },
-  {
-    "Player": "Dwyane Wade",
-    "Pos": "SG",
-    "Age": 36,
-    "Tm": "CLE",
-    "G": 46,
-    "MP": 23.2,
-    "FG%": ".455",
-    "TRB": 3.9,
-    "AST": 3.5,
-    "PS/G": 11.2
-  },
-  {
-    "Player": "Dwyane Wade",
-    "Pos": "SG",
-    "Age": 36,
-    "Tm": "MIA",
-    "G": 21,
-    "MP": 22.2,
-    "FG%": ".409",
-    "TRB": 3.4,
-    "AST": 3.1,
-    "PS/G": 12
   },
   {
     "Player": "Dion Waiters",
@@ -7702,30 +6357,6 @@ let stats =  [{
     "TRB": 1.9,
     "AST": 1.2,
     "PS/G": 2.8
-  },
-  {
-    "Player": "Briante Weber",
-    "Pos": "PG",
-    "Age": 25,
-    "Tm": "HOU",
-    "G": 13,
-    "MP": 9.1,
-    "FG%": ".409",
-    "TRB": 1.4,
-    "AST": 1,
-    "PS/G": 2
-  },
-  {
-    "Player": "Briante Weber",
-    "Pos": "PG",
-    "Age": 25,
-    "Tm": "MEM",
-    "G": 5,
-    "MP": 23.8,
-    "FG%": ".476",
-    "TRB": 3.4,
-    "AST": 1.8,
-    "PS/G": 4.8
   },
   {
     "Player": "David West",
@@ -7932,30 +6563,6 @@ let stats =  [{
     "PS/G": 6.3
   },
   {
-    "Player": "Troy Williams",
-    "Pos": "SF",
-    "Age": 23,
-    "Tm": "HOU",
-    "G": 4,
-    "MP": 4.3,
-    "FG%": ".222",
-    "TRB": 1,
-    "AST": 0.3,
-    "PS/G": 1.3
-  },
-  {
-    "Player": "Troy Williams",
-    "Pos": "SF",
-    "Age": 23,
-    "Tm": "NYK",
-    "G": 17,
-    "MP": 17.1,
-    "FG%": ".490",
-    "TRB": 3.5,
-    "AST": 0.9,
-    "PS/G": 7.5
-  },
-  {
     "Player": "D.J. Wilson",
     "Pos": "PF",
     "Age": 21,
@@ -8026,30 +6633,6 @@ let stats =  [{
     "TRB": 3.4,
     "AST": 0.5,
     "PS/G": 5
-  },
-  {
-    "Player": "Brandan Wright",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "MEM",
-    "G": 27,
-    "MP": 13.6,
-    "FG%": ".576",
-    "TRB": 3.4,
-    "AST": 0.5,
-    "PS/G": 5
-  },
-  {
-    "Player": "Brandan Wright",
-    "Pos": "PF",
-    "Age": 30,
-    "Tm": "HOU",
-    "G": 1,
-    "MP": 15,
-    "FG%": ".667",
-    "TRB": 2,
-    "AST": 0,
-    "PS/G": 4
   },
   {
     "Player": "Delon Wright",
@@ -8148,30 +6731,6 @@ let stats =  [{
     "PS/G": 6.7
   },
   {
-    "Player": "Tyler Zeller",
-    "Pos": "C",
-    "Age": 28,
-    "Tm": "BRK",
-    "G": 42,
-    "MP": 16.7,
-    "FG%": ".546",
-    "TRB": 4.6,
-    "AST": 0.7,
-    "PS/G": 7.1
-  },
-  {
-    "Player": "Tyler Zeller",
-    "Pos": "C",
-    "Age": 28,
-    "Tm": "MIL",
-    "G": 24,
-    "MP": 16.9,
-    "FG%": ".590",
-    "TRB": 4.6,
-    "AST": 0.8,
-    "PS/G": 5.9
-  },
-  {
     "Player": "Paul Zipser",
     "Pos": "SF",
     "Age": 23,
@@ -8208,3 +6767,10 @@ let stats =  [{
     "PS/G": 3.7
   }
 ]
+
+
+
+grabNames(cleanStats);
+
+playerMap.setHashAll(firstNames);
+playerMap.setHashAll(lastNames);

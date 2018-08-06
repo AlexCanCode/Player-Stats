@@ -9,7 +9,7 @@
 	
 </head>
 <body>
-	<div class="stat-box">Steph Curry <span class="table"><table class="stat-table">
+	<div class="stat-box">Stephen Curry <span class="table"><table class="stat-table">
 		<tr>
 			<th class="ppg">ppg</th>
 			<th class="ppg">rpg</th>
@@ -28,23 +28,38 @@
 	</table>
 
 	</span>
+
+	<p>michael carter-williams, paul george jason bourne</p>
 </div>
 
 	
 
 </body>
 
-<!--<script type="text/javascript">
+<script type="text/javascript">
 	
+/* remove white spaces from array - may not need */
 
-	let playerData = d3.csv("https://raw.githubusercontent.com/AlexCanCode/Player-Stats/master/players.csv", function(error, data){
-		const dataNest = d3.nest()
-			.key(function(d) { return d.PF})
-			.entries(data);
+ function cleanArray(arr){
+    let arrayOne = [];
+    for(var i = 0; i < arr.length; i++){
+        if(arr[i]) {
+            arrayOne.push(arr[i]);
+        }
+    }
+    return arrayOne;
+}
 
-			return dataNest
+/* serialize the body text of a webpage and remove special characters*/
 
-	})
+let pageText; //wrote this function hastily to get to search funciton - return and optomize (if needed);
 
-</script> -->
+function getPageText(){
+	pageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))
+}
+
+window.onload = getPageText;
+
+
+</script>
 </html>
