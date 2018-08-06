@@ -1,0 +1,96 @@
+
+next step: 2. Script to automatically break cleanStats into key: value array of objects 
+
+
+                        Steps
+
+                        1. Write a function that hashes the first and last names of each player automatically XXXXXXXXXXXXXXXXXXXXXXXXX
+            
+                            - Index = # in list they are (e.g. 0: "Alex Abrines")
+                            - to be run daily in case of new players
+                            - ****Need to do some individual changes, potentially for "steph" not "stephan" curry and KD and the likes.
+
+                        2. Seperately, write a script to automatically break the stats object into a key:value object with the RK as
+                           the key and all the current stats info as the value.
+                            - to be run daily in case of new players 
+
+                        3. Data Storage: Store the key: stat-value data in chrome.storage.
+                            - ensure you can make daily updates/sync's in the way you want
+                            - check how fast retrieval is and whether loading the stats each time is faster (unlikely by do due diligences) 
+
+                        4. Write the search script: Search all the words on a page by hashing each and seeing if it matches a key
+                            - Address player line duplication, consolidating all duplicates into "TOT" stats line (will affect "RK" numbers)
+                            - need to remove apostrophies, as they are commonly applied to players names along with an 's' - remove ("'s")
+                            - if the script finds a first name key matches, search for the next word and compare the values 
+                            - if they match, retrieve the stats information from chrome.storage 
+                            - May need to deal with nicknames being their own thing as they will only correspond to single values 
+                                - idea: add a unique identifier to the nicknames key signifiying that the search does not need to compare
+                                  next word and can skip to stat retrieval 
+                        
+                        5. Design/implement a serach and replace feature that locates the matched players on a page and inserts the corresponding
+                           style element (prehaps <em>) around them to add the box. This may be more difficult then first anticipated. Below are
+                           links that may help find the optimal solution.
+                            Consider how you want to make the app lightweight and not add too much JS to a page, using the libary below
+                            may not be the best solution.  
+
+                            You may also be able to store the find and replace logic locally to solve any loadtime issues
+
+                                  - Useful links to solving this problem:  
+                                   https://github.com/padolsey/findAndReplaceDOMText 
+                                   https://j11y.io/javascript/replacing-text-in-the-dom-solved/
+
+                        6. Design back-end to automate steps throughout 1-4 using a server and a database
+                            - This will require delving into topics that you dont know much about 
+                            - will require a seperate brainstorming session to lay out steps, consider this a bookmark
+
+                        7. Finish design of the info box 
+                            - Make box expandable to include extra stats >>
+                                - Need to decided which stats are important enough to load 
+
+                        8. Test 
+
+                        9. Write pitch
+
+                        10. Test more  
+
+                        11. Launch 
+                            - Idealy before the season starts (perhaps the week before and use 2018 stats for 'demo') 
+                                - Only issue with this is if the scraper does not work properly I may not know until afterwards
+                                - But this way will probably generate more interest
+leaning towards this option --> - Or launch a week in after thorough testing of the nightly scraper activities - will prevent issues during launch 
+                                - May be worth having a more tested app then generating 
+
+
+                                other feature notes:
+
+                                - Have nickname feature optional
+                                - limit to "nba" in the url
+                                - have the highlighting feature of players names be optional 
+
+                                * reddit comment: This is awesome dude, thank you. Do you just want to apply this to sports? Because this would be perfect for /r/asoiaf. There are just so many characters and places, it gets annoying sometimes to search them all.
+
+
+To-do:
+
+- Account for invidiual nuances for popular players who are referred to by nickname (e.g. "KD", "Steph", "AD")
+    - May need to do manually, but explore other solutions
+
+- Grab and populate current team names for all "TOT" players. Needs to be done on back end with possibly more web scrpaing. 
+
+- Deal with duplicate players at earlier stage than currently doing (needs to be part of automation process)
+
+- Write feature that will only run extension on sites with "nba" in the url
+
+
+TESTING 
+    - Does hashing function work properly? Are their unanticipated collisions?
+    - Does the serach funciton work properly? 
+
+
+
+Backlog:
+
+- Write a nicknames feature (make toggleable by user) to search against nicknames
+    - May need a different serach funciton as only matching 1 string against another
+    - keep in mind nicknames may be multiple length strings (e.g. "the truth")
+
