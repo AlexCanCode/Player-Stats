@@ -77,11 +77,9 @@ class statMap {
 
         this.list[x].push([x, i]); 
     }
-
   }
 
   playerSearch(arr){ 
-    const t0 = performance.now()
     let fullMatches = [];
     let searchedHash;
     let secondHash;
@@ -94,9 +92,15 @@ class statMap {
              fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
         }
     }
-    console.log(fullMatches.filter(element => element.length >= 1)); 
-    const t1 = performance.now();
-    //console.log(t1 - t0);
+    return playerMap.getData(fullMatches.filter(element => element.length >= 1)); 
+  }
+
+  getData(arr){ // Get data from cleanStats. Need to determine fomrat. this function will need to be rewritten to access local storage later on in development 
+       let statArr = [];
+
+       arr.forEach(element => statArr.push(cleanStats[element]));
+       return statArr;
+
   }
   
 }
@@ -134,6 +138,8 @@ function grabNames(arr){
 
 */
 
+/*
+
  function cleanArray(arr){
     let arrayOne = [];
     for(var i = 0; i < arr.length; i++){
@@ -144,7 +150,11 @@ function grabNames(arr){
     return arrayOne;
 }
 
+*/
+
 /* serialize the body text of a webpage and remove special characters*/
+
+/*
 
 let pageText; //wrote this function hastily to get to search funciton - return and optomize (if needed);
 
@@ -152,8 +162,9 @@ function getPageText(){
     pageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))
 };
 
-getPageText();
+getPageText(); 
 
+*/
 
 /* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions */
 
