@@ -1,34 +1,28 @@
 
-next step: 2. Script to automatically break cleanStats into key: value array of objects 
+CURRENT STEP: Design tooltip box 
+NEXT STEP: Write function to get data from cleanStats and send to the proper tooltip box
 
 
                         Steps
 
-                        1. Write a function that hashes the first and last names of each player automatically XXXXXXXXXXXXXXXXXXXXXXXXX
+                        X Write a function that hashes the first and last names of each player automatically 
             
                             - Index = # in list they are (e.g. 0: "Alex Abrines")
                             - to be run daily in case of new players
                             - ****Need to do some individual changes, potentially for "steph" not "stephan" curry and KD and the likes.
 
-                        2. Seperately, write a script to automatically break the stats object into a key:value object with the RK as
-                           the key and all the current stats info as the value.
-                            - to be run daily in case of new players 
-
-                        3. Data Storage: Store the key: stat-value data in chrome.storage.
+                        * Data Storage: Store the key: stat-value data in chrome.storage.
                             - ensure you can make daily updates/sync's in the way you want
                             - check how fast retrieval is and whether loading the stats each time is faster (unlikely by do due diligences) 
 
-                        4. Write the search script: Search all the words on a page by hashing each and seeing if it matches a key
-                            - Address player line duplication, consolidating all duplicates into "TOT" stats line (will affect "RK" numbers)
-                            - need to remove apostrophies, as they are commonly applied to players names along with an 's' - remove ("'s")
-                            - if the script finds a first name key matches, search for the next word and compare the values 
+                        X Write the search script: Search all the words on a page by hashing each and seeing if it matches a key
                             - if they match, retrieve the stats information from chrome.storage 
                             - May need to deal with nicknames being their own thing as they will only correspond to single values 
                                 - idea: add a unique identifier to the nicknames key signifiying that the search does not need to compare
                                   next word and can skip to stat retrieval 
                         
-                        5. Design/implement a serach and replace feature that locates the matched players on a page and inserts the corresponding
-                           style element (prehaps <em>) around them to add the box. This may be more difficult then first anticipated. Below are
+                        * Design/implement a serach and replace feature that locates the matched players on a page and inserts the    
+                           corresponding style element (prehaps <em>) around them to add the box. This may be more difficult then first anticipated. Below are
                            links that may help find the optimal solution.
                             Consider how you want to make the app lightweight and not add too much JS to a page, using the libary below
                             may not be the best solution.  
@@ -39,21 +33,22 @@ next step: 2. Script to automatically break cleanStats into key: value array of 
                                    https://github.com/padolsey/findAndReplaceDOMText 
                                    https://j11y.io/javascript/replacing-text-in-the-dom-solved/
 
-                        6. Design back-end to automate steps throughout 1-4 using a server and a database
+                        * Design back-end to automate steps throughout 1-4 using a server and a database
                             - This will require delving into topics that you dont know much about 
                             - will require a seperate brainstorming session to lay out steps, consider this a bookmark
 
-                        7. Finish design of the info box 
+                        * Finish design of the info box 
                             - Make box expandable to include extra stats >>
                                 - Need to decided which stats are important enough to load 
+                                <!-- https://stackoverflow.com/questions/7654711/how-to-show-a-table-as-a-tooltip-using-jquery --> 
 
-                        8. Test 
+                        * Test 
 
-                        9. Write pitch
+                        * Write pitch/marketing 
 
-                        10. Test more  
+                        * Test more  
 
-                        11. Launch 
+                        * Launch 
                             - Idealy before the season starts (perhaps the week before and use 2018 stats for 'demo') 
                                 - Only issue with this is if the scraper does not work properly I may not know until afterwards
                                 - But this way will probably generate more interest
@@ -93,4 +88,6 @@ Backlog:
 - Write a nicknames feature (make toggleable by user) to search against nicknames
     - May need a different serach funciton as only matching 1 string against another
     - keep in mind nicknames may be multiple length strings (e.g. "the truth")
+    - idea: add a unique identifier to the nicknames key signifiying that the search does not need to compare
+                                  next word and can skip to stat retrieval 
 
