@@ -1,9 +1,10 @@
+
 .stat-box {
-	
+	display: inline-block;
 	}
 
 .stat-box .stat-table{
-	visibility: visible;
+	display: none;
 	width: 200px;
 	height: auto;
 	color: white;
@@ -14,18 +15,28 @@ span {
 
 }
 
+.tooltip {
+	position: relative;
+	display: block;
+	transform: translate(100%, -37px);
+	margin-left: 5px;
+}
+
 .stat-box:hover .stat-table {
-	visibility: visible;
+	position: absolute;
+	display: block;
 }
 
 
 
 .stat-table, .stat-table th, .stat-table td {
+	position: relative;
 	border-collapse: collapse;
 	z-index: 1;
 	height: 50%;
-	width: auto;
+	width: 30%;
 	border-radius: 10px;
+	padding: 2px 5px 2px 1px;
 }
 
 .stat-table th {
@@ -44,4 +55,5 @@ th, td {
 .stat-table a {
 	text-decoration: none;
 	font-family: helvetica;
+	font-size: .75em;
 }
