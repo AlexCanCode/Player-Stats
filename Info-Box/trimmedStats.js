@@ -123,10 +123,6 @@ function grabNames(arr){
 };
 
 
-
-
-/* *****NEW SECTION: Deals with getting html on page and formatting****** */
-
 /* Enables console on basketball reference (previously disabled) 
 
  javascript: (function() { //restores console.log to basketball reference 
@@ -138,7 +134,7 @@ function grabNames(arr){
 
 */
 
-/*
+//pushes all non-blank elements to an array and returns that array
 
  function cleanArray(arr){
     let arrayOne = [];
@@ -150,13 +146,10 @@ function grabNames(arr){
     return arrayOne;
 }
 
-*/
 
 /* serialize the body text of a webpage and remove special characters*/
 
-/*
-
-let pageText; //wrote this function hastily to get to search funciton - return and optomize (if needed);
+let pageText; 
 
 function getPageText(){
     pageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))
@@ -164,7 +157,6 @@ function getPageText(){
 
 getPageText(); 
 
-*/
 
 /* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions */
 
@@ -6706,3 +6698,5 @@ grabNames(cleanStats);
 
 playerMap.setHashAll(firstNames);
 playerMap.setHashAll(lastNames);
+
+
