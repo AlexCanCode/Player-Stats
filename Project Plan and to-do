@@ -33,6 +33,9 @@ NEXT STEP: Write function to get data from cleanStats and send to the proper too
                                    https://github.com/padolsey/findAndReplaceDOMText 
                                    https://j11y.io/javascript/replacing-text-in-the-dom-solved/
 
+
+                                -- need to inject the right CSS styles as well (may be able to do inline, but likely not)
+
                         * Design back-end to automate steps throughout 1-4 using a server and a database
                             - This will require delving into topics that you dont know much about 
                             - will require a seperate brainstorming session to lay out steps, consider this a bookmark
@@ -75,6 +78,8 @@ To-do:
 - Deal with duplicate players at earlier stage than currently doing (needs to be part of automation process)
 
 - Write feature that will only run extension on sites with "nba" in the url
+
+- Need to make sure the extesnsion re-runs on scroll for facebook, reddit, twitter, ect. 
 
 
 TESTING 
