@@ -1,7 +1,5 @@
 const t1 = performance.now();
 
-const playerArr = ["kyrie irving", "ben mclemore", "david west", "damian lillard", "kyle singler", "ben wallace", "tony parker", "shawn kemp", "demarcus cousins"]
-
 //create tree walker and search if inputted string exists, return all nodes with no children where it exists
 function textNodesUnder(el, str){
 	let n, a = [], walk = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, 
@@ -22,16 +20,14 @@ function textNodesUnder(el, str){
 
 const body = document.querySelector("body");
 
-const foundNodes = []; 
-
-function runWalker(){
-	for(i = 0; i < (playerArr.length - 1); i++){
-		console.log(i);
-		foundNodes.push(textNodesUnder(body, playerArr[i]));
+function runWalker(arr){
+	const nodes = []; 
+	for(i = 0; i < (arr.length - 1); i++){
+		nodes.push(textNodesUnder(body, arr[i]));
 	}
 };
 
-runWalker();
+const foundNodes = runWalker(NEEDSARR);
 
 const t2 = performance.now();
 

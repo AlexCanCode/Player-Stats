@@ -6,3 +6,5 @@ https://success.ensighten.com/hc/en-us/articles/206565813-How-to-Restore-a-Disab
 http://jsfiddle.net/dAutM/7/ -- tooltip example 
 
 http://csstooltip.com/ -- tooltip resource
+
+https://stackoverflow.com/questions/5904914/javascript-regex-to-replace-text-not-in-html-attributes/5904945#5904945 

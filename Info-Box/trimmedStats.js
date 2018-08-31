@@ -1,3 +1,4 @@
+ const t1 = performance.now();
  /* Hash Function */
 
  function hashCode(str) {
@@ -195,8 +196,45 @@ const cleanStats = stats.filter(function(item, index) {
 
 */
 
-/* 
+ 
 
+
+// Search page for matched players and return the node they are located in
+
+
+
+//create tree walker and search if inputted string exists, return all nodes with no children where it exists
+// PROBLEM: Takes wayyyy too long, scans dom for each name, untenable. Took over 4 minutes on backetball reference page. 
+//solution needs to iterate through the dom only once
+function textNodesUnder(el, str){
+    let n, a = [], walk = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, 
+        {acceptNode: function(node){ 
+            if((node.innerHTML.toLowerCase().indexOf(str) >= 0))
+                if(node.children.length > 0){
+                    return NodeFilter.FILTER_SKIP;
+                }
+                else {
+                return NodeFilter.FILTER_ACCEPT;
+            }
+            } 
+        }
+        , false);
+    while(n=walk.nextNode()) a.push(n);
+    return a;
+}
+
+const body = document.querySelector("body");
+
+const foundNodes = []; 
+
+function runWalker(arr){
+    for(i = 0; i < (arr.length - 1); i++){
+        foundNodes.push(textNodesUnder(body, arr[i]));
+    }
+};
+
+
+/*
 Stats order of operation:
 
 1. playerData --> formatted as JSON but nothing removed 
@@ -6699,4 +6737,24 @@ grabNames(cleanStats);
 playerMap.setHashAll(firstNames);
 playerMap.setHashAll(lastNames);
 
+const playersFound = playerMap.playerSearch(pageText);
+
+function extractNames(arr){
+    let newArr = [];
+    for(i = 0; i < (arr.length); i++){
+        newArr.push(arr[0].Player.toLowerCase());
+    }
+    return newArr;
+}
+
+const playersFoundNames = extractNames(playersFound);
+
+
+runWalker(playersFoundNames);
+
+const t2 = performance.now();
+
+console.log(t2 - t1);
+
+console.log(foundNodes);
 
