@@ -1,6 +1,6 @@
  const t1 = performance.now();
+ 
  /* Hash Function */
-
  function hashCode(str) {
     let hash = 0;
     if (str.length == 0){
@@ -15,9 +15,6 @@
 }
 
 /* Object to hash and store player names and corresponding stats[key] value */
-
-
-
 class statMap {
     constructor() {
     this.list = [];
@@ -80,7 +77,7 @@ class statMap {
     }
   }
 
-  playerSearch(arr){ 
+  playerSearch(arr){    
     let fullMatches = [];
     let searchedHash;
     let secondHash;
@@ -124,16 +121,16 @@ function grabNames(arr){
 };
 
 
-/* Enables console on basketball reference (previously disabled) 
-
+ //Enables console on basketball reference (previously disabled) 
+/*
  javascript: (function() { //restores console.log to basketball reference 
     var i = document.createElement('iframe');
     i.style.display='none';
     document.body.appendChild(i);
     window.console=i.contentWindow.console;
-}());d
+}())  */
 
-*/
+
 
 //pushes all non-blank elements to an array and returns that array
 
@@ -146,7 +143,6 @@ function grabNames(arr){
     }
     return arrayOne;
 }
-
 
 /* serialize the body text of a webpage and remove special characters*/
 
@@ -195,43 +191,6 @@ const cleanStats = stats.filter(function(item, index) {
 });
 
 */
-
- 
-
-
-// Search page for matched players and return the node they are located in
-
-
-
-//create tree walker and search if inputted string exists, return all nodes with no children where it exists
-// PROBLEM: Takes wayyyy too long, scans dom for each name, untenable. Took over 4 minutes on backetball reference page. 
-//solution needs to iterate through the dom only once
-function textNodesUnder(el, str){
-    let n, a = [], walk = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, 
-        {acceptNode: function(node){ 
-            if((node.innerHTML.toLowerCase().indexOf(str) >= 0))
-                if(node.children.length > 0){
-                    return NodeFilter.FILTER_SKIP;
-                }
-                else {
-                return NodeFilter.FILTER_ACCEPT;
-            }
-            } 
-        }
-        , false);
-    while(n=walk.nextNode()) a.push(n);
-    return a;
-}
-
-const body = document.querySelector("body");
-
-const foundNodes = []; 
-
-function runWalker(arr){
-    for(i = 0; i < (arr.length - 1); i++){
-        foundNodes.push(textNodesUnder(body, arr[i]));
-    }
-};
 
 
 /*
@@ -6731,7 +6690,6 @@ let cleanStats = [
 ]
 
 
-
 grabNames(cleanStats);
 
 playerMap.setHashAll(firstNames);
@@ -6742,19 +6700,59 @@ const playersFound = playerMap.playerSearch(pageText);
 function extractNames(arr){
     let newArr = [];
     for(i = 0; i < (arr.length); i++){
-        newArr.push(arr[0].Player.toLowerCase());
-    }
+        if(!newArr.includes(arr[i].Player.toLowerCase())) {
+            newArr.push(arr[i].Player.toLowerCase());
+            }   
+        }
     return newArr;
 }
 
-const playersFoundNames = extractNames(playersFound);
+
+playersFoundNames = extractNames(playersFound);
 
 
-runWalker(playersFoundNames);
+// Search and Wrap with Element Tag Logic 
+
+//recursive function that iterates through all nodes
+function walkTheDOM(node, func) {
+    func(node);
+    node = node.firstChild;
+    while(node) {
+        walkTheDOM(node, func);
+        node= node.nextSibling;
+    }
+}
+
+//Array of all nodes that contain players names
+const nodeArray = []
+
+//Walk the DOM and return all nodes with text that matches a name in players
+walkTheDOM(document.body, function(node) {
+    if(node.children){
+        if(node.children.length === 0){
+            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
+                    nodeArray.push(node);
+            }
+        }
+    }
+});
+
+
+//Loop through text nodes with players names and wrap with span
+function replaceText(arr1, arr2) { 
+    for(i = 0; i < (arr1.length - 1); i++){
+        for(j = 0; j < (arr2.length - 1); j++){
+            const regex = new RegExp(arr2[j], 'ig');
+            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, "<span>$&</span>"); 
+
+            //replace span with the tag name you end up using
+        }
+    }
+}
+
+replaceText(nodeArray, playersFoundNames);
 
 const t2 = performance.now();
 
 console.log(t2 - t1);
-
-console.log(foundNodes);
 

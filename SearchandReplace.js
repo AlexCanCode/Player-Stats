@@ -1,5 +1,7 @@
 const t1 = performance.now();
 
+
+//recursive function that iterates through all nodes
 function walkTheDOM(node, func) {
 	func(node);
 	node = node.firstChild;
@@ -11,8 +13,10 @@ function walkTheDOM(node, func) {
 
 const players = ["jayson tatum", "joe ingles", "lance stephenson", "tim duncan", "michael jordan", "derrick rose", "javale mcgee", "harry giles", "paul pierce", "dwight howard", "kevin durant", "shaun livingston", "nikola jokic", "deandre jordan", "luol deng", "goran dragic", "steph curry", "wayne ellington"] //NEXT: Generate this list from hash result 
 
+//Array of all nodes that contain players names
 const nodeArray = []
 
+//Walk the DOM and return all nodes with text that matches a name in players
 walkTheDOM(document.body, function(node) {
 	if(node.children){
 		if(node.children.length === 0){
@@ -23,7 +27,9 @@ walkTheDOM(document.body, function(node) {
 	}
 });
 
-function replaceText(arr1, arr2) { // may want to decide which array is bigger before loop and customize for performance
+
+//Loop through text nodes with players names and wrap with span
+function replaceText(arr1, arr2) { 
 	for(i = 0; i < (arr1.length - 1); i++){
 		for(j = 0; j < (arr2.length - 1); j++){
 			const regex = new RegExp(arr2[j], 'ig');
