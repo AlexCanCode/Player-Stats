@@ -1,5 +1,5 @@
 # Player-Stats
-A chrome extension that displays relevent, up-to-date NBA Stats for any player simply by hovering over their name on any given webpage. 
+A chrome extension that displays relevant, up-to-date NBA Stats for any player simply by hovering over their name on any given webpage. 
 
 ## Table of Contents
 - Motivation
@@ -54,8 +54,8 @@ Written entirely in vanilla JS for the purposes of learning while creating.
 
 ## Features 
 
-- Toggle to only run on NBA related sites (deteremined by the prescence of "NBA" in the URL)
-- Toggle to serach by nicknames (e.g. "Shaquille O'neal" and "Shaq" both acceptable names)
+- Toggle to only run on NBA related sites (determined by the presence of "NBA" in the URL)
+- Toggle to search by nicknames (e.g. "Shaquille O'Neal" and "Shaq" would both be acceptable names)
 - Expandable box to show more advanced stats
 
 ## Tests
