@@ -1,0 +1,32 @@
+TODO
+
+- Configure web crawler to only grab stats you want from the table (or a way to automatically filter them after)
+
+- Determine how to grab PER 
+
+- Define exact stats you want to grab
+
+- Develop automated process to convert CSV to JSON 
+
+- Develop search of JSON - (hash or map serach?) 
+
+- Look into how to store data in cache so you don't need to load it each time
+
+- Look into broad process of storing data in database and having the extension load it when needed
+
+- Feature: only works on urls that contain "NBA" or a sports related string
+
+- Develop UI including box appearance 
+   Name
+   Stats
+   Link to stats page 
+   Anything else you want to show? 
+
+- Decide if you want to prevent the extension from running on longer than x amount of names (or prevent large tables)(because it will be very slow)
+	- This way you can support small reddit tables but not have to do it on the full league when stats are being showed anyways 
+
+- Needs to re-run on reddit scroll (but only to a certain point) 
+	- it may not need to actually run on this 
+
+
+

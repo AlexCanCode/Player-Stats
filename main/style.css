@@ -1,0 +1,67 @@
+
+.stat-box {
+	display: inline-block;
+	}
+
+.stat-box .stat-table{
+	display: none;
+	width: 200px;
+	height: auto;
+	color: white;
+	background: grey;
+}
+
+/* div.tooltip:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: #FFFFFF transparent transparent transparent; this is the rub for the triangle 
+      top: 44px;
+      left: 50px;
+} css that can help add triangle to the left */
+
+.tooltip {
+	position: relative;
+	display: block;
+	transform: translate(100%, -37px);
+	margin-left: 5px;
+}
+
+.stat-box:hover .stat-table {
+	position: absolute;
+	display: block;
+}
+
+
+
+.stat-table, .stat-table th, .stat-table td {
+	position: relative;
+	border-collapse: collapse;
+	z-index: 1;
+	height: 50%;
+	width: 30%;
+	border-radius: 10px;
+	padding: 2px 5px 2px 1px;
+}
+
+.stat-table th {
+	color: black;
+} 
+
+
+.stat-table td {
+	text-align: center;
+}
+
+th, td {
+	padding: 3px;
+}
+
+.stat-table a {
+	text-decoration: none;
+	font-family: helvetica;
+	font-size: .75em;
+}
