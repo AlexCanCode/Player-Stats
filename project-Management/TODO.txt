@@ -28,5 +28,9 @@ TODO
 - Needs to re-run on reddit scroll (but only to a certain point) 
 	- it may not need to actually run on this 
 
+- Open to show more stats with a ">>" style thing 
+
+- Optimize search and replace to perform on match in recursive funciton instead of waiting for second function. 
+
 
 

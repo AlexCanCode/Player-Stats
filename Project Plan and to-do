@@ -81,6 +81,8 @@ To-do:
 
 - Need to make sure the extesnsion re-runs on scroll for facebook, reddit, twitter, ect. 
 
+- Write function to detect large tables on page and stop extension script from running 
+
 
 TESTING 
     - Does hashing function work properly? Are their unanticipated collisions?

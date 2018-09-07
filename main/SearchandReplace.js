@@ -21,7 +21,7 @@ walkTheDOM(document.body, function(node) {
 	if(node.children){
 		if(node.children.length === 0){
 			if(new RegExp(players.join("|"), "i").test(node.textContent)) {
-					nodeArray.push(node);
+					nodeArray.push(node); //SHOULD PERFORM MATCH HERE BUT RUNNING INTO INFINITE LOOP ISSUE
 			}
 		}
 	}
