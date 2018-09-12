@@ -4,7 +4,7 @@
 	}
 
 .stat-box .stat-table{
-	display: none;
+	display: visible;
 	width: 200px;
 	height: auto;
 	color: white;
