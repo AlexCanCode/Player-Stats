@@ -1,0 +1,12 @@
+{
+	"name": "Player Stats", 
+	"version": "0.1", 
+	"description": "A simply, fast way to view stats without navigating to a different page.",
+	"permissions":["storage"],
+	"background": {
+		"scripts":["background.js"],
+		"persistent":false
+	},
+	"content_scripts":,
+	"manifest_version": 2
+}
