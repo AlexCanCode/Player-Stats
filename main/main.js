@@ -1,21 +1,5 @@
- const t1 = performance.now();
- 
- /* Hash Function */
- function hashCode(str) {
-    let hash = 0;
-    if (str.length == 0){
-        return hash;
-    }
-    for (let i = 0; i < str.length; i++) {
-        let char = str.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
-        hash = hash & hash;
-    }
-    return hash;
-}
-
-/* Object to hash and store player names and corresponding stats[key] value */
-class statMap {
+// Object to hash and store player names and corresponding stats[key] value 
+class StatMap {
     constructor() {
     this.list = [];
   }
@@ -34,24 +18,19 @@ class statMap {
   }
 
   get(x) { 
-
     let j = this.hash(x.toLowerCase());
     let result = this.list[j];
     
     if(!result){
         return -1;  
     }
-
-    
-
-    else{ //puts all outputs into an array for simpler processing in playerSearch, doubles performance time on a MDN page from .29 ms to .50ms, 
+    else { //puts all outputs into an array for simpler processing in playerSearch, doubles performance time on a MDN page from .29 ms to .50ms, 
           //a seemingly negligable difference to my beginner eyes. removes need to check typeof in playerSearch 
         return result.reduce(function(all, item, index){
             all.push(item[1]);
             return all;
         }, [])
     }   //No need to deal with duplicates here as this is expected due to common names 
-
   }
 
   set(x, y) {
@@ -65,7 +44,6 @@ class statMap {
   }
 
   setHashAll(arr){  
-
     for(let i = 0; i < arr.length; i++){  //is arr.legnth fine? Or does it need to be length-1? Try with small sample array see if you are adding garbage values 
         let x = this.hash(arr[i].toLowerCase())
 
@@ -93,22 +71,18 @@ class statMap {
     return playerMap.getData(fullMatches.filter(element => element.length >= 1)); 
   }
 
-  getData(arr){ // Get data from cleanStats. Need to determine fomrat. this function will need to be rewritten to access local storage later on in development 
+  getData(arr){ // Get data from cleanStats. Need to determine format. this function will need to be rewritten to access local storage later on in development 
        let statArr = [];
 
        arr.forEach(element => statArr.push(cleanStats[element]));
        return statArr;
-
   }
-  
 }
 
+// Create new instance of hash table
+let playerMap = new StatMap(); 
 
-
-let playerMap = new statMap(); 
-
-/* Grab all first and last names from stats and put them, respectively, into first and last name arrays */
-
+// Grab all first and last names from stats and put them, respectively, into first and last name arrays 
 let firstNames = [];
 let lastNames = [];
 
@@ -120,6 +94,12 @@ function grabNames(arr){
     });
 };
 
+grabNames(cleanStats); //clean stats is now an externally linked file 
+
+
+//Hash all first and last names
+playerMap.setHashAll(firstNames);
+playerMap.setHashAll(lastNames);
 
  //Enables console on basketball reference (previously disabled) 
 /*
@@ -129,8 +109,6 @@ function grabNames(arr){
     document.body.appendChild(i);
     window.console=i.contentWindow.console;
 }())  */
-
-
 
 //pushes all non-blank elements to an array and returns that array
 
@@ -155,7 +133,7 @@ function getPageText(){
 getPageText(); 
 
 
-/* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions */
+/* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions -- Move to data formatting file upon file organization */
 
 /* COMMENTED OUT TO TEST CODE ON WEBPAGES
 
@@ -204,11 +182,6 @@ Stats order of operation:
 
 
                            */
-
-grabNames(cleanStats);
-
-playerMap.setHashAll(firstNames);
-playerMap.setHashAll(lastNames);
 
 const playersFound = playerMap.playerSearch(pageText);
 
@@ -266,8 +239,4 @@ function replaceText(arr1, arr2) {
 }
 
 replaceText(nodeArray, playersFoundNames);
-
-const t2 = performance.now();
-
-console.log(t2 - t1);
 
