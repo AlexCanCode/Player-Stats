@@ -61,26 +61,26 @@ class StatMap {
     let secondHash;
 
      for(let i = 0; i < (arr.length - 1); i++){
-        searchedHash = playerMap.get(arr[i]);
-        secondHash = playerMap.get(arr[(i + 1)]); 
+        searchedHash = PlayerMap.get(arr[i]);
+        secondHash = PlayerMap.get(arr[(i + 1)]); 
 
         if(searchedHash != -1 && secondHash != -1){
              fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
         }
     }
-    return playerMap.getData(fullMatches.filter(element => element.length >= 1)); 
+    return PlayerMap.getData(fullMatches.filter(element => element.length >= 1)); 
   }
 
-  getData(arr){ // Get data from cleanStats. Need to determine format. this function will need to be rewritten to access local storage later on in development 
+  getData(arr){ // Get data from (clean)stats. Need to determine format. this function will need to be rewritten to access local storage later on in development 
        let statArr = [];
 
-       arr.forEach(element => statArr.push(cleanStats[element]));
+       arr.forEach(element => statArr.push(stats[element]));
        return statArr;
   }
 }
 
 // Create new instance of hash table
-let playerMap = new StatMap(); 
+let PlayerMap = new StatMap(); 
 
 // Grab all first and last names from stats and put them, respectively, into first and last name arrays 
 let firstNames = [];
@@ -98,8 +98,8 @@ grabNames(cleanStats); //clean stats is now an externally linked file
 
 
 //Hash all first and last names
-playerMap.setHashAll(firstNames);
-playerMap.setHashAll(lastNames);
+PlayerMap.setHashAll(firstNames);
+PlayerMap.setHashAll(lastNames);
 
  //Enables console on basketball reference (previously disabled) 
 /*
@@ -135,8 +135,6 @@ getPageText();
 
 /* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions -- Move to data formatting file upon file organization */
 
-/* COMMENTED OUT TO TEST CODE ON WEBPAGES
-
 let duplicate = false;
 let compare;
 let spliceArr = [];
@@ -146,7 +144,7 @@ stats.map(function(item, index) {
      if(item.Tm === "TOT"){
       duplicate = true;
       compare = item.Player;
-  }
+        }
     else if(duplicate) {
         if(item.Player === compare){
          spliceArr.push(index); 
@@ -168,7 +166,7 @@ const cleanStats = stats.filter(function(item, index) {
     }
 });
 
-*/
+
 
 
 /*
@@ -183,7 +181,7 @@ Stats order of operation:
 
                            */
 
-const playersFound = playerMap.playerSearch(pageText);
+const playersFound = PlayerMap.playerSearch(pageText);
 
 function extractNames(arr){
     let newArr = [];
@@ -197,7 +195,6 @@ function extractNames(arr){
 
 
 playersFoundNames = extractNames(playersFound);
-
 
 // Search and Wrap with Element Tag Logic 
 
