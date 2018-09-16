@@ -64,6 +64,7 @@ leaning towards this option --> - Or launch a week in after thorough testing of 
                                 - Have nickname feature optional
                                 - limit to "nba" in the url
                                 - have the highlighting feature of players names be optional 
+				- native stats viewer (extend functionality) 
 
                                 * reddit comment: This is awesome dude, thank you. Do you just want to apply this to sports? Because this would be perfect for /r/asoiaf. There are just so many characters and places, it gets annoying sometimes to search them all.
 
@@ -73,20 +74,22 @@ To-do:
 - Account for invidiual nuances for popular players who are referred to by nickname (e.g. "KD", "Steph", "AD")
     - May need to do manually, but explore other solutions
 
-- Grab and populate current team names for all "TOT" players. Needs to be done on back end with possibly more web scrpaing. 
+- Grab and populate current team names for all "TOT" players. Needs to be done on back end with possibly more web scrapaing. 
+
+- grab PER with scraper and incorporate into format.js
 
 - Deal with duplicate players at earlier stage than currently doing (needs to be part of automation process)
 
 - Write feature that will only run extension on sites with "nba" in the url
 
-- Need to make sure the extesnsion re-runs on scroll for facebook, reddit, twitter, ect. 
+- Need to make sure the extension re-runs on scroll for facebook, reddit, twitter, ect. 
 
 - Write function to detect large tables on page and stop extension script from running 
 
 
 TESTING 
     - Does hashing function work properly? Are their unanticipated collisions?
-    - Does the serach funciton work properly? 
+    - Does the search function work properly? 
 
 
 
@@ -97,4 +100,6 @@ Backlog:
     - keep in mind nicknames may be multiple length strings (e.g. "the truth")
     - idea: add a unique identifier to the nicknames key signifiying that the search does not need to compare
                                   next word and can skip to stat retrieval 
+- Native stats viewer (if 1 call a day data update) Have stats available for viewing in separate page (even offline) - just a simple table of stats (maybe include standings too. Could extend functionality of extension to be more comprehensive (save this for after successful implementation and a degree of interest is shown)
+
 
