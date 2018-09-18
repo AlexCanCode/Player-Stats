@@ -50,7 +50,7 @@ Coming Soon
 
 ## Tech/framework used
 
-Written entirely in vanilla JS for the purposes of learning while creating. 
+Written almost exclusively in Vanilla Javascript in order to learn core concepts of development. Some select tasks (e.g. tooltip creation) were best left to a library. 
 
 ## Features 
 
