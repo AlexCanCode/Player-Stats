@@ -1,3 +1,4 @@
 Research.txt
-/Archive
+.DS_Store
+
 
