@@ -4,9 +4,12 @@
 	"description": "A simply, fast way to view stats without navigating to a different page.",
 	"permissions":["storage"],
 	"background": {
-		"scripts":["background.js"],
+		"scripts":[
+			"background.js",
+			"/main/finalStatObject.js",
+			"/main/main.js" 
+		],
 		"persistent":false
 	},
-	"content_scripts":,
 	"manifest_version": 2
 }

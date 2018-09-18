@@ -80,3 +80,18 @@ return cleanStats;
 module.exports = formattedStats;
 
 
+/*Stats order of operation:
+
+1. CSV to JSON
+
+2. add in PER
+
+3. removed all unwanted fields but retains duplicates
+
+4. Remove duplicates
+
+5. Add in team names for duplicate players (not done)
+
+6. formattedStats --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)*/
+
+

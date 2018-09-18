@@ -1,4 +1,4 @@
-// Object to hash and store player names and corresponding stats[key] value 
+// Object to hash and store player names and corresponding stats in [key]value: hash->index
 class StatMap {
     constructor() {
     this.list = [];
@@ -44,7 +44,7 @@ class StatMap {
   }
 
   setHashAll(arr){  
-    for(let i = 0; i < arr.length; i++){  //is arr.legnth fine? Or does it need to be length-1? Try with small sample array see if you are adding garbage values 
+    for(let i = 0; i < (arr.length - 1); i++){  
         let x = this.hash(arr[i].toLowerCase())
 
         if(!this.list[x]){
@@ -55,31 +55,31 @@ class StatMap {
     }
   }
 
-  playerSearch(arr){    
+  playerSearch(arr, location){ //added location so script can run getData(arr, location) in a file that does not contain the stats file.
     let fullMatches = [];
     let searchedHash;
     let secondHash;
 
      for(let i = 0; i < (arr.length - 1); i++){
-        searchedHash = PlayerMap.get(arr[i]);
-        secondHash = PlayerMap.get(arr[(i + 1)]); 
+        searchedHash = this.get(arr[i]);
+        secondHash = this.get(arr[(i + 1)]); 
 
         if(searchedHash != -1 && secondHash != -1){
              fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
         }
     }
-    return PlayerMap.getData(fullMatches.filter(element => element.length >= 1)); 
+    return this.getData(fullMatches.filter(element => element.length >= 1), location); 
   }
 
-  getData(arr){ // Get data from (clean)stats. Need to determine format. this function will need to be rewritten to access local storage later on in development 
+  getData(arr, location){ // Get data from location (which is entered, as of now, in the playerSearch function. Need to determine format and ultimate location once architecture is clearer. this function will need to be rewritten to access stats location later on in development 
        let statArr = [];
 
-       arr.forEach(element => statArr.push(stats[element]));
+       arr.forEach(element => statArr.push(location[element]));
        return statArr;
   }
 }
 
-// Create new instance of hash table
+// Create new instance of StatMap
 let PlayerMap = new StatMap(); 
 
 // Grab all first and last names from stats and put them, respectively, into first and last name arrays 
@@ -94,146 +94,14 @@ function grabNames(arr){
     });
 };
 
-grabNames(cleanStats); //clean stats is now an externally linked file 
+
+grabNames(finalStatObject); //clean stats is now an externally linked file 
 
 
 //Hash all first and last names
 PlayerMap.setHashAll(firstNames);
 PlayerMap.setHashAll(lastNames);
 
- //Enables console on basketball reference (previously disabled) 
-/*
- javascript: (function() { //restores console.log to basketball reference 
-    var i = document.createElement('iframe');
-    i.style.display='none';
-    document.body.appendChild(i);
-    window.console=i.contentWindow.console;
-}())  */
+console.log(PlayerMap.playerSearch(["jayson", "tatum"], finalStatObject));
 
-//pushes all non-blank elements to an array and returns that array
-
- function cleanArray(arr){
-    let arrayOne = [];
-    for(var i = 0; i < arr.length; i++){
-        if(arr[i]) {
-            arrayOne.push(arr[i]);
-        }
-    }
-    return arrayOne;
-}
-
-/* serialize the body text of a webpage and remove special characters*/
-
-let pageText; 
-
-function getPageText(){
-    pageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))
-};
-
-getPageText(); 
-
-
-/* Deals with diplicate players, creates new stat array with no duplicates, store all duplicates in dupStatArr in case needed for later versions -- Move to data formatting file upon file organization */
-
-let duplicate = false;
-let compare;
-let spliceArr = [];
-let dupStatsArr = [];
-
-stats.map(function(item, index) {
-     if(item.Tm === "TOT"){
-      duplicate = true;
-      compare = item.Player;
-        }
-    else if(duplicate) {
-        if(item.Player === compare){
-         spliceArr.push(index); 
-        }
-        else {
-         duplicate = false;
-         compare = ""; 
-        }
-    }
-});
-
-const cleanStats = stats.filter(function(item, index) {
-    if(spliceArr.indexOf(index) == -1){
-     return true; 
-    }
-    else {
-      dupStatsArr.push(item);
-      return false
-    }
-});
-
-
-
-
-/*
-Stats order of operation:
-
-1. playerData --> formatted as JSON but nothing removed 
-
-2. stats = --> removed all unwanted fields but retains duplicates
-
-3. cleanStats --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)
-
-
-                           */
-
-const playersFound = PlayerMap.playerSearch(pageText);
-
-function extractNames(arr){
-    let newArr = [];
-    for(i = 0; i < (arr.length); i++){
-        if(!newArr.includes(arr[i].Player.toLowerCase())) {
-            newArr.push(arr[i].Player.toLowerCase());
-            }   
-        }
-    return newArr;
-}
-
-
-playersFoundNames = extractNames(playersFound);
-
-// Search and Wrap with Element Tag Logic 
-
-//recursive function that iterates through all nodes
-function walkTheDOM(node, func) {
-    func(node);
-    node = node.firstChild;
-    while(node) {
-        walkTheDOM(node, func);
-        node= node.nextSibling;
-    }
-}
-
-//Array of all nodes that contain players names
-const nodeArray = []
-
-//Walk the DOM and return all nodes with text that matches a name in players
-walkTheDOM(document.body, function(node) {
-    if(node.children){
-        if(node.children.length === 0){
-            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
-                    nodeArray.push(node);
-            }
-        }
-    }
-});
-
-
-//Loop through text nodes with players names and wrap with span
-function replaceText(arr1, arr2) { 
-    for(i = 0; i < (arr1.length - 1); i++){
-        for(j = 0; j < (arr2.length - 1); j++){
-            const regex = new RegExp(arr2[j], 'ig');
-            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, "<span>$&</span>"); 
-
-            //replace span with the tag name you end up using
-        }
-    }
-}
-
-replaceText(nodeArray, playersFoundNames);
 
