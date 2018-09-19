@@ -72,11 +72,14 @@ class StatMap {
   }
 
   getData(arr, location){ // Get data from location (which is entered, as of now, in the playerSearch function. Need to determine format and ultimate location once architecture is clearer. this function will need to be rewritten to access stats location later on in development 
-       let statArr = [];
-
-       arr.forEach(element => statArr.push(location[element]));
-       return statArr;
-  }
+         let statArr = [];
+         arr.forEach(element => {
+          if(!statArr.includes(location[element])) {
+          statArr.push(location[element])
+       }
+     });
+         return statArr;
+    }
 }
 
 // Create new instance of StatMap
@@ -102,6 +105,14 @@ grabNames(finalStatObject); //clean stats is now an externally linked file
 PlayerMap.setHashAll(firstNames);
 PlayerMap.setHashAll(lastNames);
 
-console.log(PlayerMap.playerSearch(["jayson", "tatum"], finalStatObject));
+const finalStatObjectString = JSON.stringify(finalStatObject);
 
+chrome.storage.local.set({"quickStats": finalStatObjectString}, function() {
+  console.log("storage set");
+});
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+      sendResponse({response: (PlayerMap.playerSearch(request, finalStatObject))});
+  }); //may need to access finalStatObject from local storage to ensure same data as content script is used. 
 

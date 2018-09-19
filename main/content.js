@@ -1,6 +1,15 @@
 //DOM MANIPULATION SCRIPT
 
-//pushes all non-blank elements to an array and returns that array
+
+//Accesses finalStatObjectString stored in local storage. May be used to access the data later
+ /* chrome.storage.local.get("quickStats", function(value) {
+    console.log(value.quickStats);
+  }) */
+
+
+const t1 = performance.now();
+
+//pushes all non-blank elements to an array and returns that array - need to set to run on load, perhaps? Otherwise might not get everything
  function cleanArray(arr){
     let arrayOne = [];
     for(var i = 0; i < arr.length; i++){
@@ -12,15 +21,29 @@
 }
 
 /* serialize the body text of a webpage and remove special characters*/
-let pageText; 
+let serializedPageText; 
 
-function getPageText(){
-    pageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" ")) //Assigning a variable in global scope from local seems like bad practice, need to clean-up this code to return a value that THEN gets assigned to pageText.
+function getSerializedPageText(){
+    serializedPageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" ")) //Assigning a variable in global scope from local seems like bad practice, need to clean-up this code to return a value that THEN gets assigned to serializedPageText.
 };
 
-getPageText(); 
+getSerializedPageText(); 
 
-const playersFound = PlayerMap.playerSearch(pageText); //Need to determine how it will access PlayerMap Data
+let playersFound; 
+
+chrome.runtime.sendMessage(serializedPageText, function(response) {
+    playersFound = response;
+}); //LEFT OFF HERE: Need to get response and use it to create tooltips and populate them with data. How do you get the value of a promise out of the promise itself?
+
+console.log(playersFound);
+
+const t2 = performance.now()
+
+console.log(t2 - t1);
+
+
+// Runs once serach is done
+//const playersFound = PlayerMap.playerSearch(serializedPageText); //Need to determine how it will access PlayerMap Data
 
 function extractNames(arr){
     let newArr = [];
@@ -30,10 +53,11 @@ function extractNames(arr){
             }   
         }
     return newArr;
-}
+};
 
+/*
 
-playersFoundNames = extractNames(playersFound);
+ playersFoundNames = extractNames(playersFound); An array of all players found. Used after search, may move to background script. 
 
 // Search and Wrap with Element Tag Logic 
 
@@ -75,3 +99,5 @@ function replaceText(arr1, arr2) {
 }
 
 replaceText(nodeArray, playersFoundNames);
+
+*/ 

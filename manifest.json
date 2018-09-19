@@ -11,5 +11,11 @@
 		],
 		"persistent":false
 	},
+	"content_scripts": [
+		{
+			"matches": [ "<all_urls>" ], 
+			"js": [ "/main/content.js" ]
+		}
+	],
 	"manifest_version": 2
 }
