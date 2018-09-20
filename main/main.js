@@ -97,22 +97,13 @@ function grabNames(arr){
     });
 };
 
-
-grabNames(finalStatObject); //clean stats is now an externally linked file 
-
+grabNames(finalStatObject); //clean stats is now an externally linked file but it will have to grab this from a stored json object in order to update daily - unless it can modify finalStatObject.js
 
 //Hash all first and last names
 PlayerMap.setHashAll(firstNames);
 PlayerMap.setHashAll(lastNames);
 
-const finalStatObjectString = JSON.stringify(finalStatObject);
-
-chrome.storage.local.set({"quickStats": finalStatObjectString}, function() {
-  console.log("storage set");
-});
-
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
       sendResponse({response: (PlayerMap.playerSearch(request, finalStatObject))});
   }); //may need to access finalStatObject from local storage to ensure same data as content script is used. 
-
