@@ -1,5 +1,5 @@
 let serializedPageText; 
-let playersFoundNames; //populated in sendMessage response callback
+let playersFoundNames; //populated with sendMessage response callback
 let nodeArray = []; //Array of all nodes that contain players names
 
 //pushes all non-blank elements to an array and returns that array - need to set to run on load, perhaps? Otherwise might not get everything
@@ -45,11 +45,44 @@ function replaceText(arr1, arr2) {
     for(i = 0; i < (arr1.length - 1); i++){
         for(j = 0; j < (arr2.length - 1); j++){
             const regex = new RegExp(arr2[j], 'ig');
-            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, "<span class='stat-box' title='$&'>$&</span>"); 
-            //replace span with the tag name you end up using
+            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, "<span class='stat-box' data-tooltip-content='.tooltip_content'>$&</span>"); 
         };
     };
 };
+
+//inject stat-box template 
+function createBoxTemplate() {
+	const containerDiv = document.createElement("div");
+	const contentDiv = containerDiv.cloneNode();
+	containerDiv.classList.add("stat-box-template");
+	contentDiv.id = "tooltip_content";
+	/*contentDiv.innerHTML += `<table>
+			<tr>
+				<th>ppg</th>
+				<th>rpg</th>
+				<th>apg</th>
+				<th>per</th>
+			</tr>
+			<tr>
+				<td>21.7</td>
+				<td>3.8</td>
+				<td>6.7</td>
+				<td>19.4</td>
+			</tr>
+			<tr>
+				<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
+		</tr>
+		</table>` */
+
+	const ele = document.createTextNode('HELLO!');
+
+	contentDiv.appendChild(ele);
+	containerDiv.appendChild(contentDiv);
+
+	containerDiv.style.display = "none";
+
+	document.body.appendChild(containerDiv);
+}
 
 $( document ).ready(init); 
 
@@ -74,10 +107,13 @@ function init() {
 			        };
 			    };
 			});
+			createBoxTemplate();
 			replaceText(nodeArray, playersFoundNames);
 		}
 	}); 
-	$(".stat-box").tooltipster();
+	$(".stat-box").tooltipster({
+		contentCloning: true
+	});
 	console.log(nodeArray); // DEBUGGING ONLY
 	const t2 = performance.now();
 	console.log(t2 - t1);
@@ -86,6 +122,11 @@ function init() {
 //ADD AND POPULATE TOOLTIPS
 
 /* next steps
+
+Tooltipster not instiating with custom html 
+
+IDEA: make title the exact html we need 
+or find a different tool for the job
 
 1. inject stat-box template into page in the appropriate flow to 
 	a. be utilized by tooltipster BUT also
