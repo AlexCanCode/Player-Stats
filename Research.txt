@@ -10,3 +10,5 @@ http://csstooltip.com/ -- tooltip resource
 https://stackoverflow.com/questions/5904914/javascript-regex-to-replace-text-not-in-html-attributes/5904945#5904945
 
 https://stackoverflow.com/questions/21012250/how-to-pass-a-variable-value-between-background-scripts-in-chrome-extensions 
+
+https://stackoverflow.com/questions/13704789/can-i-use-complex-html-with-twitter-bootstraps-tooltip —> question about creating complex HTML in bootstrap
