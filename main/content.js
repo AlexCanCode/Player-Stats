@@ -40,23 +40,55 @@ function walkTheDOM(node, func) {
     };
 };
 
+function insertStatsAndName(match){
+
+	return `<span class='stat-box'>${match}</span>`;
+}
+
+function prepareStatsAndNames(arr){
+	
+}
+
+
 //Loop through text nodes with players names and wrap with span
 function replaceText(arr1, arr2) { 
     for(i = 0; i < (arr1.length - 1); i++){
         for(j = 0; j < (arr2.length - 1); j++){
             const regex = new RegExp(arr2[j], 'ig');
-            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, "<span class='stat-box' data-tooltip-content='.tooltip_content'>$&</span>"); 
+            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, insertStatsAndName); 
         };
     };
 };
 
-//inject stat-box template 
-function createBoxTemplate() {
-	const containerDiv = document.createElement("div");
-	const contentDiv = containerDiv.cloneNode();
-	containerDiv.classList.add("stat-box-template");
-	contentDiv.id = "tooltip_content";
-	/*contentDiv.innerHTML += `<table>
+//On page ready, do all the things
+$( document ).ready(init); 
+
+function init() {
+	const t1 = performance.now();
+	getSerializedPageText(); 
+
+	chrome.runtime.sendMessage(serializedPageText, function(response) {
+	    if(response.response.length === 0) {
+	    	return false;
+	    }
+	    else {
+		    console.log(response.response); //DEBUGGING ONLY
+		    playersFoundNames = extractNames(response.response); 
+		    console.log(playersFoundNames)
+		    //Walk the DOM and return all nodes with text that matches a name in players
+			walkTheDOM(document.body, function(node) {
+			    if(node.children){
+			        if(node.children.length === 0 || node.tagName === "P"){ //all non-parent nodes and paragraphs. Will need to teak for performance and accuracy. BUT NEED to make sure they don't conflict as sometimes it will grab both p element and the a element within it. Doesn't work for <a> tags within a paragraph
+			            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
+			                    nodeArray.push(node);
+			            };
+			        };
+			    };
+			});
+			replaceText(nodeArray, playersFoundNames);
+			tippy(document.querySelectorAll(".stat-box"), {
+				allowHTML: true,
+				content: `<table>
 			<tr>
 				<th>ppg</th>
 				<th>rpg</th>
@@ -72,52 +104,17 @@ function createBoxTemplate() {
 			<tr>
 				<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
 		</tr>
-		</table>` */
-
-	const ele = document.createTextNode('HELLO!');
-
-	contentDiv.appendChild(ele);
-	containerDiv.appendChild(contentDiv);
-
-	containerDiv.style.display = "none";
-
-	document.body.appendChild(containerDiv);
-}
-
-$( document ).ready(init); 
-
-function init() {
-	const t1 = performance.now();
-	getSerializedPageText(); 
-
-	chrome.runtime.sendMessage(serializedPageText, function(response) {
-	    if(response.response.length === 0) {
-	    	return false;
-	    }
-	    else {
-		    console.log(response.response); //DEBUGGING ONLY
-		    playersFoundNames = extractNames(response.response); 
-		    //Walk the DOM and return all nodes with text that matches a name in players
-			walkTheDOM(document.body, function(node) {
-			    if(node.children){
-			        if(node.children.length === 0 || node.tagName === "P"){ //all non-parent nodes and paragraphs. Will need to teak for performance and accuracy
-			            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
-			                    nodeArray.push(node);
-			            };
-			        };
-			    };
-			});
-			createBoxTemplate();
-			replaceText(nodeArray, playersFoundNames);
+		</table>`, 
+				placement: "right", 
+				zIndex: 999999
+			})
 		}
 	}); 
-	$(".stat-box").tooltipster({
-		contentCloning: true
-	});
 	console.log(nodeArray); // DEBUGGING ONLY
 	const t2 = performance.now();
 	console.log(t2 - t1);
 };
+
 
 //ADD AND POPULATE TOOLTIPS
 

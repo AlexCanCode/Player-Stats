@@ -13,8 +13,8 @@
 	},
 	"content_scripts": [
 		{
-			"css": ["/tooltip/tooltipster/dist/css/tooltipster.bundle.css"], 
-			"js": [ "/main/Jquery-3.3.1.js", "/tooltip/tooltipster/dist/js/tooltipster.bundle.js", "/main/content.js"], //need to change all libararies to minified ones for deployment. Need to decide best order. 
+			"css": ["/tooltip/tippy.css"], 
+			"js": [ "/main/Jquery-3.3.1.js", "/tooltip/tippy.js", "/main/content.js"], //need to change all libararies to minified ones for deployment. Need to decide best order. 
 			"matches": [ "<all_urls>" ]
 		}
 	],
