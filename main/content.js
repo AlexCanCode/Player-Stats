@@ -40,13 +40,14 @@ function walkTheDOM(node, func) {
     };
 };
 
-function insertStatsAndName(match){
+function insertStatsAndName(match){ //used by replaceText to fill in match portion
 
-	return `<span class='stat-box'>${match}</span>`;
+	return `<span class='stat-box' data-tippy-theme="${match}">${match}</span>`;
 }
 
-function prepareStatsAndNames(arr){
-	
+function prepareStatsAndNames(arr){ //to be used to format stats to be inserted into table
+	//let playerDataArray = arr.response;
+	console.log(arr[0]); 
 }
 
 
@@ -73,8 +74,8 @@ function init() {
 	    }
 	    else {
 		    console.log(response.response); //DEBUGGING ONLY
+		    prepareStatsAndNames(response.response);
 		    playersFoundNames = extractNames(response.response); 
-		    console.log(playersFoundNames)
 		    //Walk the DOM and return all nodes with text that matches a name in players
 			walkTheDOM(document.body, function(node) {
 			    if(node.children){
@@ -85,10 +86,12 @@ function init() {
 			        };
 			    };
 			});
-			replaceText(nodeArray, playersFoundNames);
+			replaceText(nodeArray, playersFoundNames); //IDEA - If nothing else works for populating the data, you could intiate a counter that keeps track of which player you are populating for. PROBLEM is it would be prone to break on things like reload and what not. 
 			tippy(document.querySelectorAll(".stat-box"), {
 				allowHTML: true,
-				content: `<table>
+				content: function() { //Idea: Set one of tippy.js' data attribute (data-tippy-[attr]) and read it to understand what player. 
+					console.log(this);
+					return `<table>
 			<tr>
 				<th>ppg</th>
 				<th>rpg</th>
@@ -103,8 +106,8 @@ function init() {
 			</tr>
 			<tr>
 				<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
-		</tr>
-		</table>`, 
+			</tr>
+			</table>`}, 
 				placement: "right", 
 				zIndex: 999999
 			})
