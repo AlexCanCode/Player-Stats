@@ -2,6 +2,7 @@ let serializedPageText;
 let playersFoundNames; //populated with sendMessage response callback
 let nodeArray = []; //Array of all nodes that contain players names
 let responseMap; //To be an object of arrays where the player name is the key for fast lookup while creating tooltip. May want to change main.js response format to render this unecessary. 
+const acceptedTagNames = ["A", "P", "H1", "H2", "H3", "H4", "H5", "H6", "LI"]
 
 //pushes all non-blank elements to an array and returns that array - need to set to run on load, perhaps? Otherwise might not get everything
  function cleanArray(arr){
@@ -42,7 +43,6 @@ function walkTheDOM(node, func) {
 };
 
 function insertStatsAndName(match){ //used by replaceText to fill in match portion
-
 	return `<span class='stat-box' data-player='${match}'>${match}</span>`;
 }
 
@@ -68,6 +68,38 @@ function replaceText(arr1, arr2) {
     };
 };
 
+function createAndPopulateTooltips() {
+	const nodeCollectionForTippy = document.querySelectorAll(".stat-box");
+	let counter = 0;
+	tippy(nodeCollectionForTippy, {
+			allowHTML: true,
+			content: function() { //Idea: Set one of tippy.js' data attribute (data-tippy-[attr]) and read it to understand what player. 
+			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
+			counter++;
+				return `<h4>${stat.Player}</h4>
+				<table>
+		<tr>
+			<th>ppg</th>
+			<th>rpg</th>
+			<th>apg</th>
+			<th>per</th>
+		</tr>
+		<tr>
+			<td>${stat["PS\/G"]}</td>
+			<td>${stat.TRB}</td>
+			<td>${stat.AST}</td>
+			<td>n/a</td>
+		</tr>
+		<tr>
+			<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
+		</tr>
+		</table>`}, 
+			placement: "right", 
+			zIndex: 999999, 
+		})
+}
+
+
 //On page ready, do all the things
 $( document ).ready(init); 
 
@@ -86,42 +118,15 @@ function init() {
 		    //Walk the DOM and return all nodes with text that matches a name in players
 			walkTheDOM(document.body, function(node) {
 			    if(node.children){
-			        if(node.children.length === 0){ //all non-parent nodes and paragraphs. Will need to tweak for performance and accuracy. BUT NEED to make sure they don't conflict as sometimes it will grab both p element and the a element within it. Doesn't work for <a> tags within a paragraph || node.tagName === "P"
+			        if(acceptedTagNames.includes(node.tagName)){ //all non-parent nodes and paragraphs. Will need to tweak for performance and accuracy. BUT NEED to make sure they don't conflict as sometimes it will grab both p element and the a element within it. Doesn't work for <a> tags within a paragraph || node.tagName === "P"
 			            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
 			                    nodeArray.push(node);
 			            };
 			        };
 			    };
 			});
-			replaceText(nodeArray, playersFoundNames); //IDEA - If nothing else works for populating the data, you could intiate a counter that keeps track of which player you are populating for. PROBLEM is it would be prone to break on things like reload and what not. 
-			const nodeCollectionForTippy = document.querySelectorAll(".stat-box");
-			let counter = 0;
-			tippy(nodeCollectionForTippy, {
-				allowHTML: true,
-				content: function() { //Idea: Set one of tippy.js' data attribute (data-tippy-[attr]) and read it to understand what player. 
-				const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
-				counter++;
-					return `<h4>${stat.Player}</h4>
-					<table>
-			<tr>
-				<th>ppg</th>
-				<th>rpg</th>
-				<th>apg</th>
-				<th>per</th>
-			</tr>
-			<tr>
-				<td>${stat["PS\/G"]}</td>
-				<td>${stat.TRB}</td>
-				<td>${stat.AST}</td>
-				<td>n/a</td>
-			</tr>
-			<tr>
-				<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
-			</tr>
-			</table>`}, 
-				placement: "right", 
-				zIndex: 999999, 
-			})
+			replaceText(nodeArray, playersFoundNames); 
+			createAndPopulateTooltips()
 		}
 	}); 
 	console.log(nodeArray); // DEBUGGING ONLY
