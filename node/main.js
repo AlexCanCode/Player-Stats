@@ -11,6 +11,6 @@ fs.writeFile("finalStatObject.js", `let finalStatObject = ${finalStatObjectJSON}
 	if(err) {
 		console.log(err);
 	};
-}); //Send to client-side with daily update request. 
+}); //Send to client-side with daily update request 
 
 
