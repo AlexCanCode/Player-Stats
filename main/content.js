@@ -73,11 +73,11 @@ function createAndPopulateTooltips() {
 	let counter = 0;
 	tippy(nodeCollectionForTippy, {
 			allowHTML: true,
-			content: function() { //Idea: Set one of tippy.js' data attribute (data-tippy-[attr]) and read it to understand what player. 
+			content: function() { 
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
 				return `<h4>${stat.Player}</h4>
-				<table>
+				<table id="stat-box-${counter}" style="all: initial">
 		<tr>
 			<th>ppg</th>
 			<th>rpg</th>
@@ -96,8 +96,19 @@ function createAndPopulateTooltips() {
 		</table>`}, 
 			placement: "right", 
 			zIndex: 999999, 
-		})
-}
+			interactive: true,
+			theme: "honeybee"
+		});
+};
+
+/*function createTippyStyle() { //This may work better by just putting it into tippy.css, but not sure if that will override other sites' styles
+	let tippyStyles = document.createElement('style');
+	tippyStyles.innerText = `tippy-backdrop {
+		background-color: red;
+	}
+	`
+	document.head.appendChild(tippyStyles);
+}*/
 
 
 //On page ready, do all the things
@@ -118,7 +129,7 @@ function init() {
 		    //Walk the DOM and return all nodes with text that matches a name in players
 			walkTheDOM(document.body, function(node) {
 			    if(node.children){
-			        if(acceptedTagNames.includes(node.tagName)){ //all non-parent nodes and paragraphs. Will need to tweak for performance and accuracy. BUT NEED to make sure they don't conflict as sometimes it will grab both p element and the a element within it. Doesn't work for <a> tags within a paragraph || node.tagName === "P"
+			        if(acceptedTagNames.includes(node.tagName)){ //This search logic needs work. Does not pick up all instance of names on a page. Need to find a balence between performance and coverage. Will need tweaking and a deep dive into how the funciton works. 
 			            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
 			                    nodeArray.push(node);
 			            };
@@ -133,19 +144,3 @@ function init() {
 	const t2 = performance.now();
 	console.log(t2 - t1);
 };
-
-
-//ADD AND POPULATE TOOLTIPS
-
-/* next steps
-
-Tooltipster not instiating with custom html 
-
-IDEA: make title the exact html we need 
-or find a different tool for the job
-
-1. inject stat-box template into page in the appropriate flow to 
-	a. be utilized by tooltipster BUT also
-	b. not be instiated if it is not needed.
-
-2. Follow tooltipster "5. Use HTML inside your tooltips" */

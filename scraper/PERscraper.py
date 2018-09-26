@@ -19,7 +19,7 @@ for row in table.findAll('tr'):
 
 clean_list_of_rows = filter(None, list_of_rows)
 
-outfile = open("./players.csv", "w", newline='')
+outfile = open("./Advplayers.csv", "w", newline='')
 writer = csv.writer(outfile)
 writer.writerow(["Player", "Pos", "Age", "Tm", "G", "MP", "PER", "TS%", "3PAr%", "FTr", "ORB%", "DRB%", "TRB%", "AST%", "STL%", "BLK%", "TOV%", "USG%", "OWS", "DWS", "WS", "WS/48", "OBPM", "DBPM", "BPM", "VORP"])
 writer.writerows(clean_list_of_rows)
