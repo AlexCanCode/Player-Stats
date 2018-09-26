@@ -1,23 +1,42 @@
+/*Stats order of operation:
 
-//Convert stats file from csv to JSON - having trouble returning promise, come back to
-/* const csvFilePath = './players.csv';
+1. CSV to JSON
+
+2. add in PER
+
+3. removed all unwanted fields but retains duplicates
+
+4. Remove duplicates
+
+5. Add in team names for duplicate players (UNFINISHED)
+
+6. formattedStatsJSON --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)*/
+
+//Convert stats file from csv to JSON 
+const fs = require("fs");
+const csvFilePath = './players.csv';
+const advCsvFilePath = './Advplayers.csv';
 const csv = require('csvtojson');
-
 csv()
-	.fromFile(csvFilePath)
-	.then((jsonObj) => {
-		 console.log(jsonObj)
-	});
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+        csv()
+        .fromFile(advCsvFilePath)
+        .then((advJsonObj) => {
+            const formattedStatsJSON = JSON.stringify(format(jsonObj, advJsonObj));
+            fs.writeFile("formattedStatsObject.json", `let formattedStatsObjectJSON = ${formattedStatsJSON}`, function(err) {
+                if(err){
+                    console.log(err);
+                }
+            })
+        })
 
-//Do i need nested structure? I don't think so but leaving comment in to double check prior to deployment
-*/
+    });
 
-const scrapedData = require('./scrapedStats.js'); //replace with csv to json output once problem is solved.
 
-const formattedStats = format(scrapedData);
-
-function format(arr) {  
-    arr.forEach(x => {
+//remove unwanted stats, add in PER stat
+function format(arr, advArr) {  
+    arr.forEach((x, i) => {
         delete x["2P"];
         delete x["2PA"];
         delete x["2P%"];
@@ -38,60 +57,44 @@ function format(arr) {
         delete x["TOV"];
         delete x["PF"];
         delete x["eFG%"];
+        if(x.Player = advArr[i].Player) { //add PER stat to each record
+            x.PER = advArr[i].PER;
+        }
     });
-
     return removeDuplicateNames(arr);
 };
 
+//remove duplicate names created by traded teams, retains full year stats
 function removeDuplicateNames(arr) {
-let duplicate = false;
-let compare;
-let spliceIndexArr = [];
-let cleanStats;
+    let duplicate = false;
+    let compare;
+    let spliceIndexArr = [];
+    let cleanStats;
 
-arr.map(function(item, index) {
-     if(item.Tm === "TOT"){
-      duplicate = true;
-      compare = item.Player;
+    arr.map(function(item, index) {
+         if(item.Tm === "TOT"){
+          duplicate = true;
+          compare = item.Player;
+            }
+        else if(duplicate) {
+            if(item.Player === compare){
+             spliceIndexArr.push(index); 
+            }
+            else {
+             duplicate = false;
+             compare = ""; 
+            }
         }
-    else if(duplicate) {
-        if(item.Player === compare){
-         spliceIndexArr.push(index); 
+    });
+
+    cleanStats = arr.filter(function(item, index) {
+        if(spliceIndexArr.indexOf(index) == -1){
+         return true; 
         }
         else {
-         duplicate = false;
-         compare = ""; 
+          return false
         }
-    }
-});
+    });
 
- cleanStats = arr.filter(function(item, index) {
-    if(spliceIndexArr.indexOf(index) == -1){
-     return true; 
-    }
-    else {
-      return false
-    }
-});
-
-return cleanStats;
-}
-
-module.exports = formattedStats;
-
-
-/*Stats order of operation:
-
-1. CSV to JSON
-
-2. add in PER
-
-3. removed all unwanted fields but retains duplicates
-
-4. Remove duplicates
-
-5. Add in team names for duplicate players (not done)
-
-6. formattedStats --> no duplicates, ready to be hashed and searched (requires team names to be added back in for "tot" players)*/
-
-
+    return cleanStats;
+};
