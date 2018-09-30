@@ -76,8 +76,8 @@ function createAndPopulateTooltips() {
 			content: function() { 
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
-				return `<h4>${stat.Player}</h4>
-				<table id="stat-box-${counter}" style="all: initial">
+				return `<h4 id="stat-box-header-${counter}">${stat.Player}</h4>
+				<table id="stat-box-table-${counter}">
 		<tr>
 			<th>ppg</th>
 			<th>rpg</th>
@@ -97,7 +97,6 @@ function createAndPopulateTooltips() {
 			placement: "right", 
 			zIndex: 999999, 
 			interactive: true,
-			theme: "honeybee"
 		});
 };
 
