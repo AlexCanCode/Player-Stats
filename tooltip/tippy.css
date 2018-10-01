@@ -377,12 +377,10 @@
     -webkit-transform:translateX(0) scale(.5);
     transform:translateX(0) scale(.5)
 }
-.tippy-tooltip{
+.tippy-tooltip{ 
     position:relative;
     color:#fff;
     border-radius:4px;
-    font-size:.9rem;
-    padding:.3rem .6rem;
     max-width:350px;
     text-align:center;
     will-change:transform;
@@ -475,4 +473,67 @@ body:not(.tippy-iOS) .tippy-popper[x-placement=left] .tippy-tooltip[data-animate
         max-width:calc(100% - 20px)
     }
 }
+
+/* Selects all tables with ID that starts with "stat-box-table-" - seems to work well to override page css.
+   The real question is, can it be made to be airtight and deliver a decent UX? */
+
+h4[id^="stat-box-header-"] { 
+    font: normal x-small verdana,arial,helvetica,sans-serif;
+    color: #fff;
+    margin: 5px 0 0 0;
+    padding: 0;
+}
+
+table[id^="stat-box-table-"] { 
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    font-family: verdana;
+    width: 200px;
+    border-spacing: 2px;
+    font-size:.9rem;
+    border-collapse: separate;
+    /*border-top: 1px dotted #03fc96;*/
+}
+
+table[id^="stat-box-table-"] td {
+    color: black;
+    padding: 0px 5px;
+    background-color: #fff;
+    background: #fff;
+    text-align: center;
+    font-size:.9rem;
+}
+
+table[id^="stat-box-table-"] th {
+    color: #fff;
+    padding: 0px 5px;
+    text-align: center;
+    background: #333;
+    font-size:.9rem;
+}
+
+table[id^="stat-box-table-"] a {
+    text-decoration: none;
+    font-size: .7rem;
+    color: #0000EE;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

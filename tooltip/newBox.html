@@ -1,48 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="tippy.css">
+	<script type="text/javascript" src="tippy.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="tooltipster/dist/css/tooltipster.bundle.min.css" />
-
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-    <script type="text/javascript" src="tooltipster/dist/js/tooltipster.bundle.min.js"></script>
-
-    <script type="text/javascript">
-    	$(document).ready(function(){
-    		$(".tooltip").tooltipster({
-    			theme: 'tooltipster-noir',
-    			contentCloning: true
-    		});
-    	});
-    </script>
     
 	<title>Box Template</title>
 </head>
 <body>
-
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. <span class="tooltip" data-tooltip-content="#tooltip_content">stephan curry</span>Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-	<p>Lorem <span class="tooltip" data-tooltip-content="#tooltip_content">Jeff Green</span> dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. <span class="stat-box" data-player="stephan curry">stephan curry</span> Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
+	<p>Lorem <span class="stat-box" data-player="jeff green">Jeff Green</span> dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -56,6 +43,14 @@
 	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -81,131 +76,42 @@
 	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<div class="tooltip_templates">
-	<div id="tooltip_content">
-		<table>
-			<tr>
-				<th>ppg</th>
-				<th>rpg</th>
-				<th>apg</th>
-				<th>per</th>
-			</tr>
-			<tr>
-				<td>21.7</td>
-				<td>3.8</td>
-				<td>6.7</td>
-				<td>19.4</td>
-			</tr>
-			<tr>
-				<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
-		</tr>
-		</table>
-	</div>
-</div>
 
 </body>
 
-<style type="text/css">
-	
-.tooltipster-sidetip.tooltipster-noir .tooltipster-box{border-radius:0;border:3px solid #000;background:#fff}.tooltipster-sidetip.tooltipster-noir .tooltipster-content{color:#000}.tooltipster-sidetip.tooltipster-noir .tooltipster-arrow{height:11px;margin-left:-11px;width:22px}.tooltipster-sidetip.tooltipster-noir.tooltipster-left .tooltipster-arrow,.tooltipster-sidetip.tooltipster-noir.tooltipster-right .tooltipster-arrow{height:22px;margin-left:0;margin-top:-11px;width:11px}.tooltipster-sidetip.tooltipster-noir .tooltipster-arrow-background{border:11px solid transparent}.tooltipster-sidetip.tooltipster-noir.tooltipster-bottom .tooltipster-arrow-background{border-bottom-color:#fff;top:4px}.tooltipster-sidetip.tooltipster-noir.tooltipster-left .tooltipster-arrow-background{border-left-color:#fff;left:-4px}.tooltipster-sidetip.tooltipster-noir.tooltipster-right .tooltipster-arrow-background{border-right-color:#fff;left:4px}.tooltipster-sidetip.tooltipster-noir.tooltipster-top .tooltipster-arrow-background{border-top-color:#fff;top:-4px}.tooltipster-sidetip.tooltipster-noir .tooltipster-arrow-border{border-width:11px}.tooltipster-sidetip.tooltipster-noir.tooltipster-bottom .tooltipster-arrow-uncropped{top:-11px}.tooltipster-sidetip.tooltipster-noir.tooltipster-right .tooltipster-arrow-uncropped{left:-11px}
-
-	.stat-box-template {display: none;}
-
-
-
-
-
-</style>
-
 <script type="text/javascript">
-	
+let counter = 0;
+
+	tippy(document.querySelectorAll(".stat-box"), {
+			allowHTML: true,
+			content: function() { 
+				counter++;
+				return `
+				<table id="stat-box-table-${counter}">
+		<tr>
+			<th>ppg</th>
+			<th>rpg</th>
+			<th>apg</th>
+			<th>per</th>
+		</tr>
+		<tr>
+			<td>21.7</td>
+			<td>4.5</td>
+			<td>5.7</td>
+			<td>19.8</td>
+		</tr>
+		<tr>
+			<td colspan="4" id="stat-box-table-link-${counter}"><a href="https://www.basketball-reference.com/players/c/curryst01.html"> S. Curry Full Stats</a></td>
+		</tr>
+		</table>`}, 
+			placement: "right", 
+			zIndex: 999999, 
+			interactive: true,
+			theme: "dark", 
+			trigger: "click", 
+			hideOnClick: false
+	})
 
 </script>
 
 </html>
-
-<script type="text/javascript">
-		function appendStyle(styles) {
-		  var css = document.createElement('style');
-		  css.type = 'text/css';
-
-		  if (css.styleSheet) css.styleSheet.cssText = styles;
-		  else css.appendChild(document.createTextNode(styles));
-
-		  document.getElementsByTagName("head")[0].appendChild(css);
-		}
-
-		var styles = `.stat-box {
-				background-color: blue;
-				display: none; 
-				position: absolute;
-
-			}
-			.stat-table {
-				position: absolute;
-				left: 50%; /* FOR DEVELOPMENT ONLY */
-				background: #88b7d5;
-				padding: 2px 5px 2px 2px;
-				width: 200px;
-				border-radius: 10px;
-				font-family: sans-serif;
-			}
-
-			.stat-table td {
-				text-align: center;
-				font-weight: 
-			}
-
-			/* Style the link */
-			.stat-table a {
-			text-decoration: none;
-			font-family: helvetica;
-			font-size: .75em;
-			}`
-
-			appendStyle(styles);
-
-	function display(){
-		const divs = document.querySelectorAll(".stat-box");
-
-		for(let i = 0; i < (divs.length - 1); i++){
-			divs[i].style.display = "inline-block"
-		}
-	}
-
-	function hide(){
-		const divs = document.querySelectorAll(".stat-box");
-
-		for(let i = 0; i < (divs.length - 1); i++){
-			divs[i].style.display = "none"
-		}
-	}
-
-	function setDivs(arr, ele){
-		for(let i = 0; i < (arr.length - 1); i++){
-			const x = ele.cloneNode(true);
-			arr[i].appendChild(x);
-		}
-	}
-
-	const template = document.createElement("div");
-	template.innerHTML = `<table class="stat-table">
-			<tr>
-				<th>ppg</th>
-				<th>rpg</th>
-				<th>apg</th>
-				<th>per</th>
-			</tr>
-			<tr>
-				<td>21.7</td>
-				<td>3.8</td>
-				<td>6.7</td>
-				<td>19.4</td>
-			</tr>
-			<tr>
-				<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
-		</tr>
-		</table>`
-
-</script>
