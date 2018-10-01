@@ -6,7 +6,7 @@
 	"background": {
 		"scripts":[
 			"background.js",
-			"/main/finalStatObject.js",
+			"/main/formattedStatsObjectJSON.js",
 			"/main/main.js" 
 		],
 		"persistent":false
