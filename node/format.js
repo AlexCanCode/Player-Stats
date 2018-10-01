@@ -17,6 +17,7 @@ const fs = require("fs");
 const csvFilePath = './players.csv';
 const advCsvFilePath = './Advplayers.csv';
 const csv = require('csvtojson');
+
 csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
