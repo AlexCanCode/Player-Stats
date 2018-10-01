@@ -484,6 +484,13 @@ h4[id^="stat-box-header-"] {
     padding: 0;
 }
 
+
+h4[id^="stat-box-header-"] a {
+    text-decoration: none;
+    font-size: .7rem;
+    color: #fff;
+}
+
 table[id^="stat-box-table-"] { 
     margin: 0;
     padding: 0;
@@ -516,13 +523,6 @@ table[id^="stat-box-table-"] th {
     background: #333;
     font-size:.9rem;
 }
-
-table[id^="stat-box-table-"] a {
-    text-decoration: none;
-    font-size: .7rem;
-    color: #0000EE;
-}
-
 
 
 

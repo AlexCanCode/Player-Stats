@@ -76,7 +76,8 @@ function createAndPopulateTooltips() {
 			content: function() { 
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
-				return `<h4 id="stat-box-header-${counter}">${stat.Player}</h4>
+			let playerName = stat.Player.toLowerCase().split(" ");
+				return `<h4 id="stat-box-header-${counter}"><a target="_blank" href="https://www.basketball-reference.com/players/${playerName[1].charAt()}/${playerName[1]}${playerName[0].charAt()}${playerName[0].charAt(1)}01.html">${stat.Player}</a> | ${stat.Age} | ${stat.Pos} | ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
 		<tr>
 			<th>ppg</th>
@@ -88,10 +89,7 @@ function createAndPopulateTooltips() {
 			<td>${stat["PS\/G"]}</td>
 			<td>${stat.TRB}</td>
 			<td>${stat.AST}</td>
-			<td>n/a</td>
-		</tr>
-		<tr>
-			<td colspan="4"><a href="https://www.basketball-reference.com/players/c/curryst01.html">Full Stats</a></td>
+			<td>${stat.PER}</td>
 		</tr>
 		</table>`}, 
 			placement: "right", 
