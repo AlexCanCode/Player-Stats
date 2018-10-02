@@ -37,53 +37,76 @@ csv()
 
 //remove unwanted stats, add in PER stat
 function format(arr, advArr) {  
-    arr.forEach((x, i) => {
-        delete x["2P"];
-        delete x["2PA"];
-        delete x["2P%"];
-        delete x["3P"];
-        delete x["3PA"];
-        delete x["3P%"];
-        delete x["BLK"];
-        delete x["DRB"];
-        delete x["FG"];
-        delete x["FGA"];
-        delete x["GS"];
-        delete x["eFG"];
-        delete x["FT"];
-        delete x["FTA"];
-        delete x["FT%"];
-        delete x["ORB"];
-        delete x["STL"];
-        delete x["TOV"];
-        delete x["PF"];
-        delete x["eFG%"];
-        if(x.Player = advArr[i].Player) { //add PER stat to each record
-            x.PER = advArr[i].PER;
+    arr.forEach((player, index) => {
+        delete player["2P"];
+        delete player["2PA"];
+        delete player["2P%"];
+        delete player["3P"];
+        delete player["3PA"];
+        delete player["3P%"];
+        delete player["BLK"];
+        delete player["DRB"];
+        delete player["FG"];
+        delete player["FGA"];
+        delete player["GS"];
+        delete player["eFG"];
+        delete player["FT"];
+        delete player["FTA"];
+        delete player["FT%"];
+        delete player["ORB"];
+        delete player["STL"];
+        delete player["TOV"];
+        delete player["PF"];
+        delete player["eFG%"];
+        if(player.Player = advArr[index].Player) { //add PER stat to each record
+            player.PER = advArr[index].PER;
+            player["TS%"] = advArr[index]["TS%"];
         }
     });
     return removeDuplicateNames(arr);
 };
 
-//remove duplicate names created by traded teams, retains full year stats
+function populateDuplicatePlayerTeams(arr, dupArr) {
+        arr.forEach((player, index) => {
+            dupArr.map((item, index) => {
+                if(item.Player === player.Player){
+                    player.Tm = item.Tm;
+                };
+            });
+        });
+        return arr;
+   };
+
+//remove duplicate names created by trading, retains full year stats
 function removeDuplicateNames(arr) {
     let duplicate = false;
     let compare;
     let spliceIndexArr = [];
     let cleanStats;
+    let lastTeam;
+    let duplicatePlayerTeams = [];
 
     arr.map(function(item, index) {
          if(item.Tm === "TOT"){
-          duplicate = true;
-          compare = item.Player;
+            if(duplicate) {
+                duplicatePlayerTeams.push({Player: compare, Tm: lastTeam});
+                compare = item.Player;
+            }
+            else {
+              duplicate = true;
+              compare = item.Player;
+          }
             }
         else if(duplicate) {
             if(item.Player === compare){
              spliceIndexArr.push(index); 
+             lastTeam = item.Tm;
             }
-            else {
+            else { //use last team and compare to create an array to fill in TOT players
+             duplicatePlayerTeams.push({Player: compare, Tm: lastTeam});
              duplicate = false;
              compare = ""; 
+             lastTeam = "";
             }
         }
     });
@@ -96,6 +119,5 @@ function removeDuplicateNames(arr) {
           return false
         }
     });
-
-    return cleanStats;
+    return populateDuplicatePlayerTeams(cleanStats, duplicatePlayerTeams); 
 };
