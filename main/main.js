@@ -62,6 +62,7 @@ class StatMap {
 
      for(let i = 0; i < (arr.length - 1); i++){
         searchedHash = this.get(arr[i]);
+        //if(searchedHash is found in this.specialCases){  } for nickname and special cases - need to create additional lists which involves updating get and set
         secondHash = this.get(arr[(i + 1)]); 
 
         if(searchedHash != -1 && secondHash != -1){
@@ -102,6 +103,8 @@ grabNames(formattedStatsObjectJSON); //clean stats is now an externally linked f
 //Hash all first and last names
 PlayerMap.setHashAll(firstNames);
 PlayerMap.setHashAll(lastNames);
+
+console.log(PlayerMap.list);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {

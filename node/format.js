@@ -31,7 +31,6 @@ csv()
                 }
             })
         })
-
     });
 
 
@@ -66,6 +65,7 @@ function format(arr, advArr) {
     return removeDuplicateNames(arr);
 };
 
+//Populates the teams for all traded players, taking in the formatted Stats Array and an array with the proper team names. 
 function populateDuplicatePlayerTeams(arr, dupArr) {
         arr.forEach((player, index) => {
             dupArr.map((item, index) => {
