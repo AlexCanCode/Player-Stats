@@ -480,8 +480,11 @@ body:not(.tippy-iOS) .tippy-popper[x-placement=left] .tippy-tooltip[data-animate
 h4[id^="stat-box-header-"] { 
     font: normal x-small verdana,arial,helvetica,sans-serif;
     color: #fff;
-    margin: 5px 0 0 0;
-    padding: 0;
+    margin: 0 0 0 0;
+    padding: 3px 0 3px 5px;
+    background-color: #006BB6;
+    font-size: .7rem;
+    opacity: .85;
 }
 
 
@@ -521,7 +524,8 @@ table[id^="stat-box-table-"] th {
     padding: 0px 5px;
     text-align: center;
     background: #333;
-    font-size:.9rem;
+    font-size:.65rem;
+    font-weight: normal;
 }
 
 

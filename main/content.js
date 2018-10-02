@@ -3,6 +3,8 @@ let playersFoundNames; //populated with sendMessage response callback
 let nodeArray = []; //Array of all nodes that contain players names
 let responseMap; //To be an object of arrays where the player name is the key for fast lookup while creating tooltip. May want to change main.js response format to render this unecessary. 
 const acceptedTagNames = ["A", "P", "H1", "H2", "H3", "H4", "H5", "H6", "LI"]
+const teamColors = {"ATL": "#E03A3E", "BOS": "#007A33", "BRK": "#000000", "CHI": "#CE1141", "CHO": "#1D1160", "CLE": "#6F263D", "DAL": "#00538C", "DEN": "#0E2240", "DET": "#C8102E", "GSW": "#006BB6", "HOU": "#CE1141", "IND": "#002D62", "LAC": "#C8102E", "LAL": "#FDB927", "MEM": "#5D76A9", "MIA": "#98002E", "MIL": "#00471B", "MIN": "#0C2340", "NOP": "#0C2340", "NYK": "#F58426", "OKC": "#007AC1", "ORL": "#0077C0", "PHI": "#006BB6", "PHO": "#1D1160", "POR": "#E03A3E", "SAC": "#5A2D81", "SAS": "#000000", "TOR": " #CE1141", "UTA": "#002B5C", "WAS": "#002B5C"}
+
 
 //pushes all non-blank elements to an array and returns that array - need to set to run on load, perhaps? Otherwise might not get everything
  function cleanArray(arr){
@@ -77,13 +79,25 @@ function createAndPopulateTooltips() {
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
 			let playerName = stat.Player.toLowerCase().split(" ");
-				return `<h4 id="stat-box-header-${counter}"><a target="_blank" href="https://www.basketball-reference.com/players/${playerName[1].charAt()}/${playerName[1]}${playerName[0].charAt()}${playerName[0].charAt(1)}01.html">${stat.Player}</a> | ${stat.Age} | ${stat.Pos} | ${stat.Tm}</h4>
+				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com/players/${playerName[1].charAt()}/${playerName[1]}${playerName[0].charAt()}${playerName[0].charAt(1)}01.html">${stat.Player}</a> | ${stat.Pos} | ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
 		<tr>
-			<th>ppg</th>
-			<th>rpg</th>
-			<th>apg</th>
-			<th>per</th>
+			<th>G</th>
+			<th>MPG</th>
+			<th>FG%</th>
+			<th>+/-</th>
+		</tr>
+		<tr>
+			<td>${stat.G}</td>
+			<td>${stat.MP}</td>
+			<td>${stat["FG%"]}</td>
+			<td>11.5</td>
+		</tr>
+		<tr>
+			<th>PPG</th>
+			<th>RPG</th>
+			<th>APG</th>
+			<th>PER</th>
 		</tr>
 		<tr>
 			<td>${stat["PS\/G"]}</td>
@@ -93,8 +107,9 @@ function createAndPopulateTooltips() {
 		</tr>
 		</table>`}, 
 			placement: "right", 
-			zIndex: 999999, 
+			zIndex: 9999999, 
 			interactive: true,
+/*			trigger: "click"*/
 		});
 };
 
