@@ -1,51 +1,38 @@
-// Object to hash and store player names and corresponding stats in [key]value: hash->index
+// Object to hash and store player names with their stats key in [key]value: hash->index
 class StatMap {
     constructor() {
     this.list = [];
   }
 
-  hash(str) {
-    let hash = 0;
-    if (str.length == 0){
-        return hash;
-    }
-    for (let i = 0; i < str.length; i++) { // consider declaring i as a variable accessible to the whole object, may be better practice, research
-        let char = str.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
-        hash = hash & hash;
-    }
-    return hash;
-  }
-
   get(x) { 
-    let j = this.hash(x.toLowerCase());
+    let j = x.toLowerCase();
     let result = this.list[j];
     
     if(!result){
         return -1;  
     }
-    else { //puts all outputs into an array for simpler processing in playerSearch, doubles performance time on a MDN page from .29 ms to .50ms, 
-          //a seemingly negligable difference to my beginner eyes. removes need to check typeof in playerSearch 
+    else {
+      if(typeof result === "function"){ //checks if string is also the name of a function, which results in an error when you run .reduce on it.
+        return
+      }
         return result.reduce(function(all, item, index){
             all.push(item[1]);
             return all;
         }, [])
-    }   //No need to deal with duplicates here as this is expected due to common names 
-  }
+    };
+  };
 
   set(x, y) {
-    let i = this.hash(x);
-
-    if(!this.list[i]) {
-        this.list[i] = [];
+    if(!this.list[x]) {
+        this.list[x] = [];
     }
 
-    this.list[i].push([x, y]);
+    this.list[x].push([x, y]);
   }
 
   setHashAll(arr){  
     for(let i = 0; i < (arr.length - 1); i++){  
-        let x = this.hash(arr[i].toLowerCase())
+        let x = arr[i].toLowerCase();
 
         if(!this.list[x]){
             this.list[x] = [];
@@ -67,6 +54,7 @@ class StatMap {
 
         if(searchedHash != -1 && secondHash != -1){
              fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
+             console.log(searchedHash, secondHash)
         }
     }
     return this.getData(fullMatches.filter(element => element.length >= 1), location); 
@@ -109,4 +97,4 @@ console.log(PlayerMap.list);
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
       sendResponse({response: (PlayerMap.playerSearch(request, formattedStatsObjectJSON))});
-  }); //may need to access formattedStatsObjectJSON from local storage to ensure same data as content script is used. 
+  }); 
