@@ -92,8 +92,6 @@ grabNames(formattedStatsObjectJSON); //clean stats is now an externally linked f
 PlayerMap.setHashAll(firstNames);
 PlayerMap.setHashAll(lastNames);
 
-console.log(PlayerMap.list);
-
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
       sendResponse({response: (PlayerMap.playerSearch(request, formattedStatsObjectJSON))});
