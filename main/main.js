@@ -42,7 +42,7 @@ class StatMap {
     }
   }
 
-  searchErrorHandler(str1, str2) {
+  searchErrorHandler(str1, str2) { //look into implementing cleaner version of this
     if(!str1) {
       return false
     }

@@ -121,7 +121,7 @@ function createAndPopulateTooltips() {
 			interactive: true,
 			arrow: true,
 			arrowType: "sharp",
-			/*trigger: "click" for inspecting html/css*/
+			trigger: "click" /*for inspecting html/css*/
 		});
 };
 
