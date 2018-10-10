@@ -7,14 +7,14 @@ class StatMap {
   get(x) { 
     let j = x.toLowerCase();
     let result = this.list[j];
-    
-    if(!result){
+    if(typeof j === "function" || typeof result === "function"){ //checks if string is also the name of a function, which results in an error when you run .reduce on it.
+        return
+      }
+
+    else if(!result){
         return -1;  
     }
     else {
-      if(typeof result === "function"){ //checks if string is also the name of a function, which results in an error when you run .reduce on it.
-        return
-      }
         return result.reduce(function(all, item, index){
             all.push(item[1]);
             return all;
@@ -42,6 +42,24 @@ class StatMap {
     }
   }
 
+  searchErrorHandler(str1, str2) {
+    if(!str1) {
+      return false
+    }
+    else if (str1 === -1) {
+      return false
+    } 
+    else if(!str2) {
+      return false
+    }
+    else if (str2 === -1) {
+      return false
+    }
+    else {
+      return true;
+    }
+  }
+
   playerSearch(arr, location){ //added location so script can run getData(arr, location) in a file that does not contain the stats file.
     let fullMatches = [];
     let searchedHash;
@@ -52,9 +70,8 @@ class StatMap {
         //if(searchedHash is found in this.specialCases){  } for nickname and special cases - need to create additional lists which involves updating get and set
         secondHash = this.get(arr[(i + 1)]); 
 
-        if(searchedHash != -1 && secondHash != -1){
-             fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
-             console.log(searchedHash, secondHash)
+        if(this.searchErrorHandler(searchedHash, secondHash)) {
+            fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
         }
     }
     return this.getData(fullMatches.filter(element => element.length >= 1), location); 
@@ -98,6 +115,7 @@ PlayerMap.setHashAll(lastNames);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
+      console.log(PlayerMap.playerSearch(request, formattedStatsObjectJSON));
       sendResponse({response: (PlayerMap.playerSearch(request, formattedStatsObjectJSON))});
   }); 
 
