@@ -69,6 +69,10 @@ class StatMap {
      });
          return statArr;
     }
+
+  clearHash(){
+    this.list = [];
+  }
 }
 
 // Create new instance of StatMap
@@ -86,7 +90,7 @@ function grabNames(arr){
     });
 };
 
-grabNames(formattedStatsObjectJSON); //clean stats is now an externally linked file but it will have to grab this from a stored json object in order to update daily - unless it can modify formattedStatsObjectJSON.js
+grabNames(formattedStatsObjectJSON); 
 
 //Hash all first and last names
 PlayerMap.setHashAll(firstNames);
@@ -96,3 +100,22 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
       sendResponse({response: (PlayerMap.playerSearch(request, formattedStatsObjectJSON))});
   }); 
+
+//Requests JSON Stat Object from Local Server for updating json object
+// let updateToday = {day: 9, updated: true};
+
+let xhr = new XMLHttpRequest();
+xhr.open("GET", "http://localhost:3000/", true);
+xhr.onreadystatechange = function() {
+  if(xhr.readyState == 4) {
+    formattedStatsObjectJSON = JSON.parse(xhr.response);
+  };
+};
+
+xhr.send();
+
+/* Next Steps
+
+1. DONE - Have the main funciton rehash the data when it receives it to account for new names (maybe put all logic in one function and rerun when receieving the data back)
+2. Determine how to measure a day's passing and make the update at that point
+*/
