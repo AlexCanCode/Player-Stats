@@ -86,6 +86,10 @@ class StatMap {
      });
          return statArr;
     }
+
+  clearHash(){
+    this.list = [];
+  }
 }
 
 // Create new instance of StatMap
@@ -103,7 +107,7 @@ function grabNames(arr){
     });
 };
 
-grabNames(formattedStatsObjectJSON); //clean stats is now an externally linked file but it will have to grab this from a stored json object in order to update daily - unless it can modify formattedStatsObjectJSON.js
+grabNames(formattedStatsObjectJSON); 
 
 //Hash all first and last names
 PlayerMap.setHashAll(firstNames);

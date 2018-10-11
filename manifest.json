@@ -2,12 +2,16 @@
 	"name": "Player Stats", 
 	"version": "0.1", 
 	"description": "A simply, fast way to view stats without navigating to a different page.",
-	"permissions":["storage"],
+	"permissions":[
+		"storage",
+		"http://localhost/*"
+	],
 	"background": {
 		"scripts":[
 			"background.js",
-			"/main/formattedStatsObjectJSON.js",
-			"/main/main.js" 
+			"/main/formattedStatsObject.js",
+			"/main/main.js",
+			"/main/update.js" 
 		],
 		"persistent":false
 	},
