@@ -1,6 +1,5 @@
 chrome.runtime.onInstalled.addListener(function(details) {
 	if(details.reason === "install"){
-		setDateAndStore();
 		makeXHRRequest();
 	};
 });
@@ -39,7 +38,7 @@ function makeXHRRequest() {
 	    formattedStatsObjectJSON = JSON.parse(xhr.response);
 	    handleDataUpdate(formattedStatsObjectJSON);
 	    console.log("stats updated");
-	    // setDateAndStore(); TURNED OFF ONLY FOR TESTING PURPOSES
+	    setDateAndStore(); 
 	  };
 	xhr.onerror = function() {
 		console.log("an error occured");

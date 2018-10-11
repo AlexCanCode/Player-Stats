@@ -115,11 +115,45 @@ PlayerMap.setHashAll(lastNames);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-      updateDataCheck(request[1]);
-      // console.log(PlayerMap.playerSearch(request, formattedStatsObjectJSON));
+    const t1 = performance.now();
+    let run = checkOptions(sender);
+    updateDataCheck(request[1]);
+    if(run){
       sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
-      console.log(sender.url); //test sender.url for NBA and blacklist and take action according to options selected. 
+      //need to include options object in return so that highlighting and other things can be incorporated. 
+      const t2 = performance.now();
+      console.log(t2 - t1);
+    };
   }); 
 
+//check options object for whether to run and what parameters to use
+function checkOptions(sender) {
+  let shouldExtRun = options.extensionOn;
+  if(shouldExtRun) {
+    shouldExtRun = checkIsBlacklisted(sender)
+      if(shouldExtRun && options.nbaOnlyURLs) {
+        shouldExtRun = checkNBAURLs(options.nbaOnlyURLs, sender);
+      };
+  }
+  return shouldExtRun;
+};
+
+function checkNBAURLs(bool, sender) {
+  if(bool) {
+    return (sender.url.toLowerCase().includes("nba"))
+  }
+  else {
+    return true; //indicating it should run regardless.
+  };
+};
+
+function checkIsBlacklisted(sender) {
+  return options.blacklist.reduce(function(all, item, index) {
+      if(sender.url.toLowerCase().includes(item)) { 
+        all = false;
+      }  
+      return all;
+  }, true);
+};
 
 
