@@ -1,10 +1,8 @@
-<<<<<<< HEAD
+
 let stampedDate = new Date();
 
 console.log(stampedDate.getDate());
 
-
-=======
 chrome.runtime.onInstalled.addListener(function(details) {
 	if(details.reason === "install"){
 		let stampedDate = +new Date();
@@ -19,7 +17,7 @@ chrome.storage.local.get("quickStatsDate", function(items) { //NEed to set this 
 	console.log(items);
 });
 
->>>>>>> f4ac1aabd2f16cf930caca5d99d900376aa66338
+
 /*//Requests JSON Stat Object from Local Server for updating json object
 // let updateToday = {day: 9, updated: true};
 
