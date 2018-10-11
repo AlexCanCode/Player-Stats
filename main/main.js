@@ -118,4 +118,8 @@ chrome.runtime.onMessage.addListener(
       updateDataCheck(request[1]);
       // console.log(PlayerMap.playerSearch(request, formattedStatsObjectJSON));
       sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
+      console.log(sender.url); //test sender.url for NBA and blacklist and take action according to options selected. 
   }); 
+
+
+
