@@ -115,6 +115,7 @@ PlayerMap.setHashAll(lastNames);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-      console.log(PlayerMap.playerSearch(request, formattedStatsObjectJSON));
-      sendResponse({response: (PlayerMap.playerSearch(request, formattedStatsObjectJSON))});
+      updateDataCheck(request[1]);
+      // console.log(PlayerMap.playerSearch(request, formattedStatsObjectJSON));
+      sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
   }); 
