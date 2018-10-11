@@ -58,7 +58,7 @@ class StatMap {
     else {
       return true;
     }
-  }
+  };
 
   playerSearch(arr, location){ //added location so script can run getData(arr, location) in a file that does not contain the stats file.
     let fullMatches = [];

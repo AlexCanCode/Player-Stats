@@ -1,4 +1,4 @@
-# Player-Stats
+# Quick-Stats
 A chrome extension that displays relevant, up-to-date NBA Stats for any player simply by hovering over their name on any given webpage. 
 
 ## Table of Contents

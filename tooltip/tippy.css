@@ -487,9 +487,20 @@ h4[id^="stat-box-header-"] {
     opacity: .85;
 }
 
-
 h4[id^="stat-box-header-"] a {
-    text-decoration: none;
+    text-decoration: underline;
+    font-size: .7rem;
+    color: #fff;
+}
+
+h4[id^="stat-box-header-"] a:visited {
+    text-decoration: underline;
+    font-size: .7rem;
+    color: #fff;
+}
+
+h4[id^="stat-box-header-"] a:focus {
+    text-decoration: underline;
     font-size: .7rem;
     color: #fff;
 }
@@ -510,7 +521,7 @@ table[id^="stat-box-table-"] {
     /*border-top: 1px dotted #03fc96;*/
 }
 
-table[id^="stat-box-table-"] td {
+table[id^="stat-box-table-"] tr td {
     color: black;
     padding: 0px 5px;
     background-color: #fff;
@@ -519,7 +530,7 @@ table[id^="stat-box-table-"] td {
     font-size:.9rem;
 }
 
-table[id^="stat-box-table-"] th {
+table[id^="stat-box-table-"] tr th {
     color: #fff;
     padding: 0px 5px;
     text-align: center;
@@ -527,7 +538,6 @@ table[id^="stat-box-table-"] th {
     font-size:.65rem;
     font-weight: normal;
 }
-
 
 
 

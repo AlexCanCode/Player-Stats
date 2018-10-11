@@ -45,7 +45,7 @@ function walkTheDOM(node, func) {
 };
 
 function findAllNodesWithPlayerNames(arr){
-	let htmlCollection = document.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6");
+	let htmlCollection = document.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
 	htmlCollection.forEach(element => {
 		if(new RegExp(arr.join("|"), "i").test(element.textContent)) {
 		    nodeArray.push(element);
@@ -87,9 +87,12 @@ function createAndPopulateTooltips() {
 			content: function() { 
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
-			console.log(stat);
+			let url = chrome.runtime.getURL("/main/arrow.svg");
+			console.log(url)
 			let playerName = stat.Player.toLowerCase().split(" ");
-				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com/players/${playerName[1].charAt()}/${playerName[1]}${playerName[0].charAt()}${playerName[0].charAt(1)}01.html">${stat.Player}</a> | ${stat.Pos} ${stat.Tm}</h4>
+				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com/players/${playerName[1].charAt()}/${playerName[1]}${playerName[0].charAt()}${playerName[0].charAt(1)}01.html">${stat.Player} <img src=${url} 
+    height="auto"
+    width="auto"/></a> | ${stat.Pos} ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
 		<tr>
 			<th>G</th>
@@ -121,7 +124,7 @@ function createAndPopulateTooltips() {
 			interactive: true,
 			arrow: true,
 			arrowType: "sharp",
-			trigger: "click" /*for inspecting html/css*/
+			// trigger: "click" /*for inspecting html/css*/
 		});
 };
 
