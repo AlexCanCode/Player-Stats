@@ -1,0 +1,155 @@
+<!DOCTYPE html>  <!-- TODO: FIGURE OUT HOW TO RUN JAVACSRIPT ON THIS PAGE - 
+then implement blacklist and saving 
+then implement getting options from local storage instead of the messagin system you have right now -->
+<html>
+<head>
+	<title>Quick-Stats Options</title>
+	<script type="text/javascript" src="../tooltip/tippy.js"></script>
+	<script type="text/javascript" src="./options.js"></script>
+	<link rel="stylesheet" type="text/css" href="../tooltip/tippy.css">
+</head>
+<body>
+
+	<!-- grab values from local storage to populate the options -->
+
+	<h4>NBA Only URLs<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'nba'"> &#9432;</span></h4>
+	<label class="switch">
+		<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
+		<span class="slider"></span>
+	</label>
+
+	<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
+	<label class="switch">
+		<input id="playerHighlighting" type="checkbox" name="playerHighlighting">
+		<span class="slider"></span>
+	</label>
+	<br>
+	<br>
+	<button type="button" id="save">SAVE</button>
+
+			<p id="status"></p>
+
+
+</body>
+<style type="text/css">
+	button {
+	    background-color: #fff;
+	    border: solid grey;
+	    border-radius: 30px;
+	    color: blue;
+	    padding: 6px 20px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 14px;
+	}
+
+	button:focus {
+		outline: 0;
+	}
+
+	button:active {
+	  transform: translateY(4px);
+	}
+
+	h4	{
+		margin: 10px 0px;
+	}
+	.slider-label {
+		display: inline-block;
+		line-height: 
+	}
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 60px;
+		height: 34px;
+	}
+	/* Hide default HTML checkbox */
+	.switch input {display:none;}
+
+	/* The slider */
+	.slider {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: #2196F3;
+	  transition: .4s;
+	}
+
+	.slider:before {
+	  position: absolute;
+	  content: "";
+	  height: 26px;
+	  width: 26px;
+	  left: 4px;
+	  bottom: 4px;
+	  background-color: white;
+	  transition: .4s;
+	}
+
+	input:checked + .slider {
+	  background-color: #ccc;
+	}
+
+	input:focus + .slider {
+	  box-shadow: 0 0 1px #2196F3;
+	}
+
+	input:checked + .slider:before {
+	  transform: translateX(26px);
+	}
+
+	/*------ ADDED CSS ---------*/
+	.slider:after
+	{
+	 content:'ON';
+	 color: white;
+	 display: block;
+	 position: absolute;
+	 transform: translate(-50%,-50%);
+	 top: 50%;
+	 left: 75%;
+	 font-size: 10px;
+	 font-family: Verdana, sans-serif;
+	}
+
+	input:checked + .slider:after
+	{  
+	  content:'OFF';
+	  left: 25%;
+	}
+
+</style>
+
+<script type="text/javascript">
+	
+	tippy(document.querySelectorAll(".info-tip"), {
+		"placement": "left"
+	})
+
+	const save = document.querySelector("#save");
+	save.addEventListener('click', save_options);
+
+	function save_options() {
+		const NBAOnlyURLsOption = document.querySelector("#NBAOnlyURLs").value;
+		const playerHighlightingOption = document.querySelector("#playerHighlighting").value;
+
+		chrome.storage.sync.set({
+			nbaURL: NBAOnlyURLsOption,
+			highlighting: playerHighlightingOption
+		}, function() {
+			//alert user of save
+			let status = document.querySelector("#status");
+			status.textContent = "Options Saved."
+			setTimeout(function() {
+				status.textContent = '';
+			}, 750)
+		});
+	}
+</script>
+
+</html>
