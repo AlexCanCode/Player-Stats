@@ -70,7 +70,7 @@ function prepareStatsAndNames(obj){
 
 
 //Loop through text nodes with players names and wrap with span
-function replaceText(arr1, arr2) {  //Problem of missing players on page likely stems from this function as the node array variable has the right elements but this funciton is failing to put the right class in them. For some reason, on the test page this function works when the test paragraph is frist but not when it is followed by several other paragraphs. 
+function replaceText(arr1, arr2) {   
     for(i = 0; i < arr1.length; i++){
         for(j = 0; j < arr2.length; j++){
             const regex = new RegExp(arr2[j], 'ig');
@@ -132,12 +132,12 @@ function createAndPopulateTooltips() {
 $( document ).ready(init); 
 
 function init() {
-	const currentDate = +new Date();
 	const t1 = performance.now();
+	const currentDate = +new Date();
 	getSerializedPageText(); 
 
 	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
-	    if (response.response.length === 0) {
+	    if (response.response.length === 0) { //ERROR WHEN NBA-Only Turned On - might be fine but see if there is a more elegant way to address
 	    	return false;
 	    }
 	    else {
@@ -146,7 +146,7 @@ function init() {
 		    responseMap = prepareStatsAndNames(response.response);
 		    //Walk the DOM and return all nodes with text that matches a name in players
 		    findAllNodesWithPlayerNames(playersFoundNames);
-			/*walkTheDOM(document.body, function(node) {
+			/*walkTheDOM(document.body, function(node) { //REMOVE
 			    if(node.children){
 			        if(acceptedTagNames.includes(node.tagName)){ //This search logic needs work. Does not pick up all instance of names on a page. Need to find a balence between performance and coverage. Will need tweaking and a deep dive into how the funciton works. 
 			            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
