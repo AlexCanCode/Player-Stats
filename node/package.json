@@ -1,15 +1,19 @@
 {
-  "name": "4manipulatingcleanstats",
+  "name": "quickstats",
   "version": "1.0.0",
-  "description": "",
-  "main": "cleanStats.js",
+  "description": "quick stats backend",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Alex Richards",
+  "license": "UNLICENSED",
   "dependencies": {
+    "cron": "^1.4.1",
     "csvtojson": "^2.0.8",
     "python-shell": "^1.0.6"
+  }, 
+  "engines": {
+    "node": "8.12.0"
   }
 }
