@@ -1,3 +1,4 @@
+import time
 import csv
 import requests
 from bs4 import BeautifulSoup
@@ -23,3 +24,31 @@ outfile = open("./players.csv", "w", newline='')
 writer = csv.writer(outfile)
 writer.writerow(["Player", "Pos", "Age", "Tm", "G", "GS", "MP", "FG", "FGA", "FG%", "3P", "3PA", "3P%", "2P", "2PA", "2P%", "eFG%", "FT", "FTA", "FT%", "ORB", "DRB", "TRB", "AST", "STL", "BLK", "TOV", "PF", "PS/G"])
 writer.writerows(clean_list_of_rows)
+
+time.sleep(5);
+
+adUrl = 'https://www.basketball-reference.com/leagues/NBA_2018_advanced.html'
+Adresponse = requests.get(adUrl)
+Adhtml = Adresponse.content
+
+Adsoup = BeautifulSoup(Adhtml, "html.parser")
+Adtable = Adsoup.find('tbody')
+
+Adlist_of_rows = []
+for row in Adtable.findAll('tr'):
+	Adlist_of_cells = []
+	for cell in row.findAll('td'):
+		text = cell.text
+		Adlist_of_cells.append(text)
+	Adlist_of_rows.append(Adlist_of_cells)
+
+clean_list_of_rows = filter(None, Adlist_of_rows)
+
+Adoutfile = open("./Advplayers.csv", "w", newline='')
+Adwriter = csv.writer(Adoutfile)
+Adwriter.writerow(["Player", "Pos", "Age", "Tm", "G", "MP", "PER", "TS%", "3PAr%", "FTr", "ORB%", "DRB%", "TRB%", "AST%", "STL%", "BLK%", "TOV%", "USG%", "OWS", "DWS", "WS", "WS/48", "OBPM", "DBPM", "BPM", "VORP"])
+Adwriter.writerows(clean_list_of_rows)
+
+
+
+

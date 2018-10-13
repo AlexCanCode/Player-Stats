@@ -14,8 +14,8 @@
 
 //Convert stats file from csv to JSON 
 const fs = require("fs");
-const csvFilePath = './players.csv';
-const advCsvFilePath = './Advplayers.csv';
+const csvFilePath = './stats/players.csv';
+const advCsvFilePath = './stats/Advplayers.csv';
 const csv = require('csvtojson');
 
 csv()
