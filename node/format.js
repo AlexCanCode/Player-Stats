@@ -16,6 +16,7 @@
 const fs = require("fs");
 const csvFilePath = './stats/players.csv';
 const advCsvFilePath = './stats/Advplayers.csv';
+const playerURLs = './stats/URLplayers.csv'
 const csv = require('csvtojson');
 
 csv()
@@ -24,18 +25,22 @@ csv()
         csv()
         .fromFile(advCsvFilePath)
         .then((advJsonObj) => {
-            const formattedStatsJSON = JSON.stringify(format(jsonObj, advJsonObj));
-            fs.writeFile("formattedStatsObject.json", `let formattedStatsObjectJSON = ${formattedStatsJSON}`, function(err) {
-                if(err){
-                    console.log(err);
-                }
-            })
-        })
+            csv()
+            .fromFile(playerURLs)
+            .then((playerURLsObj) => {
+                const formattedStatsJSON = JSON.stringify(format(jsonObj, advJsonObj, playerURLsObj));
+                fs.writeFile("formattedStatsObject.json", `let formattedStatsObjectJSON = ${formattedStatsJSON}`, function(err) {
+                    if(err){
+                        console.log(err);
+                    };
+                });
+            });
+        });
     });
 
 
 //remove unwanted stats, add in PER stat
-function format(arr, advArr) {  
+function format(arr, advArr, urlArr) {  
     arr.forEach((player, index) => {
         delete player["2P"];
         delete player["2PA"];
@@ -57,6 +62,7 @@ function format(arr, advArr) {
         delete player["TOV"];
         delete player["PF"];
         delete player["eFG%"];
+        player["URl"] = urlArr[index].HREF;
         if(player.Player = advArr[index].Player) { //add PER stat to each record
             player.PER = advArr[index].PER;
             player["TS%"] = advArr[index]["TS%"];
