@@ -29,7 +29,7 @@ csv()
             .fromFile(playerURLs)
             .then((playerURLsObj) => {
                 const formattedStatsJSON = JSON.stringify(format(jsonObj, advJsonObj, playerURLsObj));
-                fs.writeFile("formattedStatsObject.json", `let formattedStatsObjectJSON = ${formattedStatsJSON}`, function(err) {
+                fs.writeFile("formattedStatsObject.js", `let formattedStatsObjectJSON = ${formattedStatsJSON}\n module.exports = formattedStatsObjectJSON`, function(err) {
                     if(err){
                         console.log(err);
                     };
