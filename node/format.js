@@ -62,7 +62,7 @@ function format(arr, advArr, urlArr) {
         delete player["TOV"];
         delete player["PF"];
         delete player["eFG%"];
-        player["URl"] = urlArr[index].HREF;
+        player["URL"] = urlArr[index].HREF;
         if(player.Player = advArr[index].Player) { //add PER stat to each record
             player.PER = advArr[index].PER;
             player["TS%"] = advArr[index]["TS%"];
