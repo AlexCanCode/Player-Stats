@@ -5,33 +5,44 @@ then implement getting options from local storage instead of the messagin system
 <head>
 	<title>Quick-Stats Options</title>
 	<script type="text/javascript" src="../tooltip/tippy.js"></script>
-	<script type="text/javascript" src="./options.js"></script>
 	<link rel="stylesheet" type="text/css" href="../tooltip/tippy.css">
 </head>
 <body>
+	<div id="container">
 
-	<!-- grab values from local storage to populate the options -->
+		<!-- grab values from local storage to populate the options -->
 
-	<h4>NBA Only URLs<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'nba'"> &#9432;</span></h4>
-	<label class="switch">
-		<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
-		<span class="slider"></span>
-	</label>
+		<h2>QUICK STATS OPTIONS</h2>
 
-	<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
-	<label class="switch">
-		<input id="playerHighlighting" type="checkbox" name="playerHighlighting">
-		<span class="slider"></span>
-	</label>
-	<br>
-	<br>
-	<button type="button" id="save">SAVE</button>
+		<h4>NBA Only URLs<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'nba'"> &#9432;</span></h4>
+		<label class="switch">
+			<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
+			<span class="slider"></span>
+		</label>
 
-			<p id="status"></p>
+		<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
+		<label class="switch">
+			<input id="playerHighlighting" type="checkbox" name="playerHighlighting">
+			<span class="slider"></span>
+		</label>
+		<br>
+		<br>
+		<button type="button" id="save">SAVE</button>
 
+				<p id="status"></p>
+	</div>
 
 </body>
 <style type="text/css">
+	h2 {
+		color: #f37e21;
+
+	}
+
+	#container {
+		text-align: center;
+	}
+
 	button {
 	    background-color: #fff;
 	    border: solid grey;
@@ -53,6 +64,7 @@ then implement getting options from local storage instead of the messagin system
 	}
 
 	h4	{
+		font-size: 1.5em;
 		margin: 10px 0px;
 	}
 	.slider-label {
@@ -124,32 +136,6 @@ then implement getting options from local storage instead of the messagin system
 	}
 
 </style>
-
-<script type="text/javascript">
-	
-	tippy(document.querySelectorAll(".info-tip"), {
-		"placement": "left"
-	})
-
-	const save = document.querySelector("#save");
-	save.addEventListener('click', save_options);
-
-	function save_options() {
-		const NBAOnlyURLsOption = document.querySelector("#NBAOnlyURLs").value;
-		const playerHighlightingOption = document.querySelector("#playerHighlighting").value;
-
-		chrome.storage.sync.set({
-			nbaURL: NBAOnlyURLsOption,
-			highlighting: playerHighlightingOption
-		}, function() {
-			//alert user of save
-			let status = document.querySelector("#status");
-			status.textContent = "Options Saved."
-			setTimeout(function() {
-				status.textContent = '';
-			}, 750)
-		});
-	}
-</script>
+<script type="text/javascript" src="./options.js"></script>
 
 </html>
