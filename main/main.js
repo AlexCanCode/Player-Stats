@@ -116,7 +116,7 @@ PlayerMap.setHashAll(lastNames);
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     const t1 = performance.now();
-    chrome.storage.sync.get("options", function(options) {
+    chrome.storage.sync.get("options", function(options) { //IMPORTANT: NEED TO TEST THIS TO MAKE SURE IT IS SUFFICIENTLY BOUND TO THE USERS SETTINGS - particularly given the issues with options I am having. 
         let run = checkOptions(sender, options);
         if(run){
           console.log({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});

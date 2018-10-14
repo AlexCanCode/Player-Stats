@@ -53,8 +53,13 @@ function findAllNodesWithPlayerNames(arr){
 	});
 }
 
-function insertStatsAndName(match){ //used by replaceText to fill in match portion
-	return `<span class='stat-box' data-player='${match}'>${match}</span>`;
+function insertStatsAndName(match, options){ //used by replaceText to fill in match portion 
+	if(this.options.highlighting){
+		return `<span class='stat-box' data-highlight='true' data-player='${match}'>${match}</span>`;
+	}
+	else {
+		return `<span class='stat-box' data-player='${match}'>${match}</span>`;
+	}
 }
 
 function prepareStatsAndNames(obj){ 
@@ -70,11 +75,11 @@ function prepareStatsAndNames(obj){
 
 
 //Loop through text nodes with players names and wrap with span
-function replaceText(arr1, arr2) {   
+function replaceText(arr1, arr2, options) { 
     for(i = 0; i < arr1.length; i++){
         for(j = 0; j < arr2.length; j++){
             const regex = new RegExp(arr2[j], 'ig');
-            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, insertStatsAndName); 
+            arr1[i].innerHTML = arr1[i].innerHTML.replace(regex, insertStatsAndName.bind(options));  
         };
     };
 };
@@ -87,44 +92,40 @@ function createAndPopulateTooltips() {
 			content: function() { 
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
-			let url = chrome.runtime.getURL("/main/arrow.svg");
-			console.log(url)
 			let playerName = stat.Player.toLowerCase().split(" ");
-				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com${stat['URL']}">${stat.Player} <img src=${url} 
-    height="auto"
-    width="auto"/></a> | ${stat.Pos} ${stat.Tm}</h4>
+				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com${stat['URL']}">${stat.Player}</a> | ${stat.Pos} ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
-		<tr>
-			<th>G</th>
-			<th>MPG</th>
-			<th>FG%</th>
-			<th>TS%</th>
-		</tr>
-		<tr>
-			<td>${stat.G}</td>
-			<td>${stat.MP}</td>
-			<td>${stat["FG%"]}</td>
-			<td>${stat["TS%"]}</td>
-		</tr>
-		<tr>
-			<th>PPG</th>
-			<th>RPG</th>
-			<th>APG</th>
-			<th>PER</th>
-		</tr>
-		<tr>
-			<td>${stat["PS\/G"]}</td>
-			<td>${stat.TRB}</td>
-			<td>${stat.AST}</td>
-			<td>${stat.PER}</td>
-		</tr>
-		</table>`}, 
+					<tr>
+						<th>G</th>
+						<th>MPG</th>
+						<th>FG%</th>
+						<th>TS%</th>
+					</tr>
+					<tr>
+						<td>${stat.G}</td>
+						<td>${stat.MP}</td>
+						<td>${stat["FG%"]}</td>
+						<td>${stat["TS%"]}</td>
+					</tr>
+					<tr>
+						<th>PPG</th>
+						<th>RPG</th>
+						<th>APG</th>
+						<th>PER</th>
+					</tr>
+					<tr>
+						<td>${stat["PS\/G"]}</td>
+						<td>${stat.TRB}</td>
+						<td>${stat.AST}</td>
+						<td>${stat.PER}</td>
+					</tr>
+				</table>`}, 
 			placement: "top", 
 			zIndex: 9999999, 
 			interactive: true,
 			arrow: true,
 			arrowType: "sharp",
-			// trigger: "click" /*for inspecting html/css*/
+			trigger: "click" /*for inspecting html/css*/
 		});
 };
 
@@ -141,11 +142,11 @@ function init() {
 	    	return false;
 	    }
 	    else {
-	    	console.log(response.response);
+	    	console.log(response);
 		    playersFoundNames = extractNames(response.response); 
 		    responseMap = prepareStatsAndNames(response.response);
 		    findAllNodesWithPlayerNames(playersFoundNames);
-			replaceText(nodeArray, playersFoundNames); 
+			replaceText(nodeArray, playersFoundNames, response.options); 
 			createAndPopulateTooltips()
 		}
 	}); 
