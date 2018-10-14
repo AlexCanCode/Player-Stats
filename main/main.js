@@ -120,7 +120,7 @@ chrome.runtime.onMessage.addListener(
         let run = checkOptions(sender, options);
         if(run){
           console.log({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
-          sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
+          sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON)), options});
       //need to include options object in return so that highlighting and other things can be incorporated. 
       const t2 = performance.now();
       console.log(t2 - t1);
