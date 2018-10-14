@@ -1,6 +1,5 @@
 Research.txt
 **/.DS_Store
-node
 
 
 
