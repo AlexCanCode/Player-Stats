@@ -4,13 +4,15 @@ const http = require('http');
 const stats = require('./formattedStatsObject.js');
 const port = process.env.PORT || 8080;
 
-
 http.createServer(function(req, res) {
+	res.statusCode = 200;
+	res.setHeader('Content-Type', 'application/json');
 	res.write(JSON.stringify(stats));
 	res.end()
 }).listen(3000, function() {
 	console.log("server started");
 });
+
 
 
 

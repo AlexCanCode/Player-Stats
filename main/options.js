@@ -1,6 +1,6 @@
 let options = {
 	"extensionOn": true,
-	"nbaOnlyURLs": true,
+	"nbaOnlyURLs": false,
 	"nameHighlighting": true,
 	"blacklist": ["basketball-reference"]
 }
