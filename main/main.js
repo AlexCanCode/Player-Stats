@@ -116,23 +116,29 @@ PlayerMap.setHashAll(lastNames);
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     const t1 = performance.now();
-    let run = checkOptions(sender);
-    updateDataCheck(request[1]);
-    if(run){
-      sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
+    chrome.storage.sync.get("options", function(options) {
+        let run = checkOptions(sender, options);
+        if(run){
+          console.log({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
+          sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
       //need to include options object in return so that highlighting and other things can be incorporated. 
       const t2 = performance.now();
       console.log(t2 - t1);
     };
+  })
+    updateDataCheck(request[1]);
+    return true  //MAKE SURE THIS ASYNC SEND MESSAGE BACK WON"T CAUSE ISSUES
+    
   }); 
 
 //check options object for whether to run and what parameters to use
-function checkOptions(sender) {
-  let shouldExtRun = options.extensionOn;
+function checkOptions(sender, userOptions) {
+  console.log(userOptions.options.extensionOn)
+  let shouldExtRun = userOptions.options.extensionOn;
   if(shouldExtRun) {
-    shouldExtRun = checkIsBlacklisted(sender)
-      if(shouldExtRun && options.nbaOnlyURLs) {
-        shouldExtRun = checkNBAURLs(options.nbaOnlyURLs, sender);
+    shouldExtRun = checkIsBlacklisted(sender, userOptions)
+      if(shouldExtRun && userOptions.options.nbaOnlyURLs) {
+        shouldExtRun = checkNBAURLs(userOptions.options.nbaOnlyURLs, sender);
       };
   }
   return shouldExtRun;
@@ -147,8 +153,8 @@ function checkNBAURLs(bool, sender) {
   };
 };
 
-function checkIsBlacklisted(sender) {
-  return options.blacklist.reduce(function(all, item, index) {
+function checkIsBlacklisted(sender, userOptions) {
+  return userOptions.options.blacklist.reduce(function(all, item, index) {
       if(sender.url.toLowerCase().includes(item)) { 
         all = false;
       }  

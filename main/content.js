@@ -144,17 +144,7 @@ function init() {
 	    	console.log(response.response);
 		    playersFoundNames = extractNames(response.response); 
 		    responseMap = prepareStatsAndNames(response.response);
-		    //Walk the DOM and return all nodes with text that matches a name in players
 		    findAllNodesWithPlayerNames(playersFoundNames);
-			/*walkTheDOM(document.body, function(node) { //REMOVE
-			    if(node.children){
-			        if(acceptedTagNames.includes(node.tagName)){ //This search logic needs work. Does not pick up all instance of names on a page. Need to find a balence between performance and coverage. Will need tweaking and a deep dive into how the funciton works. 
-			            if(new RegExp(playersFoundNames.join("|"), "i").test(node.textContent)) {
-			                    nodeArray.push(node);
-			            };
-			        };
-			    };
-			});*/
 			replaceText(nodeArray, playersFoundNames); 
 			createAndPopulateTooltips()
 		}
