@@ -4,11 +4,11 @@
 	"description": "A simply, fast way to view stats without navigating to a different page.",
 	"permissions":[
 		"storage",
-		"http://localhost/*"
+		"https://quickstatsback.herokuapp.com/"
 	],
 	"options_ui": {
 		"page": "/options/options.html",
-		"open_in_tab": false
+		"open_in_tab": true
 	},
 	"background": {
 		"scripts":[
@@ -16,7 +16,7 @@
 			"/main/formattedStatsObject.js",
 			"/main/main.js",
 			"/main/update.js", 
-			"/main/options.js" 
+			"/options/options.js" 
 		],
 		"persistent":false
 	},
