@@ -1,7 +1,19 @@
 chrome.runtime.onInstalled.addListener(function(details) {
 	if(details.reason === "install"){
 		makeXHRRequest();
+		//Populate initial options here 
+		chrome.storage.sync.set({
+		"options": {
+			"extensionOn": true,
+			"nbaOnlyURLs": false,
+			"nameHighlighting": true,
+			"blacklist": ["basketball-reference"]
+			}
+		}, function(data) {
+			console.log("stored")
+		})
 	};
+
 });
 
 //checks to see if it is time to update stats (daily).
@@ -32,7 +44,7 @@ function handleDataUpdate(arr){
 //Requests JSON Stat Object from Local Server for updating json object
 function makeXHRRequest() {
 	let xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://localhost:3000/", true);
+	xhr.open("GET", "https://quickstatsback.herokuapp.com/", true);
 	xhr.onreadystatechange = function() {
 	xhr.onload = function() {
 	    formattedStatsObjectJSON = JSON.parse(xhr.response);
