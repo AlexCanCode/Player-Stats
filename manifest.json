@@ -12,11 +12,11 @@
 	},
 	"background": {
 		"scripts":[
-			"background.js",
+			"/main/update.js",
 			"/main/formattedStatsObject.js",
 			"/main/main.js",
-			"/main/update.js", 
-			"/options/options.js" 
+			"/options/options.js",
+			"background.js"
 		],
 		"persistent":false
 	},
