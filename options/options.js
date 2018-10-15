@@ -43,7 +43,7 @@ function save_options() {
 
 function restore_options() {
 
-	tippy(document.querySelectorAll(".info-tip"), { //move to dom onload content so it doesn't try to run the second it is fired up?
+	tippy(document.querySelectorAll(".info-tip"), {
 	"placement": "right"
 	})
 

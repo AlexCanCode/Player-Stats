@@ -7,7 +7,7 @@ class StatMap {
   get(x) { 
     let j = x.toLowerCase();
     let result = this.list[j];
-    if(typeof j === "function" || typeof result === "function"){ //checks if string is also the name of a function, which results in an error when you run .reduce on it.
+    if(typeof j === "function" || typeof result === "function"){ //checks if string is also the name of a function, which results in an error when you run .reduce 
         return
       }
 
@@ -67,7 +67,6 @@ class StatMap {
 
      for(let i = 0; i < (arr.length - 1); i++){
         searchedHash = this.get(arr[i]);
-        //if(searchedHash is found in this.specialCases){  } for nickname and special cases - need to create additional lists which involves updating get and set
         secondHash = this.get(arr[(i + 1)]); 
 
         if(this.searchErrorHandler(searchedHash, secondHash)) {
@@ -77,7 +76,7 @@ class StatMap {
     return this.getData(fullMatches.filter(element => element.length >= 1), location); 
   }
 
-  getData(arr, location){ // Get data from location (which is entered, as of now, in the playerSearch function. Need to determine format and ultimate location once architecture is clearer. this function will need to be rewritten to access stats location later on in development 
+  getData(arr, location){ // Gets stats fpr each player in array as drawn from the inputted location
          let statArr = [];
          arr.forEach(element => {
           if(!statArr.includes(location[element])) {
@@ -115,19 +114,15 @@ PlayerMap.setHashAll(lastNames);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    const t1 = performance.now();
-    chrome.storage.sync.get("options", function(options) { //IMPORTANT: NEED TO TEST THIS TO MAKE SURE IT IS SUFFICIENTLY BOUND TO THE USERS SETTINGS - particularly given the issues with options I am having. 
+    chrome.storage.sync.get("options", function(options) {
         let run = checkOptions(sender, options);
         if(run){
           console.log({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
           sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON)), options});
-      //need to include options object in return so that highlighting and other things can be incorporated. 
-      const t2 = performance.now();
-      console.log(t2 - t1);
     };
   })
     updateDataCheck(request[1]);
-    return true  //MAKE SURE THIS ASYNC SEND MESSAGE BACK WON"T CAUSE ISSUES
+    return true  //Lets content script know that the response will by asynchronous
     
   }); 
 

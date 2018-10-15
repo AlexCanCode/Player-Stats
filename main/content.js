@@ -19,7 +19,7 @@ const teamColors = {"ATL": "#E03A3E", "BOS": "#007A33", "BRK": "#000000", "CHI":
 
 /* serialize the body text of a webpage and remove special characters*/
 function getSerializedPageText(){
-    serializedPageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" ")) //Assigning a variable in global scope from local seems like bad practice, need to clean-up this code to return a value that THEN gets assigned to serializedPageText.
+    serializedPageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" ")) 
 };
 
 //Extract just the found names into an array to be converted to a regExp for the DomWalker
@@ -43,7 +43,8 @@ function findAllNodesWithPlayerNames(arr){
 	});
 }
 
-function insertStatsAndName(match, options){ //used by replaceText to fill in match portion 
+//used by replaceText to fill in match portion 
+function insertStatsAndName(match, options){ 
 	if(this.options.highlighting){
 		return `<span class='stat-box' data-highlight-${this.options.colorChoice}='true' data-player='${match}'>${match}</span>`;
 	}
@@ -122,13 +123,13 @@ function createAndPopulateTooltips() {
 //On page ready, do all the things
 $( document ).ready(init); 
 
+
+//all the things 
 function init() {
-	const t1 = performance.now();
 	const currentDate = +new Date();
 	getSerializedPageText(); 
-	console.log(serializedPageText)
 	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
-	    if (response.response.length === 0) { //ERROR WHEN NBA-Only Turned On - might be fine but see if there is a more elegant way to address
+	    if (response.response.length === 0) { 
 	    	return false;
 	    }
 	    else {
@@ -141,6 +142,15 @@ function init() {
 		}
 	}); 
 	console.log(nodeArray); // DEBUGGING ONLY
-	const t2 = performance.now();
-	console.log(t2 - t1);
+	
 };
+/*
+let url = location.href //https://stackoverflow.com/questions/37676526/how-to-detect-url-changes-in-spa
+window.addEventListener("click", function(e) {
+		requestAnimationFrame(() => {
+			url!==location.href&&console.log('url changed');
+      		url = location.href;
+      		init();
+		})
+	}, true)
+*/
