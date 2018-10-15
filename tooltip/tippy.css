@@ -539,14 +539,29 @@ table[id^="stat-box-table-"] tr th {
     font-weight: normal;
 }
 
-span[data-highlight] {
+span[data-highlight-green] {
     background-color: rgba(12.9%,95.3%,49.4%, .25);
     border-radius: 10px;
     padding: 0px 5px;
 }
 
-/*Color pallette
-https://www.colorhexa.com/21f37e*/
+span[data-highlight-orange] {
+    background-color: rgba(95.3%,49.4%,12.9%, .25);
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+
+span[data-highlight-blue] {
+    background-color: rgba(12.9%,58.8%,95.3%, .25);
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+
+span[data-highlight-purple] {
+    background-color: rgba(49.4%,12.9%,95.3%, .25);
+    border-radius: 10px;
+    padding: 0px 5px;
+}
 
 
 
