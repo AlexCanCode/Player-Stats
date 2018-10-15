@@ -34,16 +34,6 @@ function extractNames(arr){
 };
 
 // Search and Wrap with Element Tag Logic 
-//recursive function that iterates through all nodes
-function walkTheDOM(node, func) {
-    func(node);
-    node = node.firstChild;
-    while(node) {
-        walkTheDOM(node, func);
-        node = node.nextSibling;
-    };
-};
-
 function findAllNodesWithPlayerNames(arr){
 	let htmlCollection = document.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
 	htmlCollection.forEach(element => {
@@ -55,7 +45,7 @@ function findAllNodesWithPlayerNames(arr){
 
 function insertStatsAndName(match, options){ //used by replaceText to fill in match portion 
 	if(this.options.highlighting){
-		return `<span class='stat-box' data-highlight='true' data-player='${match}'>${match}</span>`;
+		return `<span class='stat-box' data-highlight-${this.options.colorChoice}='true' data-player='${match}'>${match}</span>`;
 	}
 	else {
 		return `<span class='stat-box' data-player='${match}'>${match}</span>`;
@@ -75,7 +65,7 @@ function prepareStatsAndNames(obj){
 
 
 //Loop through text nodes with players names and wrap with span
-function replaceText(arr1, arr2, options) { 
+function replaceText(arr1, arr2, options) {
     for(i = 0; i < arr1.length; i++){
         for(j = 0; j < arr2.length; j++){
             const regex = new RegExp(arr2[j], 'ig');
@@ -125,7 +115,7 @@ function createAndPopulateTooltips() {
 			interactive: true,
 			arrow: true,
 			arrowType: "sharp",
-			trigger: "click" /*for inspecting html/css*/
+			// trigger: "click" /*for inspecting html/css*/
 		});
 };
 
@@ -136,7 +126,7 @@ function init() {
 	const t1 = performance.now();
 	const currentDate = +new Date();
 	getSerializedPageText(); 
-
+	console.log(serializedPageText)
 	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
 	    if (response.response.length === 0) { //ERROR WHEN NBA-Only Turned On - might be fine but see if there is a more elegant way to address
 	    	return false;
