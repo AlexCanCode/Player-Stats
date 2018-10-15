@@ -490,6 +490,8 @@ h4[id^="stat-box-header-"] {
 h4[id^="stat-box-header-"] a {
     text-decoration: underline;
     font-size: .7rem;
+    font-weight: normal;
+    font-family: verdana;
     color: #fff;
 }
 
@@ -531,7 +533,7 @@ table[id^="stat-box-table-"] tr td {
 }
 
 table[id^="stat-box-table-"] tr th {
-    color: #fff;
+    color: #fff !important;
     padding: 0px 5px;
     text-align: center;
     background: #333;
