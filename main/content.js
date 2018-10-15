@@ -154,3 +154,14 @@ window.addEventListener("click", function(e) {
 		})
 	}, true)
 */
+
+/*window.addEventListener('hashchange', function(e) { LOOK INTO THIS ANSWER: https://stackoverflow.com/questions/2844565/is-there-a-javascript-jquery-dom-change-listener/39508954#39508954
+    console.log('URL hash changed', e);
+    doSomething();
+});
+window.addEventListener('popstate', function(e) {
+    console.log('State changed', e);
+    doSomething();
+});
+
+*/
