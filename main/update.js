@@ -4,12 +4,14 @@ chrome.runtime.onInstalled.addListener(function(details) {
 		//Populate initial options here 
 		chrome.storage.sync.set({
 		"options": {
-			"extensionOn": true,
-			"nbaOnlyURLs": false,
-			"nameHighlighting": true,
-			"blacklist": ["basketball-reference"]
+			extensionOn: true,
+			nbaOnlyURLs: false,
+			highlighting: true,
+			colorChoice: "green", 
+			blacklist: ["basketball-reference"]
 			}
 		}, function(data) {
+			installed = true;
 			console.log("stored")
 		})
 	};
@@ -33,12 +35,12 @@ function updateDataCheck (date){
 
 //Clears current data and reloads new data into the hash table.
 function handleDataUpdate(arr){ 
-  PlayerMap.clearHash();
-  firstNames = [];
-  lastNames = [];
-  grabNames(arr);
-  PlayerMap.setHashAll(firstNames);
-  PlayerMap.setHashAll(lastNames);
+   PlayerMap.clearHash();
+   firstNames = [];
+   lastNames = [];
+   grabNames(arr);
+   PlayerMap.setHashAll(firstNames);
+   PlayerMap.setHashAll(lastNames);
 };
 
 //Requests JSON Stat Object from Local Server for updating json object
