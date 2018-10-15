@@ -1,36 +1,33 @@
-const save = document.querySelector("#save");
-save.addEventListener('click', save_options);
+const sampleNames = ["Larry Bird", "Michael Jordan", "Kobe Bryant", "Kareem Abdul-Jabbar", "Shaquille O'Neal", "Tim Duncan", "Wilt Chamberlain", "Hakeem Olajuwon", "Oscar Robertson", "Jerry West", "Julius Erving"]
+const colors = {
+	"green": "rgba(33, 243,126, 0.25)", 
+	"orange": "rgba(243, 126, 33, 0.25)",
+	"blue": "rgba(33, 150, 243, 0.25)",
+	"purple": "rgba(126, 33, 243, 0.25)"
+}
 
-//LEFT OFF - INPUT VALUES ARE NOT CHANGING WHEN SLIDER CHANGES - need to find out how to capture
-
-function truthConverter(input) {
-		if(input === "on") {
-			return true;
-		}
-		else if (input === "off") {
-			return false;
-		}
-		else if (input === true) {
-			return "on";
-		}
-		else if(inpur === false) {
-			return "off";
-		}
-	}
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
 
 function save_options() {
 
-	const NBAOnlyURLsOption = truthConverter(document.querySelector("#NBAOnlyURLs").value);
-	const playerHighlightingOption = truthConverter(document.querySelector("#playerHighlighting").value);
+	const powerOption = document.querySelector("#power").checked;
+	const NBAOnlyURLsOption = document.querySelector("#NBAOnlyURLs").checked;
+	const playerHighlightingOption = document.querySelector("#playerHighlighting").checked;
+	let colorOption = getKeyByValue(colors, `${document.querySelector("#example").style.backgroundColor}`);
 
-	console.log(NBAOnlyURLsOption, playerHighlightingOption)
+	if(!colorOption) {
+		colorOption = "green";
+	}
+
 
 	chrome.storage.sync.set({
 		options: {
-			extensionOn: true, //MAKE CLICKABLE TURN OFF FOR EXTENSION -- 
-			nbaURL: NBAOnlyURLsOption,
+			extensionOn: powerOption, //MAKE CLICKABLE TURN OFF FOR EXTENSION -- 
+			nbaOnlyURLs: NBAOnlyURLsOption,
 			highlighting: playerHighlightingOption,
-			color: "rgba(12.9%,95.3%,49.4%, .25)", //INSERT COLOR PICKER
+			colorChoice: colorOption, 
 			blacklist: ["basketball-reference"]
 		}
 	}, function(options) {
@@ -45,18 +42,36 @@ function save_options() {
 }
 
 function restore_options() {
+
 	tippy(document.querySelectorAll(".info-tip"), { //move to dom onload content so it doesn't try to run the second it is fired up?
 	"placement": "right"
 	})
 
   chrome.storage.sync.get( "options", function(items) {
-  	console.log(truthConverter(items.options.nbaURL));
-    document.querySelector('#NBAOnlyURLs').value = truthConverter(items.options.nbaURL);
-    document.querySelector('#playerHighlighting').checked = truthConverter(items.options.highlighting);
+  	document.querySelector("#power").checked = items.options.extensionOn;
+    document.querySelector('#NBAOnlyURLs').checked = items.options.nbaOnlyURLs;
+    document.querySelector('#playerHighlighting').checked = items.options.highlighting;
+    document.querySelector('#example').style.backgroundColor = colors[items.options.colorChoice];
   });
 };
 
 document.addEventListener('DOMContentLoaded', restore_options);
+const save = document.querySelector("#save");
+save.addEventListener('click', save_options);
+document.querySelector("#example").textContent = sampleNames[Math.floor(Math.random()* (sampleNames.length - 1))]
+
+
+const colorButtons = document.querySelectorAll(".color")
+
+colorButtons.forEach(function(element, index) {
+	element.addEventListener('click', function(e) {
+		const exampleName = document.querySelector("#example");
+		exampleName.style.backgroundColor = colors[e.toElement.id];
+		
+	})	
+})
+
+
 
 
 

@@ -14,11 +14,23 @@ then implement getting options from local storage instead of the messagin system
 
 		<h2>QUICK STATS OPTIONS</h2>
 
+		<h4>Extension On/Off</h4>
+		<label class="switch">
+			<input id="power" type="checkbox" name="NBAOnlyURLs">
+			<span class="slider"></span>
+		</label>
+
+		<br>
+		<br>
+
 		<h4>NBA Only URLs<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'nba'"> &#9432;</span></h4>
 		<label class="switch">
 			<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
 			<span class="slider"></span>
 		</label>
+
+		<br>
+		<br>
 
 		<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
 		<label class="switch">
@@ -27,13 +39,67 @@ then implement getting options from local storage instead of the messagin system
 		</label>
 		<br>
 		<br>
+		<h4>Choose Highlighting Color</h4>
+		<button class="color" id="green"></button>
+		<button class="color" id="orange"></button>
+		<button class="color" id="blue"></button>
+		<button class="color" id="purple"></button>
+		<br>
+		<br>
+		<p style= "margin-bottom: 0px;">How it will look: </p>
+		<p id="example-para">Is <span id="example"></span> the greatest basketball player of all time?</p>
+		<br>
+		<br>
+		<br>
 		<button type="button" id="save">SAVE</button>
-
-				<p id="status"></p>
+		<p id="status"></p>
 	</div>
 
 </body>
 <style type="text/css">
+
+	p#example-para {
+		font-size: 16px;
+		display: inline-block;
+		margin: 5px;
+	}
+
+	span#example {
+		font-size: 16px;
+		display: inline-block;
+		border-radius: 10px;
+    	padding: 0px 5px;
+	}
+
+	button#green {
+		background-color: rgb(12.9%,95.3%,49.4%)
+	}
+
+	button#orange {
+		background-color: rgb(95.3%,49.4%,12.9%)
+	}
+
+	button#blue {
+		background-color: rgb(12.9%,58.8%,95.3%)
+	}
+
+	button#purple {
+		background-color: rgb(49.4%,12.9%,95.3%)
+	}
+
+	button.color {
+	    border: none;
+	    padding: 15px 32px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    height:25px;
+		width:25px;
+		display: inline-block;
+		vertical-align: top;
+	}
+
 	h2 {
 		color: #f37e21;
 
@@ -88,7 +154,7 @@ then implement getting options from local storage instead of the messagin system
 	  left: 0;
 	  right: 0;
 	  bottom: 0;
-	  background-color: #2196F3;
+	  background-color: #ccc;
 	  transition: .4s;
 	}
 
@@ -104,7 +170,7 @@ then implement getting options from local storage instead of the messagin system
 	}
 
 	input:checked + .slider {
-	  background-color: #ccc;
+	  background-color: #2196F3;
 	}
 
 	input:focus + .slider {
@@ -118,7 +184,7 @@ then implement getting options from local storage instead of the messagin system
 	/*------ ADDED CSS ---------*/
 	.slider:after
 	{
-	 content:'ON';
+	 content:'OFF';
 	 color: white;
 	 display: block;
 	 position: absolute;
@@ -131,7 +197,7 @@ then implement getting options from local storage instead of the messagin system
 
 	input:checked + .slider:after
 	{  
-	  content:'OFF';
+	  content:'ON';
 	  left: 25%;
 	}
 
