@@ -15,8 +15,7 @@
 			"/main/update.js",
 			"/main/formattedStatsObject.js",
 			"/main/main.js",
-			"/options/options.js",
-			"background.js"
+			"/options/options.js"
 		],
 		"persistent":false
 	},
