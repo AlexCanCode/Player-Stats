@@ -18,7 +18,7 @@ const teamColors = {"ATL": "#E03A3E", "BOS": "#007A33", "BRK": "#000000", "CHI":
 };
 
 /* serialize the body text of a webpage and remove special characters*/
-function getSerializedPageText(){
+function getSerializedPageText(element){
     serializedPageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" ")) 
 };
 
@@ -34,8 +34,9 @@ function extractNames(arr){
 };
 
 // Search and Wrap with Element Tag Logic 
-function findAllNodesWithPlayerNames(arr){
-	let htmlCollection = document.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
+function findAllNodesWithPlayerNames(arr, element){
+	nodeArray = [];
+	let htmlCollection = element.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
 	htmlCollection.forEach(element => {
 		if(new RegExp(arr.join("|"), "i").test(element.textContent)) {
 		    nodeArray.push(element);
@@ -75,8 +76,8 @@ function replaceText(arr1, arr2, options) {
     };
 };
 
-function createAndPopulateTooltips() {
-	const nodeCollectionForTippy = document.querySelectorAll(".stat-box");
+function createAndPopulateTooltips(element) {
+	const nodeCollectionForTippy = element.querySelectorAll(".stat-box");
 	let counter = 0;
 	tippy(nodeCollectionForTippy, {
 			allowHTML: true,
@@ -120,9 +121,9 @@ function createAndPopulateTooltips() {
 		});
 };
 
+
 //On page ready, do all the things
 $( document ).ready(init); 
-
 
 //all the things 
 function init() {
@@ -136,19 +137,39 @@ function init() {
 	    	console.log(response);
 		    playersFoundNames = extractNames(response.response); 
 		    responseMap = prepareStatsAndNames(response.response);
-		    findAllNodesWithPlayerNames(playersFoundNames);
+		    findAllNodesWithPlayerNames(playersFoundNames, document);
 			replaceText(nodeArray, playersFoundNames, response.options); 
-			createAndPopulateTooltips()
+			createAndPopulateTooltips(document)
 		}
 	}); 
 	console.log(nodeArray); // DEBUGGING ONLY
 	
 };
 
-$(window).on('beforeunload', function (e) {
-    console.log(e)
+//Adapt to Never-ending Reddit Scroll
+$(window).bind( 'neverEndingLoad', function(e) { 
+	const redditContainers = document.querySelectorAll("#siteTable")
+	const element = redditContainers[(redditContainers.length - 1)]
+	console.log(element);
+	const currentDate = +new Date();
+	serializedPageText = cleanArray(element.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))  
+	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
+	    if (response.response.length === 0) { 
+	    	return false;
+	    }
+	    else {
+	    	console.log(response);
+		    playersFoundNames = extractNames(response.response); 
+		    responseMap = prepareStatsAndNames(response.response);
+		    findAllNodesWithPlayerNames(playersFoundNames, element);
+			replaceText(nodeArray, playersFoundNames, response.options); 
+			createAndPopulateTooltips(element)
+		}
+	}); 
 });
 
+
+//ESPN SPA Detection Attempts w/ resources used
 /*
 let url = location.href //https://stackoverflow.com/questions/37676526/how-to-detect-url-changes-in-spa
 window.addEventListener("click", function(e) {
