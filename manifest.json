@@ -16,7 +16,7 @@
 	"background": {
 		"scripts":[
 			"/main/update.js",
-			"/main/formattedStatsObject.js",
+			"/main/statsLoadedOnInstall.js",
 			"/main/main.js",
 			"/options/options.js"
 		],
