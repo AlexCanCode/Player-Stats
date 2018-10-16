@@ -44,7 +44,7 @@ function save_options() {
 function restore_options() {
 
 	tippy(document.querySelectorAll(".info-tip"), {
-	"placement": "right"
+	"placement": "top"
 	})
 
   chrome.storage.sync.get( "options", function(items) {
