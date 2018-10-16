@@ -8,7 +8,7 @@ class StatMap {
     let j = x.toLowerCase();
     let result = this.list[j];
     if(typeof j === "function" || typeof result === "function"){ //checks if string is also the name of a function, which results in an error when you run .reduce 
-        return
+        return;
       }
 
     else if(!result){
@@ -18,7 +18,7 @@ class StatMap {
         return result.reduce(function(all, item, index){
             all.push(item[1]);
             return all;
-        }, [])
+        }, []);
     };
   };
 
