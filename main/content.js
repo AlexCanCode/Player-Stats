@@ -144,6 +144,11 @@ function init() {
 	console.log(nodeArray); // DEBUGGING ONLY
 	
 };
+
+$(window).on('beforeunload', function (e) {
+    console.log(e)
+});
+
 /*
 let url = location.href //https://stackoverflow.com/questions/37676526/how-to-detect-url-changes-in-spa
 window.addEventListener("click", function(e) {
