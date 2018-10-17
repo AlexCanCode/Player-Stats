@@ -90,7 +90,6 @@ class StatMap {
     this.list = [];
   }
 }
-
 // Create new instance of StatMap
 let PlayerMap = new StatMap(); 
 

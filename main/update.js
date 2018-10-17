@@ -50,6 +50,7 @@ function makeXHRRequest() {
 	xhr.onreadystatechange = function() {
 	xhr.onload = function() {
 	    formattedStatsObjectJSON = JSON.parse(xhr.response);
+	    console.log(typeof formattedStatsObjectJSON) //returns string
 	    handleDataUpdate(formattedStatsObjectJSON);
 	    console.log("stats updated");
 	    setDateAndStore(); 
