@@ -11,7 +11,6 @@ function getKeyByValue(object, value) {
 }
 
 function save_options() {
-
 	const powerOption = document.querySelector("#power").checked;
 	const NBAOnlyURLsOption = document.querySelector("#NBAOnlyURLs").checked;
 	const playerHighlightingOption = document.querySelector("#playerHighlighting").checked;
@@ -21,10 +20,9 @@ function save_options() {
 		colorOption = "green";
 	}
 
-
 	chrome.storage.sync.set({
 		options: {
-			extensionOn: powerOption, //MAKE CLICKABLE TURN OFF FOR EXTENSION -- 
+			extensionOn: powerOption, 
 			nbaOnlyURLs: NBAOnlyURLsOption,
 			highlighting: playerHighlightingOption,
 			colorChoice: colorOption, 
@@ -32,33 +30,51 @@ function save_options() {
 		}
 	}, function(options) {
 		//alert user of save
-		let status = document.querySelector("#status");
-		status.textContent = "Options Saved."
+		// let status = document.querySelector("#status");
+		// status.style.color = "black";
 		console.log("options saved");
-		setTimeout(function() {
-			status.textContent = '';
-		}, 1000)
+		// setTimeout(function() {
+		// 	status.style.color = "white"
+		// }, 500)
 	});
-}
-
-function restore_options() {
-
-	tippy(document.querySelectorAll(".info-tip"), {
-	"placement": "top"
-	})
-
-  chrome.storage.sync.get( "options", function(items) {
-  	document.querySelector("#power").checked = items.options.extensionOn;
-    document.querySelector('#NBAOnlyURLs').checked = items.options.nbaOnlyURLs;
-    document.querySelector('#playerHighlighting').checked = items.options.highlighting;
-    document.querySelector('#example').style.backgroundColor = colors[items.options.colorChoice];
-  });
 };
 
+//runs on page load
+function restore_options() {
+	tippy(document.querySelectorAll(".info-tip"), {
+	"placement": "top"
+	});
+
+	//add event listeners
+/*	const save = document.querySelector("#save");
+	save.addEventListener('click', save_options);*/
+	const inputs = document.querySelectorAll("input");
+	inputs.forEach(function(item, index) {
+		item.addEventListener("change", save_options);
+	})
+
+	const buttons = document.querySelectorAll("button");
+	buttons.forEach(function(item, index) {
+		item.addEventListener("click", save_options);
+	})
+		
+
+	document.querySelector("#example").textContent = sampleNames[Math.floor(Math.random()* (sampleNames.length - 1))]
+
+	//restore options
+  	chrome.storage.sync.get( "options", function(items) {
+	  	document.querySelector("#power").checked = items.options.extensionOn;
+	    document.querySelector('#NBAOnlyURLs').checked = items.options.nbaOnlyURLs;
+	    document.querySelector('#playerHighlighting').checked = items.options.highlighting;
+	    document.querySelector('#example').style.backgroundColor = colors[items.options.colorChoice];
+	});
+};
+
+
 document.addEventListener('DOMContentLoaded', restore_options);
-const save = document.querySelector("#save");
-save.addEventListener('click', save_options);
-document.querySelector("#example").textContent = sampleNames[Math.floor(Math.random()* (sampleNames.length - 1))]
+
+
+
 
 
 const colorButtons = document.querySelectorAll(".color")
@@ -70,6 +86,7 @@ colorButtons.forEach(function(element, index) {
 		
 	})	
 })
+
 
 
 
