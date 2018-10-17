@@ -1,4 +1,4 @@
-chrome.runtime.onInstalled.addListener(function(details) {
+chrome.runtime.onInstalled.addListener(function(details) { //https://stackoverflow.com/questions/2399389/detect-chrome-extension-first-run-update
 	if(details.reason === "install"){
 		makeXHRRequest();
 		//Populate initial options here 
@@ -11,10 +11,13 @@ chrome.runtime.onInstalled.addListener(function(details) {
 			blacklist: ["basketball-reference"]
 			}
 		}, function(data) {
-			installed = true;
-			console.log("stored")
+			console.log("options stored")
 		})
-	};
+	}
+
+	else if(details.reason === "update") { //WHAT ELSE NEEDS TO HAPPEN WHEN WE UPDATE?
+		makeXHRRequest();
+	}
 
 });
 
@@ -25,6 +28,7 @@ function updateDataCheck (date){
     const storedDate = new Date(items.quickStatsDate);
     if(currentDate.getDate() === storedDate.getDate()) {
       if(currentDate.getMonth() === storedDate.getMonth()) {
+      	return;
       }
     }
     else {
@@ -48,16 +52,15 @@ function makeXHRRequest() {
 	let xhr = new XMLHttpRequest();
 	xhr.open("GET", "https://quickstatsback.herokuapp.com/", true);
 	xhr.onreadystatechange = function() {
-	xhr.onload = function() {
-	    formattedStatsObjectJSON = JSON.parse(xhr.response);
-	    console.log(typeof formattedStatsObjectJSON) //returns string
-	    handleDataUpdate(formattedStatsObjectJSON);
-	    console.log("stats updated");
-	    setDateAndStore(); 
-	  };
-	xhr.onerror = function() {
-		console.log("an error occured");
-	}
+		xhr.onload = function() {
+		    formattedStatsObjectJSON = JSON.parse(xhr.response);
+		    handleDataUpdate(formattedStatsObjectJSON);
+		    console.log("stats updated");
+		    setDateAndStore(); 
+		  };
+		xhr.onerror = function() {
+			console.log("an error occured");
+		}
 	};
 	xhr.send();
 }
