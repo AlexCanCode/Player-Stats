@@ -31,7 +31,7 @@ class StatMap {
   }
 
   setHashAll(arr){  
-    for(let i = 0; i < (arr.length - 1); i++){  
+    for(let i = 0; i < (arr.length); i++){  
         let x = arr[i].toLowerCase();
 
         if(!this.list[x]){
@@ -61,14 +61,14 @@ class StatMap {
   };
 
   playerSearch(arr, location){ //added location so script can run getData(arr, location) in a file that does not contain the stats file.
-    let fullMatches = [];
+    let fullMatches = []; // potential improvement: Skip all already matched names.
     let searchedHash;
     let secondHash;
+    console.log(arr);
 
      for(let i = 0; i < (arr.length - 1); i++){
         searchedHash = this.get(arr[i]);
         secondHash = this.get(arr[(i + 1)]); 
-
         if(this.searchErrorHandler(searchedHash, secondHash)) {
             fullMatches.push(searchedHash.filter(element => secondHash.includes(element)));
         }
@@ -116,6 +116,7 @@ chrome.runtime.onMessage.addListener(
     chrome.storage.sync.get("options", function(options) {
         let run = checkOptions(sender, options);
         if(run){
+          console.log(request);
           console.log({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
           sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON)), options});
     };
