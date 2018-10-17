@@ -29,5 +29,8 @@
 			"matches": [ "<all_urls>" ]
 		}
 	],
+	"icons": {
+		"16": "/assets/icon16.png"
+	},
 	"manifest_version": 2
 }
