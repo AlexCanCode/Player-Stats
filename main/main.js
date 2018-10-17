@@ -64,7 +64,6 @@ class StatMap {
     let fullMatches = []; // potential improvement: Skip all already matched names.
     let searchedHash;
     let secondHash;
-    console.log(arr);
 
      for(let i = 0; i < (arr.length - 1); i++){
         searchedHash = this.get(arr[i]);
