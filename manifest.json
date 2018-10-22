@@ -15,9 +15,8 @@
 	},
 	"background": {
 		"scripts":[
-			"/main/statsLoadedOnInstall.js",
-			"/main/main.js",
 			"/main/update.js",
+			"/main/main.js",
 			"/options/options.js"
 		],
 		"persistent":false
