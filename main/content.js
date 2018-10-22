@@ -46,8 +46,8 @@ function findAllNodesWithPlayerNames(arr, element){
 
 //used by replaceText to fill in match portion 
 function insertStatsAndName(match, options){ 
-	if(this.options.highlighting){
-		return `<span class='stat-box' data-highlight-${this.options.colorChoice}='true' data-player='${match}'>${match}</span>`;
+	if(this.highlighting){
+		return `<span class='stat-box' data-highlight-${this.colorChoice}='true' data-player='${match}'>${match}</span>`;
 	}
 	else {
 		return `<span class='stat-box' data-player='${match}'>${match}</span>`;
@@ -127,6 +127,7 @@ $( document ).ready(init);
 
 //all the things 
 function init() {
+	const t1 = performance.now();
 	const currentDate = +new Date();
 	getSerializedPageText(); 
 	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
@@ -143,7 +144,8 @@ function init() {
 		}
 	}); 
 	console.log(nodeArray); // DEBUGGING ONLY
-	
+	const t2 = performance.now();
+	console.log(t2 - t1);
 };
 
 //Adapt to Never-ending Reddit Scroll

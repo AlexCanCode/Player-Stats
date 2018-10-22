@@ -104,20 +104,22 @@ function grabNames(arr){
     });
 };
 
-grabNames(formattedStatsObjectJSON); 
+//run from update to prevent undetermined bug
+// grabNames(formattedStatsObjectJSON); 
 
-//Hash all first and last names
-PlayerMap.setHashAll(firstNames);
-PlayerMap.setHashAll(lastNames);
+// //Hash all first and last names
+// PlayerMap.setHashAll(firstNames);
+// PlayerMap.setHashAll(lastNames);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    chrome.storage.sync.get("options", function(options) {
-        let run = checkOptions(sender, options);
+    chrome.storage.local.get(null, function(quickStats) {
+        let run = checkOptions(sender, quickStats);
+        const options = quickStats.options; //for some reason this needs to be defined before being passed to the response
         if(run){
           console.log(request);
-          console.log({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON))});
-          sendResponse({response: (PlayerMap.playerSearch(request[0], formattedStatsObjectJSON)), options});
+          console.log({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))});
+          sendResponse({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON)), options});
     };
   })
     updateDataCheck(request[1]);
@@ -127,7 +129,6 @@ chrome.runtime.onMessage.addListener(
 
 //check options object for whether to run and what parameters to use
 function checkOptions(sender, userOptions) {
-  console.log(userOptions.options.extensionOn)
   let shouldExtRun = userOptions.options.extensionOn;
   if(shouldExtRun) {
     shouldExtRun = checkIsBlacklisted(sender, userOptions)

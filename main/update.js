@@ -1,8 +1,9 @@
 chrome.runtime.onInstalled.addListener(function(details) { //https://stackoverflow.com/questions/2399389/detect-chrome-extension-first-run-update
 	if(details.reason === "install"){
 		makeXHRRequest();
+
 		//Populate initial options here 
-		chrome.storage.sync.set({
+		chrome.storage.local.set({
 		"options": {
 			extensionOn: true,
 			nbaOnlyURLs: false,
@@ -53,10 +54,13 @@ function makeXHRRequest() {
 	xhr.open("GET", "https://quickstatsback.herokuapp.com/", true);
 	xhr.onreadystatechange = function() {
 		xhr.onload = function() {
-		    formattedStatsObjectJSON = JSON.parse(xhr.response);
-		    handleDataUpdate(formattedStatsObjectJSON);
-		    console.log("stats updated");
-		    setDateAndStore(); 
+			const returnedStats = JSON.parse(xhr.response)
+		    chrome.storage.local.set({"formattedStatsObjectJSON": returnedStats}, function(data) {
+		    	handleDataUpdate(returnedStats);
+		   	 	console.log("stats updated");
+		    	setDateAndStore(); 
+		    })
+		    
 		  };
 		xhr.onerror = function() {
 			console.log("an error occured");
