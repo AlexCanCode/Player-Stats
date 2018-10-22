@@ -20,7 +20,7 @@ function save_options() {
 		colorOption = "green";
 	}
 
-	chrome.storage.sync.set({
+	chrome.storage.local.set({
 		options: {
 			extensionOn: powerOption, 
 			nbaOnlyURLs: NBAOnlyURLsOption,
@@ -62,7 +62,7 @@ function restore_options() {
 	document.querySelector("#example").textContent = sampleNames[Math.floor(Math.random()* (sampleNames.length - 1))]
 
 	//restore options
-  	chrome.storage.sync.get( "options", function(items) {
+  	chrome.storage.local.get( "options", function(items) {
 	  	document.querySelector("#power").checked = items.options.extensionOn;
 	    document.querySelector('#NBAOnlyURLs').checked = items.options.nbaOnlyURLs;
 	    document.querySelector('#playerHighlighting').checked = items.options.highlighting;
