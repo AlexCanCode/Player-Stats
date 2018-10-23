@@ -92,39 +92,23 @@ class StatMap {
 // Create new instance of StatMap
 let PlayerMap = new StatMap(); 
 
-// Grab all first and last names from stats and put them, respectively, into first and last name arrays 
-let firstNames = [];
-let lastNames = [];
-
-function grabNames(arr){
-    arr.map((item, index) => {
-        let tempArr = item.Player.split(" ");
-        firstNames.push(tempArr[0]);
-        lastNames.push(tempArr[1]);
-    });
-};
-
-//run from update to prevent undetermined bug
-// grabNames(formattedStatsObjectJSON); 
-
-// //Hash all first and last names
-// PlayerMap.setHashAll(firstNames);
-// PlayerMap.setHashAll(lastNames);
-
-chrome.runtime.onMessage.addListener(
+chrome.runtime.onMessage.addListener( //ADD A CHECK IN HERE- if PlayerMap.list.length === 0 {run setHashAll on locally stored stat object}
   function(request, sender, sendResponse) {
     chrome.storage.local.get(null, function(quickStats) {
+        updateDataCheck(request[1], quickStats.quickStatsDate); //check if app should update stats
         let run = checkOptions(sender, quickStats);
-        const options = quickStats.options; //for some reason this needs to be defined before being passed to the response
+        const options = quickStats.options; //for some reason this needs to be defined before being passed to the response or else it doesn't work
         if(run){
-          console.log(request);
-          console.log({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))});
-          sendResponse({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON)), options});
+          if(Object.keys(PlayerMap.list) === 0) {
+             console.log("playermap is empty for some reason")
+             handleDataUpdate(quickStats.formattedStatsObjectJSON);
+          }
+         console.log(request);
+         console.log({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))});
+         sendResponse({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON)), options});         
     };
   })
-    updateDataCheck(request[1]);
     return true  //Lets content script know that the response will by asynchronous
-    
   }); 
 
 //check options object for whether to run and what parameters to use
