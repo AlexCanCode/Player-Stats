@@ -99,7 +99,7 @@ chrome.runtime.onMessage.addListener( //ADD A CHECK IN HERE- if PlayerMap.list.l
         let run = checkOptions(sender, quickStats);
         const options = quickStats.options; //for some reason this needs to be defined before being passed to the response or else it doesn't work
         if(run){
-          if(Object.keys(PlayerMap.list) === 0) {
+          if(Object.keys(PlayerMap.list).length === 0) {
              console.log("playermap is empty for some reason")
              handleDataUpdate(quickStats.formattedStatsObjectJSON);
           }
