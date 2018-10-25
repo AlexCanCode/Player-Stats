@@ -55,8 +55,8 @@ Written almost exclusively in Vanilla Javascript in order to learn core concepts
 ## Features 
 
 - Toggle to only run on NBA related sites (determined by the presence of "NBA" in the URL)
-- Toggle to search by nicknames (e.g. "Shaquille O'Neal" and "Shaq" would both be acceptable names)
-- Expandable box to show more advanced stats
+- Player name highlighting (which can be toggled on or off) with choice of non-intrusive colors
+- Link directly to the player's basketball-reference page 
 
 ## Tests
 
