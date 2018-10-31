@@ -1,15 +1,11 @@
 {
 	"name": "Player Stats", 
-	"version": "0.1", 
-	"description": "A simply, fast way to view stats without navigating to a different page.",
+	"version": "0.1.0", 
+	"description": "A simple, fast way to view stats without navigating to a different page.",
 	"permissions":[
 		"storage",
 		"https://quickstatsback.herokuapp.com/"
 	],
-	/*"options_ui": {
-		"page": "/options/options.html",
-		"open_in_tab": true
-	},*/
 	"browser_action": {
 		"default_popup": "/options/options.html"
 	},
@@ -24,12 +20,13 @@
 	"content_scripts": [
 		{
 			"css": ["/tooltip/tippy.css"], 
-			"js": [ "/main/Jquery-3.3.1.js", "/tooltip/tippy.js", "/main/content.js"], //need to change all libararies to minified ones for deployment. Need to decide best order. 
+			"js": [ "/main/Jquery-3.3.1.js", "/tooltip/tippy.js", "/main/content.js"],
 			"matches": [ "<all_urls>" ]
 		}
 	],
 	"icons": {
-		"16": "/assets/icon16.png"
+		"16": "/assets/icon16.png", 
+		"48": "/assets/icon48.png"
 	},
 	"manifest_version": 2
 }
