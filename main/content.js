@@ -91,13 +91,13 @@ function createAndPopulateTooltips(element) {
 						<th>G</th>
 						<th>MPG</th>
 						<th>FG%</th>
-						<th>TS%</th>
+						<th>3P%</th>
 					</tr>
 					<tr>
 						<td>${stat.G}</td>
 						<td>${stat.MP}</td>
 						<td>${stat["FG%"]}</td>
-						<td>${stat["TS%"]}</td>
+						<td>${stat["3P%"]}</td>
 					</tr>
 					<tr>
 						<th>PPG</th>
