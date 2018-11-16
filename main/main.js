@@ -75,7 +75,7 @@ class StatMap {
     return this.getData(fullMatches.filter(element => element.length >= 1), location); 
   }
 
-  getData(arr, location){ // Gets stats fpr each player in array as drawn from the inputted location
+  getData(arr, location){ // Gets stats for each player in array as drawn from the inputted location
          let statArr = [];
          arr.forEach(element => {
           if(!statArr.includes(location[element])) {
@@ -105,7 +105,7 @@ chrome.runtime.onMessage.addListener( //ADD A CHECK IN HERE- if PlayerMap.list.l
           }
          console.log(request);
          console.log({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))});
-         sendResponse({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON)), options});         
+         sendResponse({response: (checkForBadValues(PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))), options});         
     };
   })
     return true  //Lets content script know that the response will by asynchronous
@@ -139,6 +139,11 @@ function checkIsBlacklisted(sender, userOptions) {
       }  
       return all;
   }, true);
+};
+
+//Remove false values from return array - mostly for edge cases (e.g. Paul George. George)
+function checkForBadValues(arr) {
+    return arr.filter(item => item)
 };
 
 
