@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(function(details) { //https://stackoverflow.com/questions/2399389/detect-chrome-extension-first-run-update
 	if(details.reason === "install"){
-		makeXHRRequest();
+		makeInitalXHRRequest(); 
 
 		//Populate initial options here 
 		chrome.storage.local.set({
@@ -89,3 +89,24 @@ function setDateAndStore() {
 	let stampedDate = +new Date();
 	chrome.storage.local.set({quickStatsDate: stampedDate});
 };
+
+//For purposes of installing (and catching errors with initial date install)--> same code as above request except it sets date for yesterday in order to ensure request retry in the event of an error.
+function makeInitalXHRRequest() {
+	let stampedDate = +new Date(new Date().setDate(new Date().getDate()-1));
+	chrome.storage.local.set({quickStatsDate: stampedDate});
+	let xhr = new XMLHttpRequest();
+	xhr.open("GET", "https://quickstatsback.herokuapp.com/", true);
+	xhr.onreadystatechange = function() {
+		xhr.onload = function() {
+			const returnedStats = JSON.parse(xhr.response)
+		    chrome.storage.local.set({"formattedStatsObjectJSON": returnedStats}, function(data) {
+		    	handleDataUpdate(returnedStats);
+		   	 	console.log("Initial stats downloaded");
+		    })
+		  };
+		xhr.onerror = function() {
+			console.log("an error occured");
+		}
+	};
+	xhr.send();
+}
