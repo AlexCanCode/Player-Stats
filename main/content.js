@@ -1,7 +1,7 @@
 let serializedPageText; 
 let playersFoundNames; //populated with sendMessage response callback
 let nodeArray = []; //Array of all nodes that contain players names
-let responseMap; //To be an object of arrays where the player name is the key for fast lookup while creating tooltip. May want to change main.js response format to render this unecessary. 
+let responseMap; //An object of arrays where the player name is the key for fast lookup while creating tooltip. 
 const acceptedTagNames = ["A", "P", "H1", "H2", "H3", "H4", "H5", "H6", "LI"]
 const teamColors = {"ATL": "#E03A3E", "BOS": "#007A33", "BRK": "#000000", "CHI": "#CE1141", "CHO": "#1D1160", "CLE": "#6F263D", "DAL": "#00538C", "DEN": "#0E2240", "DET": "#C8102E", "GSW": "#006BB6", "HOU": "#CE1141", "IND": "#002D62", "LAC": "#C8102E", "LAL": "#552583", "MEM": "#5D76A9", "MIA": "#98002E", "MIL": "#00471B", "MIN": "#0C2340", "NOP": "#0C2340", "NYK": "#F58426", "OKC": "#007AC1", "ORL": "#0077C0", "PHI": "#006BB6", "PHO": "#1D1160", "POR": "#E03A3E", "SAC": "#5A2D81", "SAS": "#000000", "TOR": " #CE1141", "UTA": "#002B5C", "WAS": "#002B5C"};
 
@@ -62,7 +62,6 @@ function prepareStatsAndNames(obj){
 		key = obj[i].Player.toLowerCase();
 		map[key] = obj[i];
 	}
-	console.log(map);
 	return map;
 }
 
@@ -128,7 +127,6 @@ $( document ).ready(init);
 
 //all the things 
 function init() {
-	const t1 = performance.now();
 	const currentDate = +new Date();
 	getSerializedPageText(); 
 	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
@@ -136,7 +134,6 @@ function init() {
 	    	return false;
 	    }
 	    else {
-	    	console.log(response);
 		    playersFoundNames = extractNames(response.response); 
 		    responseMap = prepareStatsAndNames(response.response);
 		    findAllNodesWithPlayerNames(playersFoundNames, document);
@@ -144,16 +141,13 @@ function init() {
 			createAndPopulateTooltips(document)
 		}
 	}); 
-	console.log(nodeArray); // DEBUGGING ONLY
 	const t2 = performance.now();
-	console.log(t2 - t1);
 };
 
 //Adapt to Never-ending Reddit Scroll
 $(window).bind( 'neverEndingLoad', function(e) { 
 	const redditContainers = document.querySelectorAll("#siteTable")
 	const element = redditContainers[(redditContainers.length - 1)]
-	console.log(element);
 	const currentDate = +new Date();
 	serializedPageText = cleanArray(element.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" "))  
 	chrome.runtime.sendMessage([serializedPageText, (JSON.stringify(currentDate))], function(response) {
@@ -161,7 +155,6 @@ $(window).bind( 'neverEndingLoad', function(e) {
 	    	return false;
 	    }
 	    else {
-	    	console.log(response);
 		    playersFoundNames = extractNames(response.response); 
 		    responseMap = prepareStatsAndNames(response.response);
 		    findAllNodesWithPlayerNames(playersFoundNames, element);
