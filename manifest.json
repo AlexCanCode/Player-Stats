@@ -1,6 +1,6 @@
 {
 	"name": "Quick Stats", 
-	"version": "0.1.0", 
+	"version": "0.2.0", 
 	"authur": "Alex Richards",
 	"short_name": "Quick Stats",
 	"description": "A simple, fast way to view stats without navigating to a different page.",
@@ -28,7 +28,8 @@
 	],
 	"icons": {
 		"16": "/assets/icon16.png", 
-		"48": "/assets/icon48.png"
+		"48": "/assets/icon48.png", 
+		"128": "/assets/icon128.png"
 	},
 	"manifest_version": 2
 }
