@@ -21,46 +21,39 @@ As a fan of basketball and the NBA, I often found my NBA reading "workflow" woul
 5. Google name
 6. Click on ESPN or Basektball Reference for their stats 
 
-I set out to develop an extension that would end this process on step 3. The extension identifies all current NBA player names on any given webpage and adds an HTML element that displays onmouseover and contains the most relevant stats for the current season. That is, Points Per Game (PPG), Rebounds Per Game (RPG), Assists Per Game (APG), and Player Efficiency Rating (PER). The stats JSON object is updated daily. 
+I set out to develop an extension that would end this process on step 3. This extension identifies all current NBA player names on any given webpage and adds an HTML element that displays onmouseover and contains the most relevant stats for the current season. That is, Points Per Game (PPG), Rebounds Per Game (RPG), Assists Per Game (APG), and Player Efficiency Rating (PER). The stats JSON object is updated daily. 
 
 ## How it Works
 
-1. This app starts by gathering the publicly available data from https://www.basketball-reference.com/leagues/NBA_2018_totals.html (soon to change to 2019) for the per game stats for each player in the league in a csv format. 
+1. This app starts by gathering the publicly available data from https://www.basketball-reference.com/leagues/NBA_2019_totals.html for the per game stats for each player in the league in a csv format. 
 
-2. The csv is converted to JSON and unwanted stats are trimmed. The final stats file will be loaded and synced with local storage for easy access when the app is run. 
+2. The csv is converted to JSON and unwanted stats are trimmed. The final stats file is loaded into client storage for simple access without AJAX calls. Each day the client will make a call to the server to update the file with the previous night's stats. 
 
-3. The app hashes each first and last name with the associated value for each being the key to the JSON object for each respective player. 
+3. The app creates a hashes table with all first and last names with the associated value for each being the key to the JSON object for each respective player. 
 
-4. When the extension is set to run, onpageload all innerText of the webpage is serialized using a regular expression to remove all non-word characters and put into an array is created by calling .split and passing " " (space) as the parameter (while also lowercasing all text).
+4. When the extension is set to run, onpageload all innerText of the webpage is serialized using a regular expression to remove all non-word characters.
 
 5. The serialized HTML is hashed and any matches (two hashes in a row with the same key value) are stored in an array. 
 
-6. If any matches are found, a function recursively traverses the DOM, comparing the array of found players with all text nodes that do not have children. 
+6. If any matches are found, a function runs over all DOM nodes that commonly hold text comparing the array of found players against the text.  
 
-7. On matches, a special HTML tag and class name are placed around the existing name to define the stats table that will appear onmouseover. The stats are drawn from local storage and the values populated in the table using custom data-attributes.  
+7. On matches, a special HTML tag and class name are placed around the existing name to define the stats table that will appear onmouseover. A tooltip library (tippy.js) is used to create and populate all the tooltips. The player name also serves as a link to their basketball-reference page.  
 
 
 ## Project Status
 
-In development.
+Released November 2018
 
-## Screenshots 
-
-Coming Soon
 
 ## Tech/framework used
 
-Written almost exclusively in Vanilla Javascript in order to learn core concepts of development. Some select tasks (e.g. tooltip creation) were best left to a library. 
+Written almost exclusively in Vanilla Javascript in order to learn core concepts of development and keep the applicaiton lightweight. Some select tasks (e.g. tooltip creation) were best left to a library. 
 
 ## Features 
 
 - Toggle to only run on NBA related sites (determined by the presence of "NBA" in the URL)
 - Player name highlighting (which can be toggled on or off) with choice of non-intrusive colors
 - Link directly to the player's basketball-reference page 
-
-## Tests
-
-Coming soon
 
 
 
