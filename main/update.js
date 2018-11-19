@@ -15,19 +15,15 @@ chrome.runtime.onInstalled.addListener(function(details) { //https://stackoverfl
 			console.log("options stored")
 		})
 	}
-
-	else if(details.reason === "update") { //WHAT ELSE NEEDS TO HAPPEN WHEN WE UPDATE?
+	else if(details.reason === "update") { 
 		makeXHRRequest();
 	}
-
 });
 
 //checks to see if it is time to update stats (daily).
 function updateDataCheck (date, savedDate){ 
   const currentDate = new Date(JSON.parse(date));
   const storedDate = new Date(JSON.parse(savedDate));
-/*  chrome.storage.local.get("quickStatsDate", function(items) {
-    const storedDate = new Date(items.quickStatsDate);*/
     if(currentDate.getDate() === storedDate.getDate()) {
       if(currentDate.getMonth() === storedDate.getMonth()) {
       	console.log("no update needed");
@@ -37,7 +33,6 @@ function updateDataCheck (date, savedDate){
     else {
     	makeXHRRequest();
     }; 
-/*  });*/
 };
 
 // Grab all first and last names from stats and put them, respectively, into first and last name arrays 
@@ -73,7 +68,7 @@ function makeXHRRequest() {
 		    chrome.storage.local.set({"formattedStatsObjectJSON": returnedStats}, function(data) {
 		    	handleDataUpdate(returnedStats);
 		   	 	console.log("stats updated");
-		    	setDateAndStore(); //TODO: Prevent the date updating until the stats have been verified
+		    	setDateAndStore(); 
 		    })
 		    
 		  };

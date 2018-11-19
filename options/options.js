@@ -29,13 +29,7 @@ function save_options() {
 			blacklist: ["basketball-reference"]
 		}
 	}, function(options) {
-		//alert user of save
-		// let status = document.querySelector("#status");
-		// status.style.color = "black";
 		console.log("options saved");
-		// setTimeout(function() {
-		// 	status.style.color = "white"
-		// }, 500)
 	});
 };
 
@@ -44,10 +38,6 @@ function restore_options() {
 	tippy(document.querySelectorAll(".info-tip"), {
 	"placement": "top"
 	});
-
-	//add event listeners
-/*	const save = document.querySelector("#save");
-	save.addEventListener('click', save_options);*/
 	const inputs = document.querySelectorAll("input");
 	inputs.forEach(function(item, index) {
 		item.addEventListener("change", save_options);
@@ -74,16 +64,12 @@ function restore_options() {
 document.addEventListener('DOMContentLoaded', restore_options);
 
 
-
-
-
 const colorButtons = document.querySelectorAll(".color")
 
 colorButtons.forEach(function(element, index) {
 	element.addEventListener('click', function(e) {
 		const exampleName = document.querySelector("#example");
 		exampleName.style.backgroundColor = colors[e.toElement.id];
-		
 	})	
 })
 

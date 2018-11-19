@@ -92,7 +92,7 @@ class StatMap {
 // Create new instance of StatMap
 let PlayerMap = new StatMap(); 
 
-chrome.runtime.onMessage.addListener( //ADD A CHECK IN HERE- if PlayerMap.list.length === 0 {run setHashAll on locally stored stat object}
+chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     chrome.storage.local.get(null, function(quickStats) {
         updateDataCheck(request[1], quickStats.quickStatsDate); //check if app should update stats

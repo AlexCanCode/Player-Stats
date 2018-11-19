@@ -6,7 +6,7 @@ const acceptedTagNames = ["A", "P", "H1", "H2", "H3", "H4", "H5", "H6", "LI"]
 const teamColors = {"ATL": "#E03A3E", "BOS": "#007A33", "BRK": "#000000", "CHI": "#CE1141", "CHO": "#1D1160", "CLE": "#6F263D", "DAL": "#00538C", "DEN": "#0E2240", "DET": "#C8102E", "GSW": "#006BB6", "HOU": "#CE1141", "IND": "#002D62", "LAC": "#C8102E", "LAL": "#552583", "MEM": "#5D76A9", "MIA": "#98002E", "MIL": "#00471B", "MIN": "#0C2340", "NOP": "#0C2340", "NYK": "#F58426", "OKC": "#007AC1", "ORL": "#0077C0", "PHI": "#006BB6", "PHO": "#1D1160", "POR": "#E03A3E", "SAC": "#5A2D81", "SAS": "#000000", "TOR": " #CE1141", "UTA": "#002B5C", "WAS": "#002B5C"};
 
 
-//pushes all non-blank elements to an array and returns that array - need to set to run on load, perhaps? Otherwise might not get everything
+//pushes all non-blank elements to an array and returns that array 
  function cleanArray(arr){
     let arrayOne = [];
     for(let i = 0; i < arr.length; i++){
@@ -22,7 +22,7 @@ function getSerializedPageText(element){
     serializedPageText = cleanArray(document.body.innerText.replace(/[^A-Za-z0-9_-]/g, ' ').toLowerCase().split(" ")) 
 };
 
-//Extract just the found names into an array to be converted to a regExp for the DomWalker
+//Extract just the found names into an array to be converted to a regExp 
 function extractNames(arr){
     let newArr = [];
     for(i = 0; i < (arr.length); i++){
@@ -33,7 +33,7 @@ function extractNames(arr){
     return newArr;
 };
 
-// Search and Wrap with Element Tag Logic 
+// Search and Wrap with Element Tag  
 function findAllNodesWithPlayerNames(arr, element){
 	nodeArray = [];
 	let htmlCollection = element.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
@@ -54,6 +54,7 @@ function insertStatsAndName(match, options){
 	}
 }
 
+//Creates map of names for tippy intialization function
 function prepareStatsAndNames(obj){ 
 	let key;
 	let map = {};
@@ -171,7 +172,7 @@ $(window).bind( 'neverEndingLoad', function(e) {
 });
 
 
-//ESPN SPA Detection Attempts w/ resources used
+//ESPN SPA Detection Attempts w/ resources used (work in progress)
 /*
 let url = location.href //https://stackoverflow.com/questions/37676526/how-to-detect-url-changes-in-spa
 window.addEventListener("click", function(e) {
