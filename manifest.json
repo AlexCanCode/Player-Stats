@@ -1,7 +1,6 @@
 {
 	"name": "Quick Stats", 
 	"version": "0.2.0", 
-	"authur": "Alex Richards",
 	"short_name": "Quick Stats",
 	"description": "A simple, fast way to view stats without navigating to a different page.",
 	"permissions":[
