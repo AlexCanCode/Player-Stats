@@ -87,6 +87,7 @@ class StatMap {
 
   clearHash(){
     this.list = [];
+    console.log("hash was cleared")
   }
 }
 // Create new instance of StatMap
