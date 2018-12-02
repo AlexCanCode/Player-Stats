@@ -141,7 +141,6 @@ function init() {
 			createAndPopulateTooltips(document)
 		}
 	}); 
-	const t2 = performance.now();
 };
 
 //Adapt to Never-ending Reddit Scroll
