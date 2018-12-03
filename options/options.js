@@ -38,16 +38,17 @@ function restore_options() {
 	tippy(document.querySelectorAll(".info-tip"), {
 	"placement": "top"
 	});
+	//Adds save for all inputs (sliders)
 	const inputs = document.querySelectorAll("input");
 	inputs.forEach(function(item, index) {
 		item.addEventListener("change", save_options);
 	})
 
-	const buttons = document.querySelectorAll("button");
+	//Adds save for all buttons with .save
+	const buttons = document.querySelectorAll(".save");
 	buttons.forEach(function(item, index) {
 		item.addEventListener("click", save_options);
 	})
-		
 
 	document.querySelector("#example").textContent = sampleNames[Math.floor(Math.random()* (sampleNames.length - 1))]
 
@@ -58,11 +59,20 @@ function restore_options() {
 	    document.querySelector('#playerHighlighting').checked = items.options.highlighting;
 	    document.querySelector('#example').style.backgroundColor = colors[items.options.colorChoice];
 	});
+
+  	//Add event listener to button update => send message to background script to trigger update XHR and rehash
+	const updateButton = document.querySelector("#update")
+	updateButton.addEventListener("click", (e) => {
+		let stampedDate = +new Date(new Date().setDate(new Date().getDate()-1));
+		chrome.runtime.sendMessage(["update", JSON.stringify(stampedDate)], (response) => {
+			const updateStatus = document.querySelector("#update-status")
+			updateStatus.style.color = "red";
+			setTimeout(()=> updateStatus.style.color = "white", 750)
+		});
+	})
 };
 
-
 document.addEventListener('DOMContentLoaded', restore_options);
-
 
 const colorButtons = document.querySelectorAll(".color")
 
