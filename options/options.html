@@ -16,35 +16,31 @@
 			<span class="slider"></span>
 		</label>
 
-		<br>
-		<br>
-
 		<h4>Only Run on URL's that Contain "NBA"<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'NBA'"> &#9432;</span></h4>
 		<label class="switch">
 			<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
 			<span class="slider"></span>
 		</label>
 
-		<br>
-		<br>
-
 		<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
 		<label class="switch">
 			<input id="playerHighlighting" type="checkbox" name="playerHighlighting">
 			<span class="slider"></span>
 		</label>
-		<br>
-		<br>
+
 		<h4>Choose Highlighting Color</h4>
-		<button class="color" id="green"></button>
-		<button class="color" id="orange"></button>
-		<button class="color" id="blue"></button>
-		<button class="color" id="purple"></button>
+		<button class="color save" id="green"></button>
+		<button class="color save" id="orange"></button>
+		<button class="color save" id="blue"></button>
+		<button class="color save" id="purple"></button>
 		<br>
-		<br>
-		<p style= "margin-bottom: 0px;">How it will look<span class="info-tip" data-tippy-content="Note: Stat-box will not be triggered in this window"> &#9432;</span>: </p>
+		<p style= "margin: 15px 0 0 0;">How it will look<span class="info-tip" data-tippy-content="Note: Stat-box will not be triggered in this window"> &#9432;</span>: </p>
 		<p id="example-para">Is<span id="example"></span>the greatest basketball player of all time?</p>
-		
+		<br>
+		<br>
+		<p>Think you might have missed the daily update?</p>
+		<button id="update">Get Stats Quick!</button>
+		<p id="update-status">Stats Updated!</p>	
 	</div>
 
 </body>
@@ -52,7 +48,7 @@
 
 	body {
 		min-width:300px;
-		min-height:300px;
+		min-height:500px;
 	}
 
 	p#example-para {
@@ -127,7 +123,7 @@
 
 	h4	{
 		font-size: 1.5em;
-		margin: 10px 0px;
+		margin: 15px 0 5px 0;
 	}
 	.slider-label {
 		display: inline-block;
@@ -194,6 +190,10 @@
 	{  
 	  content:'ON';
 	  left: 25%;
+	}
+
+	#update-status {
+		color: white;
 	}
 
 </style>
