@@ -68,9 +68,8 @@ function makeXHRRequest() {
 		    chrome.storage.local.set({"formattedStatsObjectJSON": returnedStats}, function(data) {
 		    	handleDataUpdate(returnedStats);
 		   	 	console.log("stats updated");
-		    	setDateAndStore(); 
+		    	setDateAndStore();
 		    })
-		    
 		  };
 		xhr.onerror = function() {
 			console.log("an error occured");
@@ -85,7 +84,7 @@ function setDateAndStore() {
 	chrome.storage.local.set({quickStatsDate: stampedDate});
 };
 
-//For purposes of installing (and catching errors with initial date install)--> same code as above request except it sets date for yesterday in order to ensure request retry in the event of an error.
+//For purposes of installing (and catching errors with initial date install)--> this is the same code as above request except it sets date for yesterday in order to ensure request retry in the event of an error.
 function makeInitalXHRRequest() {
 	let stampedDate = +new Date(new Date().setDate(new Date().getDate()-1));
 	chrome.storage.local.set({quickStatsDate: stampedDate});
