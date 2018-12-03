@@ -37,7 +37,6 @@ class StatMap {
         if(!this.list[x]){
             this.list[x] = [];
         }
-
         this.list[x].push([x, i]); 
     }
   }
@@ -106,6 +105,7 @@ chrome.runtime.onMessage.addListener(
           }
          console.log(request);
          console.log({response: (PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))});
+
          sendResponse({response: (checkForBadValues(PlayerMap.playerSearch(request[0], quickStats.formattedStatsObjectJSON))), options});         
     };
   })
