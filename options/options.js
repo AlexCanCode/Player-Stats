@@ -15,6 +15,9 @@ function save_options() {
 	const NBAOnlyURLsOption = document.querySelector("#NBAOnlyURLs").checked;
 	const playerHighlightingOption = document.querySelector("#playerHighlighting").checked;
 	let colorOption = getKeyByValue(colors, `${document.querySelector("#example").style.backgroundColor}`);
+	const blacklistValues = document.querySelector("#blacklist-entries").value.replace( /\n/g, " " ).split( " " ).filter((str) => /\S/.test(str));
+
+	console.log(blacklistValues);
 
 	if(!colorOption) {
 		colorOption = "green";
@@ -26,7 +29,7 @@ function save_options() {
 			nbaOnlyURLs: NBAOnlyURLsOption,
 			highlighting: playerHighlightingOption,
 			colorChoice: colorOption, 
-			blacklist: ["basketball-reference"]
+			blacklist: blacklistValues
 		}
 	}, function(options) {
 		console.log("options saved");
@@ -54,10 +57,14 @@ function restore_options() {
 
 	//restore options
   	chrome.storage.local.get( "options", function(items) {
-	  	document.querySelector("#power").checked = items.options.extensionOn;
+	  	document.querySelector('#power').checked = items.options.extensionOn;
 	    document.querySelector('#NBAOnlyURLs').checked = items.options.nbaOnlyURLs;
 	    document.querySelector('#playerHighlighting').checked = items.options.highlighting;
 	    document.querySelector('#example').style.backgroundColor = colors[items.options.colorChoice];
+	    const blacklistTextarea = document.querySelector('#blacklist-entries')
+	    items.options.blacklist.map((item) => {
+	    	blacklistTextarea.value += item + "\n";
+	    })
 	});
 
   	//Add event listener to button update => send message to background script to trigger update XHR and rehash
