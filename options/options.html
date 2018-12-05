@@ -28,19 +28,29 @@
 			<span class="slider"></span>
 		</label>
 
-		<h4>Choose Highlighting Color</h4>
-		<button class="color save" id="green"></button>
-		<button class="color save" id="orange"></button>
-		<button class="color save" id="blue"></button>
-		<button class="color save" id="purple"></button>
+		<h4>Highlighting Color</h4>
+		<button class="btn color save" id="green"></button>
+		<button class="btn color save" id="orange"></button>
+		<button class="btn color save" id="blue"></button>
+		<button class="btn color save" id="purple"></button>
 		<br>
 		<p style= "margin: 15px 0 0 0;">How it will look<span class="info-tip" data-tippy-content="Note: Stat-box will not be triggered in this window"> &#9432;</span>: </p>
 		<p id="example-para">Is<span id="example"></span>the greatest basketball player of all time?</p>
 		<br>
 		<br>
 		<p>Think you might have missed the daily update?</p>
-		<button id="update">Check for Stats</button>
+		<button id="update" class="btn">Check for Stats</button>
 		<p id="update-status">Stats Updated!</p>	
+	</div>
+
+	<div id="hidden" style="display:none">
+		<h4>Blacklist<span class="info-tip" data-tippy-content="Prevents Quick Stats from running on specific sites"> &#9432;</span></h4>
+		<p>Enter everything after "www" that you want to check for(e.g. "espn.com" or "reddit.com/r/nba"). <br>
+		Seperate each with a new line</p>
+		<textarea id="blacklist-entries">
+basketball-reference.com
+nbarotations.info
+		</textarea>
 	</div>
 
 </body>
@@ -101,7 +111,7 @@
 		text-align: center;
 	}
 
-	button {
+	.btn {
 	    background-color: #fff;
 	    border: solid grey;
 	    border-radius: 30px;
