@@ -47,12 +47,11 @@
 		<h4>Blacklist<span class="info-tip" data-tippy-content="Prevents Quick Stats from running on specific sites"> &#9432;</span></h4>
 		<p>Enter everything after "www" that you want to check for(e.g. "espn.com" or "reddit.com/r/nba"). <br>
 		Seperate each with a new line</p>
-		<textarea id="blacklist-entries">
-basketball-reference.com
-nbarotations.info
-		</textarea>
+		<textarea id="blacklist-entries"></textarea>
 	</div>
-
+	<div id="options-link">
+		<a href="options_fullpage.html" target="_blank">Advanced Options</a>
+	</div>
 </body>
 <style type="text/css">
 
@@ -205,6 +204,22 @@ nbarotations.info
 	#update-status {
 		color: white;
 	}
+
+	/*pop-up options specific*/
+
+	#options-link {
+		text-align: right;
+	}
+
+	#options-link a{
+		text-decoration: none;
+	}
+
+	#options-link a:hover {
+		color: #f37e21;
+	}
+
+
 
 </style>
 <script type="text/javascript" src="./options.js"></script>
