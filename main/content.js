@@ -164,25 +164,25 @@ $(window).bind( 'neverEndingLoad', function(e) {
 });
 
 
-//ESPN SPA Detection Attempts w/ resources used (work in progress)
-/*
-let url = location.href //https://stackoverflow.com/questions/37676526/how-to-detect-url-changes-in-spa
-window.addEventListener("click", function(e) {
-		requestAnimationFrame(() => {
-			url!==location.href&&console.log('url changed');
-      		url = location.href;
-      		init();
-		})
-	}, true)
+
+
+//https://stackoverflow.com/questions/4570093/how-to-get-notified-about-changes-of-the-history-via-history-pushstate
+
+/* Most promising solution thusfar, works in the console but haven't been able to hack it together in the extension. 
+(function(history){
+    var pushState = history.pushState;
+    history.pushState = function(state) {
+        if (typeof history.onpushstate == "function") {
+            history.onpushstate({state: state});
+        }
+        // whatever else you want to do
+        // maybe call onhashchange e.handler
+        return pushState.apply(history, arguments);
+    }
+})(window.history);
+
+window.onpopstate = history.onpushstate = function(e) {
+    console.log("we caught a change");
+};
 */
 
-/*window.addEventListener('hashchange', function(e) { LOOK INTO THIS ANSWER: https://stackoverflow.com/questions/2844565/is-there-a-javascript-jquery-dom-change-listener/39508954#39508954
-    console.log('URL hash changed', e);
-    doSomething();
-});
-window.addEventListener('popstate', function(e) {
-    console.log('State changed', e);
-    doSomething();
-});
-
-*/
