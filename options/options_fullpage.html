@@ -7,48 +7,52 @@
 </head>
 <body>
 	<div id="container">
+		<div class="content">
 
-		<h2 style="font-size: 2.5rem;">QUICK STATS OPTIONS</h2>
+			<h2 style="font-size: 2.5rem;">QUICK STATS OPTIONS</h2>
 
-		<h4>Extension On/Off</h4>
-		<label class="switch">
-			<input id="power" type="checkbox" name="NBAOnlyURLs">
-			<span class="slider"></span>
-		</label>
+			<h4>Extension On/Off</h4>
+			<label class="switch">
+				<input id="power" type="checkbox" name="NBAOnlyURLs">
+				<span class="slider"></span>
+			</label>
 
-		<h4>Only Run on URL's that Contain "NBA"<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'NBA'"> &#9432;</span></h4>
-		<label class="switch">
-			<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
-			<span class="slider"></span>
-		</label>
+			<h4>Only Run on URL's that Contain "NBA"<span class="info-tip" data-tippy-content="Enabling this feature will prevent Quick-Stats from running unless the URL contains 'NBA'"> &#9432;</span></h4>
+			<label class="switch">
+				<input id="NBAOnlyURLs" type="checkbox" name="NBAOnlyURLs">
+				<span class="slider"></span>
+			</label>
 
-		<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
-		<label class="switch">
-			<input id="playerHighlighting" type="checkbox" name="playerHighlighting">
-			<span class="slider"></span>
-		</label>
+			<h4>Player Name Highlighting<span class="info-tip" data-tippy-content="Toggles whether to highlight player's names"> &#9432;</span></h4>
+			<label class="switch">
+				<input id="playerHighlighting" type="checkbox" name="playerHighlighting">
+				<span class="slider"></span>
+			</label>
 
-		<h4>Highlighting Color</h4>
-		<button class="btn color save" id="green"></button>
-		<button class="btn color save" id="orange"></button>
-		<button class="btn color save" id="blue"></button>
-		<button class="btn color save" id="purple"></button>
-		<br>
-		<p style= "margin: 15px 0 0 0;">How it will look<span class="info-tip" data-tippy-content="Note: Stat-box will not be triggered in this window"> &#9432;</span>: </p>
-		<p id="example-para">Is<span id="example"></span>the greatest basketball player of all time?</p>
-		
-		<h4>Blacklist<span class="info-tip" data-tippy-content="Prevents Quick Stats from running on specific sites"> &#9432;</span></h4>
-		<p>Enter everything after "www" that you want to check for(e.g. "espn.com" or "reddit.com/r/nba"). <br>
-		Seperate each entry with a new line 
-		</p>
-		<p style="margin: .25%; font-size: .7rem">(sites with known issues have been entered)</p>
-		<textarea id="blacklist-entries"></textarea>
-		<div>
-			<button class="save-blacklist save" style="display: inline-block;">Save Blacklist Changes</button>
+			<h4>Highlighting Color</h4>
+			<button class="btn color save" id="green"></button>
+			<button class="btn color save" id="orange"></button>
+			<button class="btn color save" id="blue"></button>
+			<button class="btn color save" id="purple"></button>
+			<br>
+			<p style= "margin: 15px 0 0 0;">How it will look<span class="info-tip" data-tippy-content="Note: Stat-box will not be triggered in this window"> &#9432;</span>: </p>
+			<p id="example-para">Is<span id="example"></span>the greatest basketball player of all time?</p>
 		</div>
-		<h4>Think you might have missed the daily update?</h4>
-		<button id="update" class="btn">Check for Stats</button>
-		<p id="update-status">Stats Updated!</p>	
+
+		<div class="content">
+			<h4>Blacklist<span class="info-tip" data-tippy-content="Prevents Quick Stats from running on specific sites"> &#9432;</span></h4>
+			<p>Enter everything after "www" that you want to check for(e.g. "espn.com" or "reddit.com/r/nba"). <br>
+			Seperate each entry with a new line 
+			</p>
+			<p style="margin: .25%; font-size: .7rem">(sites with known issues have been entered)</p>
+			<textarea id="blacklist-entries"></textarea>
+			<div>
+				<button class="save-blacklist save" style="display: inline-block;">Save Blacklist Changes</button>
+			</div>
+			<h4>Think you might have missed the daily update?</h4>
+			<button id="update" class="btn">Check for Stats</button>
+			<p id="update-status">Stats Updated!</p>	
+		</div>
 	</div>
 
 </body>
@@ -215,6 +219,14 @@
 	#update-status {
 		color: #eef7fe;
 	}
+
+	.content{
+		width: 50%;
+		display: inline-block;
+	}
+
+
+
 
 
 </style>
