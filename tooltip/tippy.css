@@ -474,8 +474,7 @@ body:not(.tippy-iOS) .tippy-popper[x-placement=left] .tippy-tooltip[data-animate
     }
 }
 
-/* Selects all tables with ID that starts with "stat-box-table-" - seems to work well to override page css.
-   The real question is, can it be made to be airtight and deliver a decent UX? */
+/* Custom CSS */
 
 h4[id^="stat-box-header-"] { 
     font: normal x-small verdana,arial,helvetica,sans-serif;
