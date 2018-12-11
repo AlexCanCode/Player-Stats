@@ -46,4 +46,41 @@ describe("Content Script", function() {
 			expect(getSerializedPageText().constructor).toEqual(Array)
 		})
 	})
+
+	describe("extractNames(arr)", () => {
+
+		let inputArray = {"response": [{"3P%": ".208","AST": "2.1","Age": "19","FG%": ".469","G": "27","MP": "25.3","PER": "16.1","PS/G": "10.9","Player": "Wendell Carter","Pos": "C","TRB": "7.0","TS%": ".534","Tm": "CHI","URL": "/players/c/cartewe01.html"},{"3P%": ".500","AST": "5.8","Age": "30","FG%": ".513","G": "16","MP": "33.4","PER": "28.4","PS/G": "29.6","Player": "Stephen Curry","Pos": "PG","TRB": "5.1","TS%": ".686","Tm": "GSW","URL": "/players/c/curryst01.html" },{"3P%": ".350", "AST": "2.0", "Age": "27", "FG%": ".435", "G": "24", "MP": "19.7", "PER": "16.1", "PS/G": "9.3", "Player": "Kelly Olynyk", "Pos": "PF", "TRB": "4.1", "TS%": ".606", "Tm": "MIA", "URL": "/players/o/olynyke01.html"}]};
+
+		// let liveInputArray = TODO - write ajax request to get live data and test your code with it as well so you aren't always using static tests.
+
+		//Tests for specific cases against the input array
+		it("should return an array of names from an array of objects with player information", () => {
+			const nameOne = inputArray["response"][0].Player.toLowerCase();
+			const nameTwo = inputArray["response"][1].Player.toLowerCase();
+			const nameThree = inputArray["response"][2].Player.toLowerCase();
+			const ret = extractNames(inputArray["response"])
+			
+			expect(ret[0]).toEqual(nameOne);
+			expect(ret[1]).toEqual(nameTwo);
+			expect(ret[2]).toEqual(nameThree);
+		})
+
+		it("should return an array", () => {
+			expect(extractNames(inputArray["response"]).constructor).toEqual(Array)
+		})
+
+	})
+
+
+
+
+
+
+
+
+
+
+
+
+
 })
