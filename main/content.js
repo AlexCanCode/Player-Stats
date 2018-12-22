@@ -120,6 +120,7 @@ function createAndPopulateTooltips(element) {
 		});
 };
 
+//TODO: Explore creating an Init function that can be called depending on webpage - Will help deal with single page apps and neveredning scrolls that might call for different inits
 
 //On page ready, do all the things
 $( document ).ready(init); 
