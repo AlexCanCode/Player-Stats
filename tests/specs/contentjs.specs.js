@@ -71,7 +71,12 @@ describe("Content Script", function() {
 
 	})
 
-
+	describe("findAllNodesWithPlayerNames(arr, element)", () => {
+		//Should return all nodes with any of the players listed in it
+		it("should return an array", () => {
+			expect(findAllNodesWithPlayerNames(playerFoundNames, document).constructor).toEqual(Array)
+		})
+	})
 
 
 
