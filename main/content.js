@@ -33,7 +33,7 @@ function extractNames(arr){
 
 // Search and Wrap with Element Tag  
 function findAllNodesWithPlayerNames(arr, element){
-	let nodeArray = []; //TODO: Remove this from global scope and pass around to the functions that need it
+	let nodeArray = []; 
 	let htmlCollection = element.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
 	htmlCollection.forEach(element => {
 		if(new RegExp(arr.join("|"), "i").test(element.textContent)) {
