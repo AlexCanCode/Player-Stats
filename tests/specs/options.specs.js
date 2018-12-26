@@ -7,6 +7,13 @@
 
 describe("Options Script", () => {
 
+	beforeEach(() => {
+		let optionsBefore = [];
+		chrome.storage.get(null, (item => { // how to check options against what they should be?
+			console.log(items)
+		}))
+	})
+
 	describe("save_options", () => {
 
 	})
