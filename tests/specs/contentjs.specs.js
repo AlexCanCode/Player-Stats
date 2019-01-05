@@ -73,7 +73,7 @@ describe("Content Script", function() {
 
 	describe("findAllNodesWithPlayerNames(arr, element)", () => {
 		
-		expect(findAllNodesWithPlayerNames)
+		
 	})
 
 	describe("insertStatsAndNames(match, options)", () => {

@@ -4,6 +4,7 @@
 // - Non-saves
 // - Other odd functionality
 //Should be able to test all changes added in future 
+//https://medium.com/information-and-technology/unit-testing-browser-extensions-bdd4e60a4f3d
 
 describe("Options Script", () => {
 
@@ -15,11 +16,13 @@ describe("Options Script", () => {
 	})
 
 	describe("save_options", () => {
-
+		it("should capture current options button's states and save them to stroage", ()=> {
+			expect(save_options())
+		})
 	})
 	
 	describe("restore_options", () => {
 
-	}
+	})
 
 })
