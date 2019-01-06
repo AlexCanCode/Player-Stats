@@ -71,8 +71,17 @@ describe("Content Script", function() {
 
 	})
 
+	describe("findAllNodesWithPlayerNames(arr, element)", () => {
+		
+		
+	})
 
+	describe("insertStatsAndNames(match, options)", () => {
 
+		it("should return a span with the player name in both the tag and the text", () => {
+			
+		})
+	})
 
 
 
