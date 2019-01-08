@@ -84,6 +84,7 @@ function createAndPopulateTooltips(element) {
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
 			let playerName = stat.Player.toLowerCase().split(" ");
+			console.log(stat);
 				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com${stat['URL']}">${stat.Player}</a> | ${stat.Pos} ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
 					<tr>
@@ -96,7 +97,7 @@ function createAndPopulateTooltips(element) {
 						<td>${stat.G}</td>
 						<td>${stat.MP}</td>
 						<td>${stat["FG%"]}</td>
-						<td>${stat["3P%"]}</td>
+						<td>${stat["3P%"] ? stat["3P%"] : ".000"}</td>
 					</tr>
 					<tr>
 						<th>PPG</th>
