@@ -476,33 +476,39 @@ body:not(.tippy-iOS) .tippy-popper[x-placement=left] .tippy-tooltip[data-animate
 
 /* Custom CSS */
 
+:root {
+    /*Base font size of of a pre-dtermined value here and make them relative to that value - will take some messing around OR Use absolute sizing - this should be fine as all viewers are viewing on the browser and at full screen, but what if someone half-screens? Do we care? */
+}
+
+
 h4[id^="stat-box-header-"] { 
     font: normal x-small verdana,arial,helvetica,sans-serif;
     color: #fff;
     margin: 0 0 0 0;
     padding: 3px 0 3px 5px;
     background-color: #006BB6;
-    font-size: .7rem;
+    font-size: 11.5px;
     opacity: .85;
 }
 
 h4[id^="stat-box-header-"] a {
     text-decoration: underline;
-    font-size: .7rem;
+    font-size: 11.5px;
     font-weight: normal;
     font-family: verdana;
     color: #fff;
+    text-transform: none;
 }
 
 h4[id^="stat-box-header-"] a:visited {
     text-decoration: underline;
-    font-size: .7rem;
+    font-size: 11.5px;
     color: #fff;
 }
 
 h4[id^="stat-box-header-"] a:focus {
     text-decoration: underline;
-    font-size: .7rem;
+    font-size: 11.5px;
     color: #fff;
 }
 
@@ -515,11 +521,10 @@ table[id^="stat-box-table-"] {
     vertical-align: baseline;
     background: transparent;
     font-family: verdana;
-    width: 200px;
+    width: 215px;
     border-spacing: 2px;
-    font-size:.9rem;
+    font-size: 13.5px;
     border-collapse: separate;
-    /*border-top: 1px dotted #03fc96;*/
 }
 
 table[id^="stat-box-table-"] tr td {
@@ -528,7 +533,7 @@ table[id^="stat-box-table-"] tr td {
     background-color: #fff;
     background: #fff;
     text-align: center;
-    font-size:.9rem;
+    font-size: 13.5px;
 }
 
 table[id^="stat-box-table-"] tr th {
@@ -536,8 +541,9 @@ table[id^="stat-box-table-"] tr th {
     padding: 0px 5px;
     text-align: center;
     background: #333;
-    font-size:.65rem;
+    font-size: 11px;
     font-weight: normal;
+    border: #333;
 }
 
 span[data-highlight-green] {
