@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(function(details) { //https://stackoverfl
 			nbaOnlyURLs: false,
 			highlighting: true,
 			colorChoice: "green", 
-			blacklist: ["basketball-reference"]
+			blacklist: ["basketball-reference.com", "nbarotations.info"]
 			}
 		}, function(data) {
 			console.log("options stored")
