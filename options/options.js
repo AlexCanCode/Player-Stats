@@ -18,7 +18,20 @@ function save_options() {
 	const blacklistValues = document.querySelector("#blacklist-entries").value.replace( /\n/g, " " ).split( " " ).filter((str) => /\S/.test(str));
 
 	console.log(blacklistValues);
+	
+	//manage icon color
+	if(powerOption) {
+		chrome.browserAction.setIcon( {
+			path: "../assets/icon16.png"
+		})
+	}
+	if(!powerOption){
+		chrome.browserAction.setIcon( {
+			path: "../assets/icon16-grey.png"
+		})
+	}
 
+	//If no color selection, default to green
 	if(!colorOption) {
 		colorOption = "green";
 	}
