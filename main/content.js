@@ -42,7 +42,6 @@ function findAllNodesWithPlayerNames(arr, element){
 		    nodeArray.push(element);				
 		};
 	});
-	console.log(nodeArray);
 	return nodeArray;
 }
 
