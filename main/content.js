@@ -1,6 +1,5 @@
 let playersFoundNames; //populated with sendMessage response callback
 let responseMap; //An object of arrays where the player name is the key for fast lookup while creating tooltip. 
-const acceptedTagNames = ["A", "P", "H1", "H2", "H3", "H4", "H5", "H6", "LI"]
 const teamColors = {"ATL": "#E03A3E", "BOS": "#007A33", "BRK": "#000000", "CHI": "#CE1141", "CHO": "#1D1160", "CLE": "#6F263D", "DAL": "#00538C", "DEN": "#0E2240", "DET": "#C8102E", "GSW": "#006BB6", "HOU": "#CE1141", "IND": "#002D62", "LAC": "#C8102E", "LAL": "#552583", "MEM": "#5D76A9", "MIA": "#98002E", "MIL": "#00471B", "MIN": "#0C2340", "NOP": "#0C2340", "NYK": "#F58426", "OKC": "#007AC1", "ORL": "#0077C0", "PHI": "#006BB6", "PHO": "#1D1160", "POR": "#E03A3E", "SAC": "#5A2D81", "SAS": "#000000", "TOR": " #CE1141", "UTA": "#002B5C", "WAS": "#002B5C"};
 
 
@@ -36,10 +35,14 @@ function findAllNodesWithPlayerNames(arr, element){
 	let nodeArray = []; 
 	let htmlCollection = element.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
 	htmlCollection.forEach(element => {
-		if(new RegExp(arr.join("|"), "i").test(element.textContent)) {
-		    nodeArray.push(element);
+		if(element.classList.contains("flair") || element.classList.contains("tagline")) {
+			return
+		}
+		else if(new RegExp(arr.join("|"), "i").test(element.textContent)) {
+		    nodeArray.push(element);				
 		};
 	});
+	console.log(nodeArray);
 	return nodeArray;
 }
 
@@ -84,7 +87,6 @@ function createAndPopulateTooltips(element) {
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
 			let playerName = stat.Player.toLowerCase().split(" ");
-			console.log(stat);
 				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com${stat['URL']}">${stat.Player}</a> | ${stat.Pos} ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
 					<tr>
