@@ -12,32 +12,44 @@
 
 		<div class="welcome container text-center">
 			<h2 class="thanks">Thanks for Downloading Quick Stats!</h2>
-			<h4>Here is a very brief introduction:</h4>
+			<h5>Here is a very brief introduction:</h5>
 
 		</div>
+		<div id="content-container">
+				<div class="container main-content intro-box">
+				<h2 class="introductions">1. The Box</h2>
+				<div>
+					<img id="box_picture"  src="../assets/intro/box_intro-two.png">
+				</div>
 
-		<div class="container main-content view">
-			<h2 class="introductions">1. View</h2>
-		<div>
-			<img src="../assets/intro/box_intro.png">
-		</div>
-
-		</div>
-
-		<div class="container text-center main-content">
-			<h2 class="introductions">2. Customize </h2>
-			<div>
-				<img id="options_page" src="../assets/intro/options_intro.png">
 			</div>
 
+			<div class="container text-left main-content intro-box">
+				<h2 class="introductions">2. Options </h2>
+				<div>
+					<img id="options_page" src="../assets/intro/options_intro-two.png">
+				</div>
+
+			</div>
 		</div>
 
-		<div class="container text-right main-content" >
+
+		<div class="container text-center main-content support-container" >
 			<h2 class="introductions">3. Support</h2>
 			<p id="support">Want more great features? Salary cap info? Game logs? Team highlighting? I'm supposed to ask you for money so I can justify working on Quick Stats more. But I'd much rather have a job as a web developer. I live in Denver, CO. My github is <a rel="noopener noreferrer nofollow" target="_blank" href="https://github.com/AlexCanCode">here</a>  and linkedin <a rel="noopener noreferrer nofollow" target="_blank" href="https://www.linkedin.com/in/alexrichards2/">here</a>. Help me find a job and I will have more free time to devote to making Quick Stats truly awesome!</p>
-	
-			
+
+			<h6>Don't Know of Any Jobs?</h6>
+
+			<p>Server time isn't free, so I will still take donations. Costs right now run about 14$/month so if you feel so inclined you can support the effort here: </p>
 		</div>
+
+<!-- 		<div class="container text-center main-content support-container" >
+			<h2 class="introductions">4. Improve</h2>
+
+			<h6>Something not working right? Let. Me. Know.</h6>
+
+			<p>Every developer's goal should be bug-free code, but nobody has gotten there yet. If somehting isn't working properly, please let me know so I can work on a fix. AlexCanCode18@gmail.com.</p>
+		</div> -->
 
 </body>
 
@@ -53,6 +65,16 @@
 
 	h2.introductions {
 		color: #f37e21;
+		font-size: 1.25rem;
+	}
+
+	#content-container {
+		display: flex;
+	} 
+
+	.intro-box {
+		width: 45%;
+		padding-left: 5%;
 	}
 
 	#stat-box-table-example {
@@ -71,9 +93,18 @@
 		margin-bottom: 1%
 	}
 
-	#options_page {
-		
+	.support-container {
+		margin-top: 2%;
+	}
 
+	#options_page {
+		height: auto;
+		width: 100%;
+	}	
+
+	#box_picture {
+		height: auto;
+		width: 100%;
 	}
 
 	#support {
