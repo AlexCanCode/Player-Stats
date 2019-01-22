@@ -36,7 +36,7 @@ function findAllNodesWithPlayerNames(arr, element){
 	let htmlCollection = element.querySelectorAll("p, a, span, h1, h2, h3, h4, h5, h6, li");
 	htmlCollection.forEach(element => {
 		if(element.classList.contains("flair") || element.classList.contains("tagline")) {
-			return
+			return;
 		}
 		else if(new RegExp(arr.join("|"), "i").test(element.textContent)) {
 		    nodeArray.push(element);				
@@ -85,6 +85,7 @@ function createAndPopulateTooltips(element) {
 			content: function() { 
 			const stat = responseMap[nodeCollectionForTippy[counter].dataset.player.toLowerCase()]; //gets individual stats for current player
 			counter++;
+			console.log(stat.Player);
 			let playerName = stat.Player.toLowerCase().split(" ");
 				return `<h4 id="stat-box-header-${counter}" style="background-color: ${teamColors[stat.Tm]};"><a target="_blank" href="https://www.basketball-reference.com${stat['URL']}">${stat.Player}</a> | ${stat.Pos} ${stat.Tm}</h4>
 				<table id="stat-box-table-${counter}">
