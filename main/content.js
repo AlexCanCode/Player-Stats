@@ -147,7 +147,7 @@ function init() {
 
 //Adapt to Never-ending Reddit Scroll
 $(window).bind( 'neverEndingLoad', function(e) { 
-	const redditContainers = document.querySelectorAll("#siteTable")
+	const redditContainers = document.querySelectorAll(".sitetable")
 	const element = redditContainers[(redditContainers.length - 1)]
 	const currentDate = +new Date();
 	chrome.runtime.sendMessage([getSerializedPageText(), (JSON.stringify(currentDate))], function(response) {
