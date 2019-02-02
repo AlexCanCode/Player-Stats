@@ -14,6 +14,10 @@ chrome.runtime.onInstalled.addListener(function(details) { //https://stackoverfl
 		}, function(data) {
 			console.log("options stored")
 		})
+		//open introduciton page on first install
+		chrome.tabs.create({url: "../intro/splashIntro-two-column.html"}, function(tab) {
+			console.log("launched intro page")
+		})
 	}
 	else if(details.reason === "update") { 
 		makeXHRRequest();
