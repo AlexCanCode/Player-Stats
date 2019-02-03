@@ -2,7 +2,7 @@
 	"name": "Quick Stats", 
 	"version": "0.4.0", 
 	"short_name": "Quick Stats",
-	"description": "View player stats simply by hovering over their name.",
+	"description": "View stats simply by hovering over a player's name.",
 	"permissions":[
 		"storage",
 		"https://quickstatsback.herokuapp.com/"
